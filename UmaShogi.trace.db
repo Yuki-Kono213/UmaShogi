@@ -1,0 +1,288 @@
+2022-05-06 15:32:33 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: SQLステートメントに文法エラーがあります "CREATE table Race [*]ID int primary key Name varchar(100)"
+Syntax error in SQL statement "CREATE table Race [*]ID int primary key Name varchar(100)"; SQL statement:
+CREATE table Race ID int primary key Name varchar(100) [42000-210]
+2022-05-06 15:33:07 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: SQLステートメントに文法エラーがあります "CREATE table Race [*]ID int primary key, Name varchar(100)"
+Syntax error in SQL statement "CREATE table Race [*]ID int primary key, Name varchar(100)"; SQL statement:
+CREATE table Race ID int primary key, Name varchar(100) [42000-210]
+2022-05-06 15:33:14 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: SQLステートメントに文法エラーがあります "CREATE table Race[*], ID int primary key, Name varchar(100)"
+Syntax error in SQL statement "CREATE table Race[*], ID int primary key, Name varchar(100)"; SQL statement:
+CREATE table Race, ID int primary key, Name varchar(100) [42000-210]
+2022-05-06 15:33:19 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: SQLステートメントに文法エラーがあります "CREATE table Race[*], ID int primary key Name varchar(100)"
+Syntax error in SQL statement "CREATE table Race[*], ID int primary key Name varchar(100)"; SQL statement:
+CREATE table Race, ID int primary key Name varchar(100) [42000-210]
+2022-05-06 15:33:40 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: SQLステートメントに文法エラーがあります "CREATE table Rac(ID int primary key [*]Name varchar(100))"; 期待されるステートメント "HASH, CONSTRAINT, COMMENT, UNIQUE, NOT, NULL, CHECK, REFERENCES, AUTO_INCREMENT, ,, )"
+Syntax error in SQL statement "CREATE table Rac(ID int primary key [*]Name varchar(100))"; expected "HASH, CONSTRAINT, COMMENT, UNIQUE, NOT, NULL, CHECK, REFERENCES, AUTO_INCREMENT, ,, )"; SQL statement:
+CREATE table Rac(ID int primary key Name varchar(100)) [42001-210]
+2022-05-06 15:35:27 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: SQLステートメントに文法エラーがあります "CREATE table Horse (ID int primary key, Name varchar(100), FOREIGN KEY [*]RaceID REFERENCES Race(ID))"; 期待されるステートメント "("
+Syntax error in SQL statement "CREATE table Horse (ID int primary key, Name varchar(100), FOREIGN KEY [*]RaceID REFERENCES Race(ID))"; expected "("; SQL statement:
+CREATE table Horse (ID int primary key, Name varchar(100), FOREIGN KEY RaceID REFERENCES Race(ID)) [42001-210]
+2022-05-06 15:37:16 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: 列 "RACEID" が見つかりません
+Column "RACEID" not found; SQL statement:
+CREATE table Horse (ID int primary key, Name varchar(100), FOREIGN KEY(RaceID) REFERENCES Race(ID)) [42122-210]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:521)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:496)
+	at org.h2.message.DbException.get(DbException.java:227)
+	at org.h2.message.DbException.get(DbException.java:203)
+	at org.h2.table.Table.getColumn(Table.java:754)
+	at org.h2.table.IndexColumn.mapColumns(IndexColumn.java:184)
+	at org.h2.command.ddl.AlterTableAddConstraint.tryUpdate(AlterTableAddConstraint.java:214)
+	at org.h2.command.ddl.AlterTableAddConstraint.update(AlterTableAddConstraint.java:72)
+	at org.h2.command.ddl.AlterTable.update(AlterTable.java:46)
+	at org.h2.command.ddl.CommandWithColumns.createConstraints(CommandWithColumns.java:83)
+	at org.h2.command.ddl.CreateTable.update(CreateTable.java:131)
+	at org.h2.command.CommandContainer.update(CommandContainer.java:174)
+	at org.h2.command.Command.executeUpdate(Command.java:252)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:252)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:223)
+	at org.h2.server.web.WebApp.getResult(WebApp.java:1339)
+	at org.h2.server.web.WebApp.query(WebApp.java:1137)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1103)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1090)
+	at org.h2.server.web.WebThread.process(WebThread.java:189)
+	at org.h2.server.web.WebThread.run(WebThread.java:102)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-05-06 15:39:09 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: SQLステートメントに文法エラーがあります "ALTER TABLE RACE [*]CHANGE ID int AUTO_INCREMENT"; 期待されるステートメント "., ADD, SET, RENAME, DROP, ALTER"
+Syntax error in SQL statement "ALTER TABLE RACE [*]CHANGE ID int AUTO_INCREMENT"; expected "., ADD, SET, RENAME, DROP, ALTER"; SQL statement:
+ALTER TABLE RACE CHANGE ID int AUTO_INCREMENT [42001-210]
+2022-05-06 15:39:14 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: SQLステートメントに文法エラーがあります "ALTER TABLE RACE [*]CHANGE ID ID int AUTO_INCREMENT"; 期待されるステートメント "., ADD, SET, RENAME, DROP, ALTER"
+Syntax error in SQL statement "ALTER TABLE RACE [*]CHANGE ID ID int AUTO_INCREMENT"; expected "., ADD, SET, RENAME, DROP, ALTER"; SQL statement:
+ALTER TABLE RACE CHANGE ID ID int AUTO_INCREMENT [42001-210]
+2022-05-06 15:40:20 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: SQLステートメントに文法エラーがあります "ALTER TABLE RACE [*]CHANGE ID AUTO_INCREMENT"; 期待されるステートメント "., ADD, SET, RENAME, DROP, ALTER"
+Syntax error in SQL statement "ALTER TABLE RACE [*]CHANGE ID AUTO_INCREMENT"; expected "., ADD, SET, RENAME, DROP, ALTER"; SQL statement:
+ALTER TABLE RACE CHANGE ID AUTO_INCREMENT [42001-210]
+2022-05-06 15:41:10 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: SQLステートメントに文法エラーがあります "ALTER TABLE RACE [*]MODIFY ID  NOT_NULL AUTO_INCREMENT"; 期待されるステートメント "., ADD, SET, RENAME, DROP, ALTER"
+Syntax error in SQL statement "ALTER TABLE RACE [*]MODIFY ID  NOT_NULL AUTO_INCREMENT"; expected "., ADD, SET, RENAME, DROP, ALTER"; SQL statement:
+ALTER TABLE RACE MODIFY ID  NOT_NULL AUTO_INCREMENT [42001-210]
+2022-05-06 15:41:29 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: SQLステートメントに文法エラーがあります "ALTER TABLE RACE [*]MODIFY ID INT  NOT_NULL AUTO_INCREMENT"; 期待されるステートメント "., ADD, SET, RENAME, DROP, ALTER"
+Syntax error in SQL statement "ALTER TABLE RACE [*]MODIFY ID INT  NOT_NULL AUTO_INCREMENT"; expected "., ADD, SET, RENAME, DROP, ALTER"; SQL statement:
+ALTER TABLE RACE MODIFY ID INT  NOT_NULL AUTO_INCREMENT [42001-210]
+2022-05-06 15:41:42 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: SQLステートメントに文法エラーがあります "ALTER TABLE RACE [*]MODIFY ID INT  NOT_NULL  AUTO_INCREMENT"; 期待されるステートメント "., ADD, SET, RENAME, DROP, ALTER"
+Syntax error in SQL statement "ALTER TABLE RACE [*]MODIFY ID INT  NOT_NULL  AUTO_INCREMENT"; expected "., ADD, SET, RENAME, DROP, ALTER"; SQL statement:
+ALTER TABLE RACE MODIFY ID INT  NOT_NULL  AUTO_INCREMENT [42001-210]
+2022-05-06 15:43:05 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: SQLステートメントに文法エラーがあります "ALTER TABLE RACE [*]MODIFY ID NOT_NULL  AUTO_INCREMENT"; 期待されるステートメント "., ADD, SET, RENAME, DROP, ALTER"
+Syntax error in SQL statement "ALTER TABLE RACE [*]MODIFY ID NOT_NULL  AUTO_INCREMENT"; expected "., ADD, SET, RENAME, DROP, ALTER"; SQL statement:
+ALTER TABLE RACE MODIFY ID NOT_NULL  AUTO_INCREMENT [42001-210]
+2022-05-06 15:43:20 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: SQLステートメントに文法エラーがあります "ALTER TABLE RACE[*](MODIFY ID NOT_NULL  AUTO_INCREMENT)"; 期待されるステートメント "., ADD, SET, RENAME, DROP, ALTER"
+Syntax error in SQL statement "ALTER TABLE RACE[*](MODIFY ID NOT_NULL  AUTO_INCREMENT)"; expected "., ADD, SET, RENAME, DROP, ALTER"; SQL statement:
+ALTER TABLE RACE(MODIFY ID NOT_NULL  AUTO_INCREMENT) [42001-210]
+2022-05-06 15:43:28 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: SQLステートメントに文法エラーがあります "ALTER TABLE RACE[*], MODIFY ID NOT_NULL  AUTO_INCREMENT"; 期待されるステートメント "., ADD, SET, RENAME, DROP, ALTER"
+Syntax error in SQL statement "ALTER TABLE RACE[*], MODIFY ID NOT_NULL  AUTO_INCREMENT"; expected "., ADD, SET, RENAME, DROP, ALTER"; SQL statement:
+ALTER TABLE RACE, MODIFY ID NOT_NULL  AUTO_INCREMENT [42001-210]
+2022-05-06 15:43:53 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: SQLステートメントに文法エラーがあります "ALTER TABLE RACE [*]MODIFY ID NOT_NULL  AUTO_INCREMENT"; 期待されるステートメント "., ADD, SET, RENAME, DROP, ALTER"
+Syntax error in SQL statement "ALTER TABLE RACE [*]MODIFY ID NOT_NULL  AUTO_INCREMENT"; expected "., ADD, SET, RENAME, DROP, ALTER"; SQL statement:
+ALTER TABLE RACE MODIFY ID NOT_NULL  AUTO_INCREMENT [42001-210]
+2022-05-06 15:44:36 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: SQLステートメントに文法エラーがあります "ALTER TABLE RACE\000d\000a [*]CHANGE ID ID NOT_NULL  AUTO_INCREMENT"; 期待されるステートメント "., ADD, SET, RENAME, DROP, ALTER"
+Syntax error in SQL statement "ALTER TABLE RACE\000d\000a [*]CHANGE ID ID NOT_NULL  AUTO_INCREMENT"; expected "., ADD, SET, RENAME, DROP, ALTER"; SQL statement:
+ALTER TABLE RACE
+ CHANGE ID ID NOT_NULL  AUTO_INCREMENT [42001-210]
+2022-05-06 15:44:44 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: SQLステートメントに文法エラーがあります "ALTER TABLE RACE [*]CHANGE ID ID NOT_NULL  AUTO_INCREMENT"; 期待されるステートメント "., ADD, SET, RENAME, DROP, ALTER"
+Syntax error in SQL statement "ALTER TABLE RACE [*]CHANGE ID ID NOT_NULL  AUTO_INCREMENT"; expected "., ADD, SET, RENAME, DROP, ALTER"; SQL statement:
+ALTER TABLE RACE CHANGE ID ID NOT_NULL  AUTO_INCREMENT [42001-210]
+2022-05-06 15:45:04 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: SQLステートメントに文法エラーがあります "ALTER TABLE HORSE [*]CHANGE ID ID NOT_NULL  AUTO_INCREMENT"; 期待されるステートメント "., ADD, SET, RENAME, DROP, ALTER"
+Syntax error in SQL statement "ALTER TABLE HORSE [*]CHANGE ID ID NOT_NULL  AUTO_INCREMENT"; expected "., ADD, SET, RENAME, DROP, ALTER"; SQL statement:
+ALTER TABLE HORSE CHANGE ID ID NOT_NULL  AUTO_INCREMENT [42001-210]
+2022-05-06 15:45:39 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: SQLステートメントに文法エラーがあります "ALTER TABLE HORSE [*]CHANGE COLUMN ID ID NOT_NULL  AUTO_INCREMENT"; 期待されるステートメント "., ADD, SET, RENAME, DROP, ALTER"
+Syntax error in SQL statement "ALTER TABLE HORSE [*]CHANGE COLUMN ID ID NOT_NULL  AUTO_INCREMENT"; expected "., ADD, SET, RENAME, DROP, ALTER"; SQL statement:
+ALTER TABLE HORSE CHANGE COLUMN ID ID NOT_NULL  AUTO_INCREMENT [42001-210]
+2022-05-06 15:45:47 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: SQLステートメントに文法エラーがあります "ALTER TABLE RACE [*]CHANGE COLUMN ID ID NOT_NULL  AUTO_INCREMENT"; 期待されるステートメント "., ADD, SET, RENAME, DROP, ALTER"
+Syntax error in SQL statement "ALTER TABLE RACE [*]CHANGE COLUMN ID ID NOT_NULL  AUTO_INCREMENT"; expected "., ADD, SET, RENAME, DROP, ALTER"; SQL statement:
+ALTER TABLE RACE CHANGE COLUMN ID ID NOT_NULL  AUTO_INCREMENT [42001-210]
+2022-05-06 15:46:01 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: SQLステートメントに文法エラーがあります "ALTER TABLE RACE\000d\000a[*]CHANGE COLUMN ID ID NOT_NULL  AUTO_INCREMENT"; 期待されるステートメント "., ADD, SET, RENAME, DROP, ALTER"
+Syntax error in SQL statement "ALTER TABLE RACE\000d\000a[*]CHANGE COLUMN ID ID NOT_NULL  AUTO_INCREMENT"; expected "., ADD, SET, RENAME, DROP, ALTER"; SQL statement:
+ALTER TABLE RACE
+CHANGE COLUMN ID ID NOT_NULL  AUTO_INCREMENT [42001-210]
+2022-05-06 15:47:46 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: SQLステートメントに文法エラーがあります "ALTER TABLE RACE\000d\000aADD CONSTRAINT ID [*]NOT_NULL  AUTO_INCREMENT"; 期待されるステートメント "., COMMENT, PRIMARY, UNIQUE, FOREIGN, CHECK"
+Syntax error in SQL statement "ALTER TABLE RACE\000d\000aADD CONSTRAINT ID [*]NOT_NULL  AUTO_INCREMENT"; expected "., COMMENT, PRIMARY, UNIQUE, FOREIGN, CHECK"; SQL statement:
+ALTER TABLE RACE
+ADD CONSTRAINT ID NOT_NULL  AUTO_INCREMENT [42001-210]
+2022-05-06 15:48:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: SQLステートメントに文法エラーがあります "ALTER TABLE RACE\000d\000aADD CONSTRAINT NOT_NULL[*](ID)  AUTO_INCREMENT(ID)"; 期待されるステートメント "., COMMENT, PRIMARY, UNIQUE, FOREIGN, CHECK"
+Syntax error in SQL statement "ALTER TABLE RACE\000d\000aADD CONSTRAINT NOT_NULL[*](ID)  AUTO_INCREMENT(ID)"; expected "., COMMENT, PRIMARY, UNIQUE, FOREIGN, CHECK"; SQL statement:
+ALTER TABLE RACE
+ADD CONSTRAINT NOT_NULL(ID)  AUTO_INCREMENT(ID) [42001-210]
+2022-05-06 15:48:40 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: SQLステートメントに文法エラーがあります "ALTER TABLE RACE\000d\000aADD CONSTRAINT  AUTO_INCREMENT[*](ID)"; 期待されるステートメント "., COMMENT, PRIMARY, UNIQUE, FOREIGN, CHECK"
+Syntax error in SQL statement "ALTER TABLE RACE\000d\000aADD CONSTRAINT  AUTO_INCREMENT[*](ID)"; expected "., COMMENT, PRIMARY, UNIQUE, FOREIGN, CHECK"; SQL statement:
+ALTER TABLE RACE
+ADD CONSTRAINT  AUTO_INCREMENT(ID) [42001-210]
+2022-05-06 15:49:49 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: SQLステートメントに文法エラーがあります "ALTER TABLE RACE\000d\000aADD CONSTRAINT AUTO_INCREMENT[*](ID)"; 期待されるステートメント "., COMMENT, PRIMARY, UNIQUE, FOREIGN, CHECK"
+Syntax error in SQL statement "ALTER TABLE RACE\000d\000aADD CONSTRAINT AUTO_INCREMENT[*](ID)"; expected "., COMMENT, PRIMARY, UNIQUE, FOREIGN, CHECK"; SQL statement:
+ALTER TABLE RACE
+ADD CONSTRAINT AUTO_INCREMENT(ID) [42001-210]
+2022-05-06 15:50:05 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: SQLステートメントに文法エラーがあります "ALTER TABLE RACE\000d\000aADD CONSTRAINT AUTO_INCREMENT[*](ID)"; 期待されるステートメント "., COMMENT, PRIMARY, UNIQUE, FOREIGN, CHECK"
+Syntax error in SQL statement "ALTER TABLE RACE\000d\000aADD CONSTRAINT AUTO_INCREMENT[*](ID)"; expected "., COMMENT, PRIMARY, UNIQUE, FOREIGN, CHECK"; SQL statement:
+ALTER TABLE RACE
+ADD CONSTRAINT AUTO_INCREMENT(ID) [42001-210]
+2022-05-06 15:50:10 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: SQLステートメントに文法エラーがあります "ALTER TABLE RACE\000d\000aADD CONSTRAINT ID [*]AUTO_INCREMENT"; 期待されるステートメント "., COMMENT, PRIMARY, UNIQUE, FOREIGN, CHECK"
+Syntax error in SQL statement "ALTER TABLE RACE\000d\000aADD CONSTRAINT ID [*]AUTO_INCREMENT"; expected "., COMMENT, PRIMARY, UNIQUE, FOREIGN, CHECK"; SQL statement:
+ALTER TABLE RACE
+ADD CONSTRAINT ID AUTO_INCREMENT [42001-210]
+2022-05-06 15:50:55 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: テーブル "FAVORITE" が見つかりません
+Table "FAVORITE" not found; SQL statement:
+ALTER TABLE favorite ALTER COLUMN ID NOT_NULL AUTO_INCREMENT [42102-210]
+2022-05-06 15:51:08 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: 不明なデータ型: "NOT_NULL"
+Unknown data type: "NOT_NULL"; SQL statement:
+ALTER TABLE RACE ALTER COLUMN ID NOT_NULL AUTO_INCREMENT [50004-210]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:573)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:496)
+	at org.h2.message.DbException.get(DbException.java:227)
+	at org.h2.message.DbException.get(DbException.java:203)
+	at org.h2.command.Parser.readIfDataType1(Parser.java:6234)
+	at org.h2.command.Parser.readIfDataType(Parser.java:6075)
+	at org.h2.command.Parser.parseColumnWithType(Parser.java:6057)
+	at org.h2.command.Parser.parseColumnForTable(Parser.java:5932)
+	at org.h2.command.Parser.parseAlterTableAlterColumnType(Parser.java:8954)
+	at org.h2.command.Parser.parseAlterTableAlter(Parser.java:8589)
+	at org.h2.command.Parser.parseAlterTable(Parser.java:8503)
+	at org.h2.command.Parser.parseAlter(Parser.java:7556)
+	at org.h2.command.Parser.parsePrepared(Parser.java:730)
+	at org.h2.command.Parser.parse(Parser.java:674)
+	at org.h2.command.Parser.parse(Parser.java:644)
+	at org.h2.command.Parser.prepareCommand(Parser.java:551)
+	at org.h2.engine.SessionLocal.prepareLocal(SessionLocal.java:615)
+	at org.h2.engine.SessionLocal.prepareCommand(SessionLocal.java:553)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1116)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:237)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:223)
+	at org.h2.server.web.WebApp.getResult(WebApp.java:1339)
+	at org.h2.server.web.WebApp.query(WebApp.java:1137)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1103)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1090)
+	at org.h2.server.web.WebThread.process(WebThread.java:189)
+	at org.h2.server.web.WebThread.run(WebThread.java:102)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-05-06 15:51:14 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: 不明なデータ型: "AUTO_INCREMENT"
+Unknown data type: "AUTO_INCREMENT"; SQL statement:
+ALTER TABLE RACE ALTER COLUMN ID AUTO_INCREMENT [50004-210]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:573)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:496)
+	at org.h2.message.DbException.get(DbException.java:227)
+	at org.h2.message.DbException.get(DbException.java:203)
+	at org.h2.command.Parser.readIfDataType1(Parser.java:6234)
+	at org.h2.command.Parser.readIfDataType(Parser.java:6075)
+	at org.h2.command.Parser.parseColumnWithType(Parser.java:6057)
+	at org.h2.command.Parser.parseColumnForTable(Parser.java:5932)
+	at org.h2.command.Parser.parseAlterTableAlterColumnType(Parser.java:8954)
+	at org.h2.command.Parser.parseAlterTableAlter(Parser.java:8589)
+	at org.h2.command.Parser.parseAlterTable(Parser.java:8503)
+	at org.h2.command.Parser.parseAlter(Parser.java:7556)
+	at org.h2.command.Parser.parsePrepared(Parser.java:730)
+	at org.h2.command.Parser.parse(Parser.java:674)
+	at org.h2.command.Parser.parse(Parser.java:644)
+	at org.h2.command.Parser.prepareCommand(Parser.java:551)
+	at org.h2.engine.SessionLocal.prepareLocal(SessionLocal.java:615)
+	at org.h2.engine.SessionLocal.prepareCommand(SessionLocal.java:553)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1116)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:237)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:223)
+	at org.h2.server.web.WebApp.getResult(WebApp.java:1339)
+	at org.h2.server.web.WebApp.query(WebApp.java:1137)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1103)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1090)
+	at org.h2.server.web.WebThread.process(WebThread.java:189)
+	at org.h2.server.web.WebThread.run(WebThread.java:102)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-05-06 15:51:41 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: 不明なデータ型: "AUTO_INCREMENT"
+Unknown data type: "AUTO_INCREMENT"; SQL statement:
+ALTER TABLE RACE ALTER COLUMN ID AUTO_INCREMENT [50004-210]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:573)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:496)
+	at org.h2.message.DbException.get(DbException.java:227)
+	at org.h2.message.DbException.get(DbException.java:203)
+	at org.h2.command.Parser.readIfDataType1(Parser.java:6234)
+	at org.h2.command.Parser.readIfDataType(Parser.java:6075)
+	at org.h2.command.Parser.parseColumnWithType(Parser.java:6057)
+	at org.h2.command.Parser.parseColumnForTable(Parser.java:5932)
+	at org.h2.command.Parser.parseAlterTableAlterColumnType(Parser.java:8954)
+	at org.h2.command.Parser.parseAlterTableAlter(Parser.java:8589)
+	at org.h2.command.Parser.parseAlterTable(Parser.java:8503)
+	at org.h2.command.Parser.parseAlter(Parser.java:7556)
+	at org.h2.command.Parser.parsePrepared(Parser.java:730)
+	at org.h2.command.Parser.parse(Parser.java:674)
+	at org.h2.command.Parser.parse(Parser.java:644)
+	at org.h2.command.Parser.prepareCommand(Parser.java:551)
+	at org.h2.engine.SessionLocal.prepareLocal(SessionLocal.java:615)
+	at org.h2.engine.SessionLocal.prepareCommand(SessionLocal.java:553)
+	at org.h2.jdbc.JdbcConnection.prepareCommand(JdbcConnection.java:1116)
+	at org.h2.jdbc.JdbcStatement.executeInternal(JdbcStatement.java:237)
+	at org.h2.jdbc.JdbcStatement.execute(JdbcStatement.java:223)
+	at org.h2.server.web.WebApp.getResult(WebApp.java:1339)
+	at org.h2.server.web.WebApp.query(WebApp.java:1137)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1103)
+	at org.h2.server.web.WebApp$1.next(WebApp.java:1090)
+	at org.h2.server.web.WebThread.process(WebThread.java:189)
+	at org.h2.server.web.WebThread.run(WebThread.java:102)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+2022-05-06 20:41:54 database: flush
+org.h2.message.DbException: 一般エラー: "org.h2.mvstore.MVStoreException: The file is locked: C:/Users/yuki kono/Downloads/pleiades/workspace/UmaShogi/UmaShogi.mv.db [2.1.210/7]"
+General error: "org.h2.mvstore.MVStoreException: The file is locked: C:/Users/yuki kono/Downloads/pleiades/workspace/UmaShogi/UmaShogi.mv.db [2.1.210/7]" [50000-210]
+	at org.h2.message.DbException.get(DbException.java:216)
+	at org.h2.message.DbException.convert(DbException.java:414)
+	at org.h2.mvstore.db.Store.lambda$new$0(Store.java:120)
+	at org.h2.mvstore.MVStore.handleException(MVStore.java:3296)
+	at org.h2.mvstore.MVStore.panic(MVStore.java:585)
+	at org.h2.mvstore.MVStore.<init>(MVStore.java:461)
+	at org.h2.mvstore.MVStore$Builder.open(MVStore.java:4056)
+	at org.h2.mvstore.db.Store.<init>(Store.java:129)
+	at org.h2.engine.Database.<init>(Database.java:324)
+	at org.h2.engine.Engine.openSession(Engine.java:92)
+	at org.h2.engine.Engine.openSession(Engine.java:222)
+	at org.h2.engine.Engine.createSession(Engine.java:201)
+	at org.h2.engine.SessionRemote.connectEmbeddedOrServer(SessionRemote.java:338)
+	at org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:122)
+	at org.h2.util.JdbcUtils.getConnection(JdbcUtils.java:288)
+	at org.h2.server.web.WebServer.getConnection(WebServer.java:807)
+	at org.h2.server.web.WebApp.login(WebApp.java:1033)
+	at org.h2.server.web.WebApp.process(WebApp.java:226)
+	at org.h2.server.web.WebApp.processRequest(WebApp.java:176)
+	at org.h2.server.web.WebThread.process(WebThread.java:153)
+	at org.h2.server.web.WebThread.run(WebThread.java:102)
+	at java.base/java.lang.Thread.run(Thread.java:833)
+Caused by: org.h2.jdbc.JdbcSQLNonTransientException: 一般エラー: "org.h2.mvstore.MVStoreException: The file is locked: C:/Users/yuki kono/Downloads/pleiades/workspace/UmaShogi/UmaShogi.mv.db [2.1.210/7]"
+General error: "org.h2.mvstore.MVStoreException: The file is locked: C:/Users/yuki kono/Downloads/pleiades/workspace/UmaShogi/UmaShogi.mv.db [2.1.210/7]" [50000-210]
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:573)
+	at org.h2.message.DbException.getJdbcSQLException(DbException.java:496)
+	... 22 more
+Caused by: org.h2.mvstore.MVStoreException: The file is locked: C:/Users/yuki kono/Downloads/pleiades/workspace/UmaShogi/UmaShogi.mv.db [2.1.210/7]
+	at org.h2.mvstore.DataUtils.newMVStoreException(DataUtils.java:1004)
+	at org.h2.mvstore.FileStore.open(FileStore.java:157)
+	at org.h2.mvstore.MVStore.<init>(MVStore.java:444)
+	... 16 more
+Caused by: java.nio.channels.OverlappingFileLockException
+	at java.base/sun.nio.ch.FileLockTable.checkList(FileLockTable.java:229)
+	at java.base/sun.nio.ch.FileLockTable.add(FileLockTable.java:123)
+	at java.base/sun.nio.ch.FileChannelImpl.tryLock(FileChannelImpl.java:1321)
+	at java.base/java.nio.channels.FileChannel.tryLock(FileChannel.java:1191)
+	at org.h2.mvstore.FileStore.open(FileStore.java:154)
+	... 17 more
