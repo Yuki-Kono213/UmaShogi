@@ -117,7 +117,7 @@ public class SampleController {
 			Elements rateElements = rate.getAllElements();
 			Elements rateSpanElements = rateElements.select("span");
 			Elements horseElements  = doc.select("a.tategaki.bamei");
-			Elements beforeElements  = doc.select(".zensou.std11 span,.tategaki.broBamei a");
+			Elements beforeElements  = doc.select(".zensou.std11 span,.tategaki.broBamei a,.BeforRaces.past1");
 			Elements frameElements  = doc.select(".wakuban td:matchesOwn([1-8])");
 			Elements RangeElements  = doc.select(".classCourseSyokin.clearfix li");
 			textRaceName.setText(doc.select(".raceTitle.fL").get(0).text());
