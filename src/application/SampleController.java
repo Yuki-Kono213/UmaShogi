@@ -55,6 +55,8 @@ public class SampleController {
     private TextArea frame13;
 	@FXML
     private TextField textRaceRange;
+	@FXML
+    private TextField textRaceStage;
 	
 	Map<String,Integer> RankMap = new HashMap<>(){
 		{
@@ -116,6 +118,9 @@ public class SampleController {
 			Element rate = doc.select(".seirei.std9").get(1);
 			Elements rateElements = rate.getAllElements();
 			Elements rateSpanElements = rateElements.select("span");
+			Elements stageElements  = doc.select("#topicPath ul li");
+			System.out.println(stageElements);
+			textRaceStage.setText(stageElements.get(3).text().split("競馬")[0]);
 			Elements horseElements  = doc.select("a.tategaki.bamei");
 			Elements beforeElements  = doc.select(".zensou.std11 span,.tategaki.broBamei a,.BeforRaces.past1");
 			Elements frameElements  = doc.select(".wakuban td:matchesOwn([1-8])");
@@ -124,6 +129,7 @@ public class SampleController {
 			String[] Range = RangeElements.get(1).text().split(" ");
 			textRaceRange.setText(Range[0]);
 			List<Horse> horseList = new ArrayList<Horse>();
+			
 			//System.out.println( beforeElements );
 			for (int i = horseElements.size()/2 - 1; i >= 0; i--) {
 					String name = horseElements.get(i).text();
