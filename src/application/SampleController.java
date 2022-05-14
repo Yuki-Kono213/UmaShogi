@@ -13,10 +13,52 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 //Javaでスクレイピングを行う
 public class SampleController {
+
+	@FXML
+    private Label horseLabel1;
+	@FXML
+    private Label horseLabel2;
+	@FXML
+    private Label horseLabel3;
+	@FXML
+    private Label horseLabel4;
+	@FXML
+    private Label horseLabel5;
+	@FXML
+    private Label horseLabel6;
+	@FXML
+    private Label horseLabel7;
+	@FXML
+    private Label horseLabel8;
+	@FXML
+    private Label horseLabel9;
+	@FXML
+    private Label horseLabel10;
+	@FXML
+    private Label horseLabel11;
+	@FXML
+    private Label horseLabel12;
+	@FXML
+    private Label horseLabel13;
+	@FXML
+    private Label horseLabel14;
+	@FXML
+    private Label horseLabel15;
+	@FXML
+    private Label horseLabel16;
+	@FXML
+    private Label horseLabel17;
+	@FXML
+    private Label horseLabel18;
+	@FXML
+    private Label horseLabel19;
+	@FXML
+    private Label horseLabel20;
 	@FXML
     private TextField textURL;
 	@FXML
@@ -58,7 +100,7 @@ public class SampleController {
 	@FXML
     private TextField textRaceStage;
 	
-	Map<String,Integer> RankMap = new HashMap<>(){
+    Map<String,Integer> RankMap = new HashMap<>(){
 		{
 	        put("①", 1);
 	        put("②", 2);
@@ -81,6 +123,7 @@ public class SampleController {
 	        put("－", 19);
 		}
     };
+
 	
 	public void ClearText() 
 	{
@@ -107,19 +150,67 @@ public class SampleController {
 		
 		
 	}
-	
+	 String[] strArray = {
+			 "⓪",
+			 "①",
+		     "②",
+		     "③",
+		     "④", 
+		     "⑤", 
+		     "⑥", 
+		     "⑦",
+		     "⑧",
+		     "⑨",
+		     "⑩",
+		     "⑪",
+		     "⑫",
+		     "⑬",
+		     "⑭",
+		     "⑮",
+		     "⑯",
+		     "⑰",
+		     "⑱"
+	    		
+	    };
+	 
 	public void GetURL() {
- 
+	    
+	    Label[] labelArray = {
+	    		horseLabel1,
+	    		horseLabel1,
+	    		horseLabel2,
+	    		horseLabel3,
+	    		horseLabel4,
+	    		horseLabel5,
+	    		horseLabel6,
+	    		horseLabel7,
+	    		horseLabel8,
+	    		horseLabel9,
+	    		horseLabel10,
+	    		horseLabel11,
+	    		horseLabel12,
+	    		horseLabel13,
+	    		horseLabel14,
+	    		horseLabel15,
+	    		horseLabel16,
+	    		horseLabel17,
+	    		horseLabel18,
+	    		horseLabel19,
+	    		horseLabel20
+	    		
+	    };
 		try {
                         // jsoupを使用して当ブログのトップページへアクセス
 			Document doc = Jsoup.connect(textURL.getText()).get();
 
-
+			
 			Element rate = doc.select(".seirei.std9").get(1);
 			Elements rateElements = rate.getAllElements();
 			Elements rateSpanElements = rateElements.select("span");
+
+			Elements horseURLElements  = doc.select("div[class~=BameiWrap.*] > a");
+
 			Elements stageElements  = doc.select("#topicPath ul li");
-			System.out.println(stageElements);
 			textRaceStage.setText(stageElements.get(3).text().split("競馬")[0]);
 			Elements horseElements  = doc.select("a.tategaki.bamei");
 			Elements beforeElements  = doc.select(".zensou.std11 span,.BeforRaces.past1");
@@ -132,13 +223,13 @@ public class SampleController {
 			
 			//System.out.println( beforeElements );
 			for (int i = horseElements.size()/2 - 1; i >= 0; i--) {
+				try {
 					String name = horseElements.get(i).text();
 					if(horseList.stream().noneMatch(a -> a.name.equals(name))) {
 						Horse h = new Horse();
 						h.name = horseElements.get(i).text();
 						h.rate = Double.parseDouble(rateSpanElements.get(i*2).text());
 						String[] pos = beforeElements.get(i).text().split("");
-						System.out.println(pos[pos.length-1]);
 						try {
 							h.position = RankMap.get(pos[pos.length-1]);
 						}
@@ -151,8 +242,18 @@ public class SampleController {
 						h.number = Math.abs(i - horseElements.size()/2);
 						horseList.add(h);
 						SetTextField(h);
+						String address = "https://www.keibalab.jp" + horseURLElements.get(i).attr("href");
+						Document horseData = Jsoup.connect(address).get();
+						Elements HorseElements = horseData.select(".sortobject tr");
+						
+						labelArray[h.number].setText(strArray[h.number] +  HorseElements.get(0).text());
+						Thread.sleep(1000);
 	
 					}
+				} catch (Exception e) {
+					// TODO 自動生成された catch ブロック
+					e.printStackTrace();
+				}
 			}
 			
  
