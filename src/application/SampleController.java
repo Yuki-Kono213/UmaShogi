@@ -222,6 +222,12 @@ public class SampleController {
 			List<Horse> horseList = new ArrayList<Horse>();
 			
 			//System.out.println( beforeElements );
+			
+			for(Label l : labelArray) {
+				l.setText("");
+			}
+			
+			
 			for (int i = horseElements.size()/2 - 1; i >= 0; i--) {
 				try {
 					String name = horseElements.get(i).text();
