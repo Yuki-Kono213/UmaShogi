@@ -169,7 +169,9 @@ public class SampleController {
 		     "⑮",
 		     "⑯",
 		     "⑰",
-		     "⑱"
+		     "⑱",
+		     "⑲",
+		     "⑳"
 	    		
 	    };
 	 
@@ -222,9 +224,11 @@ public class SampleController {
 			List<Horse> horseList = new ArrayList<Horse>();
 			
 			//System.out.println( beforeElements );
-			
+			Integer cnt = 0;
 			for(Label l : labelArray) {
-				l.setText("");
+				l.setText(strArray[cnt]);
+				cnt++;
+				
 			}
 			
 			
