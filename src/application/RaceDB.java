@@ -28,7 +28,7 @@ public class RaceDB {
 		 * テスト処理を実行します。
 		 * @param args
 		 */
-		public void UsePaymentDataBase(String[] args) {
+		public void UseRaceDataBase(String[] args) {
 			
 			try{
 				// オブジェクトを生成
@@ -94,7 +94,7 @@ public class RaceDB {
 		 * Statementオブジェクトを保持します。
 		 */
 		private Statement _statement;
-		private static Integer payment_ID;
+		private static Integer race_ID;
 		
  		/**
 		 * 構築します。
@@ -111,7 +111,7 @@ public class RaceDB {
 			throws ClassNotFoundException, SQLException{
 			// 下準備
 			Class.forName("org.h2.Driver");
-			_connection = DriverManager.getConnection("jdbc:h2:./Client", "sa", "maru9685");
+			_connection = DriverManager.getConnection("jdbc:h2:./UmaShogi", "sa", "9685");
 			_statement = _connection.createStatement();
 		}
 		
@@ -148,16 +148,13 @@ public class RaceDB {
 			if("select".equals(command)) {
 				executeSelect();
 			}else if("insert".equals(command)) {
-				executeInsert(args[1]);
+				executeInsert(args[1],args[2]);
 			}else if("update".equals(command)) {
 
 				executeUpdate(args[1]);
 			}
 		}
-		
-		
-		
-		
+
 		public ObservableList<String> ReturnPaymentList(int id) throws ClassNotFoundException, SQLException 
 		{
 			ObservableList<String> items =FXCollections.observableArrayList();
@@ -196,25 +193,28 @@ public class RaceDB {
 			return items;
 		}
 		
-		public Integer GetPaymentID(int id) throws SQLException 
+		public Integer GetRaceID(String url) throws SQLException 
 		{
+			race_ID = -1;
 			ResultSet resultSetID = null;
 			try {
 				create();
-				String SQLID = "SELECT ID FROM " + TABLE_NAME +" WHERE CLIENT_ID = '"+id+"'";
+				String SQLID = "SELECT ID FROM " + TABLE_NAME +" WHERE RACEURL = '"+url+"'";
 				resultSetID = _statement.executeQuery(SQLID);
 				resultSetID.last();
 				System.out.println(resultSetID);
-				payment_ID = resultSetID.getInt("ID");
+				race_ID = resultSetID.getInt("ID");
 			}
 			catch(Exception ex)
 			{
 				
 			}finally{
-				resultSetID.close();
+				if(resultSetID != null) {
+					resultSetID.close();
+				}
 				close();
 			}
-			return payment_ID;
+			return race_ID;
 		}
 		/*
 		 * SELECT処理を実行します。
@@ -254,12 +254,12 @@ public class RaceDB {
 		 * @param name
 		 * @param password
 		 */
-		private void executeInsert(String name)
+		private void executeInsert(String name, String url)
 			throws SQLException{
 			// SQL文を発行
 			int updateCount = _statement.executeUpdate("INSERT INTO " + TABLE_NAME + 
-					" (Name) VALUES "
-					+ "('"+name+"')");
+					" (NAME, RACEURL) VALUES "
+					+ "('"+name+"','"+url+"')");
 			System.out.println("Insert: " + updateCount);
 			
 		}

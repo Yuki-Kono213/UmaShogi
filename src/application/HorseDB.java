@@ -22,13 +22,13 @@ public class HorseDB {
 		/**
 		 * テーブル名。
 		 */
-		private static final String TABLE_NAME = "RACE";
+		private static final String TABLE_NAME = "HORSE";
 
 		/**
 		 * テスト処理を実行します。
 		 * @param args
 		 */
-		public void UsePaymentDataBase(String[] args) {
+		public void UseHorseDataBase(String[] args) {
 			
 			try{
 				// オブジェクトを生成
@@ -111,7 +111,7 @@ public class HorseDB {
 			throws ClassNotFoundException, SQLException{
 			// 下準備
 			Class.forName("org.h2.Driver");
-			_connection = DriverManager.getConnection("jdbc:h2:./Client", "sa", "maru9685");
+			_connection = DriverManager.getConnection("jdbc:h2:./UmaShogi", "sa", "9685");
 			_statement = _connection.createStatement();
 		}
 		
@@ -146,9 +146,9 @@ public class HorseDB {
 			throws SQLException {
 			String command = args[0];
 			if("select".equals(command)) {
-				executeSelect();
+				
 			}else if("insert".equals(command)) {
-				executeInsert(args[1]);
+				executeInsert(args[1],Integer.parseInt(args[2]),Integer.parseInt(args[3]),args[4],Integer.parseInt(args[5]));
 			}else if("update".equals(command)) {
 
 				executeUpdate(args[1]);
@@ -219,24 +219,26 @@ public class HorseDB {
 		/*
 		 * SELECT処理を実行します。
 		 */
-		private void executeSelect()
+		public String returnPastRace(String name, Integer raceID)
 			throws SQLException{
-			ResultSet resultSet = _statement.executeQuery("SELECT * FROM " + TABLE_NAME);
+			String pastRace;
+			ResultSet resultSet = _statement.executeQuery("SELECT * FROM " + TABLE_NAME +" WHERE NAME = '"+name+"' AND "
+					+ "RACEID = '"+raceID+"'");
 			try{
 				boolean br = resultSet.first();
 				if(br == false) {
-					return;
+					return "";
 				}
 				do{
-					String id = resultSet.getString("ID");
-					String name = resultSet.getString("NAME");
-					String password = resultSet.getString("PASSWORD");
+					pastRace = resultSet.getString("PASTRACE");
 					
-					System.out.println("id: " + id + ", name: " + name + ", password: " + password);
+					System.out.println("name:" + "'"+name+"'");
 				}while(resultSet.next());
 			}finally{
 				resultSet.close();
 			}
+			
+			return pastRace;
 		}
 		
 		private void executeUpdate(String name)
@@ -254,12 +256,12 @@ public class HorseDB {
 		 * @param name
 		 * @param password
 		 */
-		private void executeInsert(String name)
+		private void executeInsert(String name, Integer raceID, Integer position, String pastRace, Integer frame)
 			throws SQLException{
 			// SQL文を発行
 			int updateCount = _statement.executeUpdate("INSERT INTO " + TABLE_NAME + 
-					" (Name) VALUES "
-					+ "('"+name+"')");
+					" (NAME,RACEID,POSITION,PASTRACE,FRAME) VALUES "
+					+ "('"+name+"' , '"+raceID+"', '"+position+"', '"+pastRace+"', '"+frame+"')");
 			System.out.println("Insert: " + updateCount);
 			
 		}

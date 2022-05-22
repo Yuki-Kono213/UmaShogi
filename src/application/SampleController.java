@@ -1,7 +1,5 @@
 package application;
 
-//Javaでスクレイピングを行う
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,111 +18,111 @@ import javafx.scene.control.TextField;
 public class SampleController {
 
 	@FXML
-    private Label horseLabel1;
+	private Label horseLabel1;
 	@FXML
-    private Label horseLabel2;
+	private Label horseLabel2;
 	@FXML
-    private Label horseLabel3;
+	private Label horseLabel3;
 	@FXML
-    private Label horseLabel4;
+	private Label horseLabel4;
 	@FXML
-    private Label horseLabel5;
+	private Label horseLabel5;
 	@FXML
-    private Label horseLabel6;
+	private Label horseLabel6;
 	@FXML
-    private Label horseLabel7;
+	private Label horseLabel7;
 	@FXML
-    private Label horseLabel8;
+	private Label horseLabel8;
 	@FXML
-    private Label horseLabel9;
+	private Label horseLabel9;
 	@FXML
-    private Label horseLabel10;
+	private Label horseLabel10;
 	@FXML
-    private Label horseLabel11;
+	private Label horseLabel11;
 	@FXML
-    private Label horseLabel12;
+	private Label horseLabel12;
 	@FXML
-    private Label horseLabel13;
+	private Label horseLabel13;
 	@FXML
-    private Label horseLabel14;
+	private Label horseLabel14;
 	@FXML
-    private Label horseLabel15;
+	private Label horseLabel15;
 	@FXML
-    private Label horseLabel16;
+	private Label horseLabel16;
 	@FXML
-    private Label horseLabel17;
+	private Label horseLabel17;
 	@FXML
-    private Label horseLabel18;
+	private Label horseLabel18;
 	@FXML
-    private Label horseLabel19;
+	private Label horseLabel19;
 	@FXML
-    private Label horseLabel20;
+	private Label horseLabel20;
 	@FXML
-    private TextField textURL;
+	private TextField textURL;
 	@FXML
-    private TextField textRaceName;
+	private TextField textRaceName;
 	@FXML
-    private TextArea frame4;
+	private TextArea frame4;
 	@FXML
-    private TextArea frame3;
+	private TextArea frame3;
 	@FXML
-    private TextArea frame2;
+	private TextArea frame2;
 	@FXML
-    private TextArea frame1;
+	private TextArea frame1;
 	@FXML
-    private TextArea frame8;
+	private TextArea frame8;
 	@FXML
-    private TextArea frame7;
+	private TextArea frame7;
 	@FXML
-    private TextArea frame6;
+	private TextArea frame6;
 	@FXML
-    private TextArea frame5;
+	private TextArea frame5;
 	@FXML
-    private TextArea frame12;
+	private TextArea frame12;
 	@FXML
-    private TextArea frame11;
+	private TextArea frame11;
 	@FXML
-    private TextArea frame10;
+	private TextArea frame10;
 	@FXML
-    private TextArea frame9;
+	private TextArea frame9;
 	@FXML
-    private TextArea frame16;
+	private TextArea frame16;
 	@FXML
-    private TextArea frame15;
+	private TextArea frame15;
 	@FXML
-    private TextArea frame14;
+	private TextArea frame14;
 	@FXML
-    private TextArea frame13;
+	private TextArea frame13;
 	@FXML
-    private TextField textRaceRange;
+	private TextField textRaceRange;
 	@FXML
-    private TextField textRaceStage;
-	
-    Map<String,Integer> RankMap = new HashMap<>(){
-		{
-	        put("①", 1);
-	        put("②", 2);
-	        put("③", 3);
-	        put("④", 4);
-	        put("⑤", 5);
-	        put("⑥", 6);
-	        put("⑦", 7);
-	        put("⑧", 8);
-	        put("⑨", 9);
-	        put("⑩", 10);
-	        put("⑪", 11);
-	        put("⑫", 12);
-	        put("⑬", 13);
-	        put("⑭", 14);
-	        put("⑮", 15);
-	        put("⑯", 16);
-	        put("⑰", 17);
-	        put("⑱", 18);
-	        put("－", 19);
-		}
-    };
+	private TextField textRaceStage;
 
-	
+	Map<String,Integer> RankMap = new HashMap<>(){
+		{
+			put("①", 1);
+			put("②", 2);
+			put("③", 3);
+			put("④", 4);
+			put("⑤", 5);
+			put("⑥", 6);
+			put("⑦", 7);
+			put("⑧", 8);
+			put("⑨", 9);
+			put("⑩", 10);
+			put("⑪", 11);
+			put("⑫", 12);
+			put("⑬", 13);
+			put("⑭", 14);
+			put("⑮", 15);
+			put("⑯", 16);
+			put("⑰", 17);
+			put("⑱", 18);
+			put("－", 19);
+		}
+	};
+
+
 	public void ClearText() 
 	{
 		frame1.clear();
@@ -144,68 +142,68 @@ public class SampleController {
 		frame15.clear();
 		frame16.clear();
 	}
-	
+
 	public void SaveRace() 
 	{
-		
-		
+
+
 	}
-	 String[] strArray = {
-			 "⓪",
-			 "①",
-		     "②",
-		     "③",
-		     "④", 
-		     "⑤", 
-		     "⑥", 
-		     "⑦",
-		     "⑧",
-		     "⑨",
-		     "⑩",
-		     "⑪",
-		     "⑫",
-		     "⑬",
-		     "⑭",
-		     "⑮",
-		     "⑯",
-		     "⑰",
-		     "⑱",
-		     "⑲",
-		     "⑳"
-	    		
-	    };
-	 
+	String[] strArray = {
+			"⓪",
+			"①",
+			"②",
+			"③",
+			"④", 
+			"⑤", 
+			"⑥", 
+			"⑦",
+			"⑧",
+			"⑨",
+			"⑩",
+			"⑪",
+			"⑫",
+			"⑬",
+			"⑭",
+			"⑮",
+			"⑯",
+			"⑰",
+			"⑱",
+			"⑲",
+			"⑳"
+
+	};
+
 	public void GetURL() {
-	    
-	    Label[] labelArray = {
-	    		horseLabel1,
-	    		horseLabel1,
-	    		horseLabel2,
-	    		horseLabel3,
-	    		horseLabel4,
-	    		horseLabel5,
-	    		horseLabel6,
-	    		horseLabel7,
-	    		horseLabel8,
-	    		horseLabel9,
-	    		horseLabel10,
-	    		horseLabel11,
-	    		horseLabel12,
-	    		horseLabel13,
-	    		horseLabel14,
-	    		horseLabel15,
-	    		horseLabel16,
-	    		horseLabel17,
-	    		horseLabel18,
-	    		horseLabel19,
-	    		horseLabel20
-	    		
-	    };
+
+		Label[] labelArray = {
+				horseLabel1,
+				horseLabel1,
+				horseLabel2,
+				horseLabel3,
+				horseLabel4,
+				horseLabel5,
+				horseLabel6,
+				horseLabel7,
+				horseLabel8,
+				horseLabel9,
+				horseLabel10,
+				horseLabel11,
+				horseLabel12,
+				horseLabel13,
+				horseLabel14,
+				horseLabel15,
+				horseLabel16,
+				horseLabel17,
+				horseLabel18,
+				horseLabel19,
+				horseLabel20
+
+		};
 		try {
-                        // jsoupを使用して当ブログのトップページへアクセス
+			// jsoupを使用して当ブログのトップページへアクセス
 			Document doc = Jsoup.connect(textURL.getText()).get();
 
-			
+
 			Element rate = doc.select(".seirei.std9").get(1);
 			Elements rateElements = rate.getAllElements();
 			Elements rateSpanElements = rateElements.select("span");
@@ -222,16 +220,36 @@ public class SampleController {
 			String[] Range = RangeElements.get(1).text().split(" ");
 			textRaceRange.setText(Range[0]);
 			List<Horse> horseList = new ArrayList<Horse>();
-			
+
 			//System.out.println( beforeElements );
 			Integer cnt = 0;
 			for(Label l : labelArray) {
 				l.setText(strArray[cnt]);
 				cnt++;
-				
+
 			}
-			
-			
+
+			RaceDB rdb = new RaceDB();
+			Integer raceID = rdb.GetRaceID(textURL.getText());
+			boolean raceExist = true;
+			if(raceID == -1) {
+				RaceDataManager rdm = new RaceDataManager(); 
+				if(RangeElements.get(0).text().contains("芝")) {
+					rdm.glass = true;
+				}
+				else {
+					rdm.glass = false;
+				}
+
+				rdm.RaceURL = textURL.getText();
+				rdm.RaceName = textRaceName.getText();
+
+				rdb.UseRaceDataBase( new String[] {"insert",rdm.RaceName, rdm.RaceURL});
+
+				raceID = rdb.GetRaceID(textURL.getText());
+				raceExist = false;
+			}
+
 			for (int i = horseElements.size()/2 - 1; i >= 0; i--) {
 				try {
 					String name = horseElements.get(i).text();
@@ -246,32 +264,49 @@ public class SampleController {
 						catch (Exception e)
 						{
 							h.position = 19;
-							
+
 						}
 						h.frame = Integer.parseInt(frameElements.get(i).text());
 						h.number = Math.abs(i - horseElements.size()/2);
 						horseList.add(h);
 						SetTextField(h);
-						String address = "https://www.keibalab.jp" + horseURLElements.get(i).attr("href");
-						Document horseData = Jsoup.connect(address).get();
-						Elements HorseElements = horseData.select(".sortobject tr");
-						
-						labelArray[h.number].setText(strArray[h.number] +  HorseElements.get(0).text());
-						Thread.sleep(1000);
-	
+
+
+						if(!raceExist) {
+							String address = "https://www.keibalab.jp" + horseURLElements.get(i).attr("href");
+							Document horseData = Jsoup.connect(address).get();
+							Elements HorseElements = horseData.select(".sortobject tr");
+
+							labelArray[h.number].setText(strArray[h.number] +  HorseElements.get(0).text());
+							h.pastRace = labelArray[h.number].getText();
+							new HorseDB().UseHorseDataBase(new String[] {"insert", h.name, raceID.toString(), Integer.toString(h.position),
+									h.pastRace,  Integer.toString(h.frame)});
+
+							Thread.sleep(1000);
+						}
+						else 
+						{
+							HorseDB hdb = new HorseDB();
+							hdb.create();
+							String horseText = hdb.returnPastRace(h.name, raceID);
+							labelArray[h.number].setText(horseText);
+							
+						}
 					}
+
+
 				} catch (Exception e) {
 					// TODO 自動生成された catch ブロック
 					e.printStackTrace();
 				}
 			}
-			
- 
-		} catch (IOException e) {
+
+
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private void SetTextField(Horse h) 
 	{
 		if(h.frame == 1 || h.frame == 2) 
@@ -279,46 +314,46 @@ public class SampleController {
 			if(h.position < 5) 
 			{
 				frame1.insertText(0, h.number + h.name + h.rate + "\r\n");
-				
+
 			}
 			else if(h.position < 9) 
 			{
 				frame5.insertText(0, h.number + h.name  + h.rate + "\r\n");
-				
+
 			}
 			else if(h.position < 13) 
 			{
 				frame9.insertText(0, h.number + h.name  + h.rate + "\r\n");
-				
+
 			}
 			else if(h.position < 18) 
 			{
 				frame13.insertText(0, h.number + h.name + h.rate  + "\r\n");
-				
+
 			}
 			else
 			{
 				frame13.insertText(0, h.number + h.name  + "?" +  h.rate +"\r\n");
-				
+
 			}
-			
+
 		}
 		else if(h.frame == 3 || h.frame == 4) 
 		{
 			if(h.position < 5) 
 			{
 				frame2.insertText(0, h.number + h.name  + h.rate + "\r\n");
-				
+
 			}
 			else if(h.position < 9) 
 			{
 				frame6.insertText(0, h.number + h.name + h.rate  + "\r\n");
-				
+
 			}
 			else if(h.position < 13) 
 			{
 				frame10.insertText(0, h.number + h.name + h.rate + "\r\n");
-				
+
 			}
 			else if(h.position < 18) 
 			{
@@ -328,24 +363,24 @@ public class SampleController {
 			{
 				frame14.insertText(0, h.number + h.name + "?" + h.rate + "\r\n");
 			}
-			
+
 		}
-			else if(h.frame == 5 || h.frame == 6) 
+		else if(h.frame == 5 || h.frame == 6) 
 		{
 			if(h.position < 5) 
 			{
 				frame3.insertText(0, h.number + h.name + h.rate + "\r\n");
-				
+
 			}
 			else if(h.position < 9) 
 			{
 				frame7.insertText(0, h.number + h.name +  h.rate +"\r\n");
-				
+
 			}
 			else if(h.position < 13) 
 			{
 				frame11.insertText(0, h.number + h.name + h.rate + "\r\n");
-				
+
 			}
 			else if(h.position < 18) 
 			{
@@ -355,23 +390,23 @@ public class SampleController {
 			{
 				frame15.insertText(0, h.number + h.name + "?" +  h.rate +"\r\n");
 			}
-			
+
 		}else if(h.frame == 7 || h.frame == 8) 
 		{
 			if(h.position < 5) 
 			{
 				frame4.insertText(0, h.number + h.name +  h.rate +"\r\n");
-				
+
 			}
 			else if(h.position < 9) 
 			{
 				frame8.insertText(0, h.number + h.name +  h.rate +"\r\n");
-				
+
 			}
 			else if(h.position < 13) 
 			{
 				frame12.insertText(0, h.number + h.name +  h.rate +"\r\n");
-				
+
 			}
 			else if(h.position < 18) 
 			{
@@ -382,7 +417,7 @@ public class SampleController {
 				frame16.insertText(0, h.number + h.name + "?" + h.rate + "\r\n");
 			}
 		}
-		
+
 	}
-	
+
 }

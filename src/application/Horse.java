@@ -7,4 +7,5 @@ public class Horse
 	public double rate;
 	public int number;
 	public int frame;
+	public String pastRace;
 }
