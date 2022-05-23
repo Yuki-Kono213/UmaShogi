@@ -249,14 +249,22 @@ public class SampleController {
 				raceID = rdb.GetRaceID(textURL.getText());
 				raceExist = false;
 			}
-
-			for (int i = horseElements.size()/2 - 1; i >= 0; i--) {
+			int hosei = 0;
+			System.out.println(rateSpanElements);
+			for (int i = 0; i <  horseElements.size()/2; i++) {
 				try {
 					String name = horseElements.get(i).text();
-					if(horseList.stream().noneMatch(a -> a.name.equals(name))) {
+					if(name != "" && horseList.stream().noneMatch(a -> a.name.equals(name))) {
 						Horse h = new Horse();
 						h.name = horseElements.get(i).text();
-						h.rate = Double.parseDouble(rateSpanElements.get(i*2).text());
+
+						if(!rateSpanElements.get(i*2 + hosei).text().equals("除外")) {
+							h.rate = Double.parseDouble(rateSpanElements.get(i *2 + hosei).text());
+						}
+						else if(rateSpanElements.get(i*2 + hosei).text().equals("除外"))
+						{
+							hosei--;
+						}
 						String[] pos = beforeElements.get(i).text().split("");
 						try {
 							h.position = RankMap.get(pos[pos.length-1]);
@@ -267,7 +275,7 @@ public class SampleController {
 
 						}
 						h.frame = Integer.parseInt(frameElements.get(i).text());
-						h.number = Math.abs(i - horseElements.size()/2);
+						h.number = Math.abs(horseElements.size()/2 -i);
 						horseList.add(h);
 						SetTextField(h);
 
