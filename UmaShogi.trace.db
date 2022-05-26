@@ -3679,3 +3679,6 @@ Caused by: org.h2.mvstore.MVStoreException: The file is locked: C:/Users/yuki ko
 	at org.h2.mvstore.FileStore.open(FileStore.java:163)
 	at org.h2.mvstore.MVStore.<init>(MVStore.java:444)
 	... 71 more
+2022-05-26 18:48:30 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLNonTransientException: 有効なデータがありません
+No data is available [2000-210]

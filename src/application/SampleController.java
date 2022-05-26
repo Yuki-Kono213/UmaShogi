@@ -11,6 +11,8 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -251,6 +253,14 @@ public class SampleController {
 			}
 			int hosei = 0;
 			System.out.println(rateSpanElements);
+			if(rateSpanElements.size() == 0) {
+				Alert dialog = new Alert(AlertType.INFORMATION);
+				dialog.setHeaderText(null);
+				dialog.setContentText("まだ倍率が出ていません。サイト情報の更新をお待ちください。");
+				
+				dialog.showAndWait();
+				return;
+			}
 			for (int i = 0; i <  horseElements.size()/2; i++) {
 				try {
 					String name = horseElements.get(i).text();
