@@ -221,7 +221,7 @@ public class HorseDB {
 		 */
 		public String returnPastRace(String name, Integer raceID)
 			throws SQLException{
-			String pastRace;
+			String pastRace = "";
 			ResultSet resultSet = _statement.executeQuery("SELECT * FROM " + TABLE_NAME +" WHERE NAME = '"+name+"' AND "
 					+ "RACEID = '"+raceID+"'");
 			try{

@@ -279,25 +279,32 @@ public class SampleController {
 						SetTextField(h);
 
 
-						if(!raceExist || h.pastRace == null) {
-							String address = "https://www.keibalab.jp" + horseURLElements.get(i).attr("href");
-							Document horseData = Jsoup.connect(address).get();
-							Elements HorseElements = horseData.select(".sortobject tr");
+						try {
 
-							labelArray[h.number].setText(strArray[h.number] +  HorseElements.get(0).text());
-							h.pastRace = labelArray[h.number].getText();
-							new HorseDB().UseHorseDataBase(new String[] {"insert", h.name, raceID.toString(), Integer.toString(h.position),
-									h.pastRace,  Integer.toString(h.frame)});
-
-							Thread.sleep(1000);
-						}
-						else 
-						{
 							HorseDB hdb = new HorseDB();
 							hdb.create();
 							String horseText = hdb.returnPastRace(h.name, raceID);
-							labelArray[h.number].setText(horseText);
-							
+							if(!raceExist || horseText == null) {
+								String address = "https://www.keibalab.jp" + horseURLElements.get(i).attr("href");
+								Document horseData = Jsoup.connect(address).get();
+								Elements HorseElements = horseData.select(".sortobject tr");
+	
+								labelArray[h.number].setText(strArray[h.number] +  HorseElements.get(0).text());
+								h.pastRace = labelArray[h.number].getText();
+								new HorseDB().UseHorseDataBase(new String[] {"insert", h.name, raceID.toString(), Integer.toString(h.position),
+										h.pastRace,  Integer.toString(h.frame)});
+	
+								Thread.sleep(1000);
+							}
+							else 
+							{
+								labelArray[h.number].setText(horseText);
+								
+							}
+						}
+						catch(Exception e) {
+
+							e.printStackTrace();
 						}
 					}
 
