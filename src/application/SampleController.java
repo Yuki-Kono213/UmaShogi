@@ -11,8 +11,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -252,15 +250,6 @@ public class SampleController {
 				raceExist = false;
 			}
 			int hosei = 0;
-			System.out.println(rateSpanElements);
-			if(rateSpanElements.size() == 0) {
-				Alert dialog = new Alert(AlertType.INFORMATION);
-				dialog.setHeaderText(null);
-				dialog.setContentText("まだ倍率が出ていません。サイト情報の更新をお待ちください。");
-				
-				dialog.showAndWait();
-				return;
-			}
 			for (int i = 0; i <  horseElements.size()/2; i++) {
 				try {
 					String name = horseElements.get(i).text();
@@ -268,10 +257,10 @@ public class SampleController {
 						Horse h = new Horse();
 						h.name = horseElements.get(i).text();
 
-						if(!rateSpanElements.get(i*2 + hosei).text().equals("除外")) {
+						if(rateSpanElements.size() != 0 && !rateSpanElements.get(i*2 + hosei).text().equals("除外") ) {
 							h.rate = Double.parseDouble(rateSpanElements.get(i *2 + hosei).text());
 						}
-						else if(rateSpanElements.get(i*2 + hosei).text().equals("除外"))
+						else if(rateSpanElements.size() != 0 && rateSpanElements.get(i*2 + hosei).text().equals("除外"))
 						{
 							hosei--;
 						}
@@ -290,7 +279,7 @@ public class SampleController {
 						SetTextField(h);
 
 
-						if(!raceExist) {
+						if(!raceExist || h.pastRace == null) {
 							String address = "https://www.keibalab.jp" + horseURLElements.get(i).attr("href");
 							Document horseData = Jsoup.connect(address).get();
 							Elements HorseElements = horseData.select(".sortobject tr");
@@ -344,7 +333,7 @@ public class SampleController {
 				frame9.insertText(0, h.number + h.name  + h.rate + "\r\n");
 
 			}
-			else if(h.position < 18) 
+			else if(h.position < 19) 
 			{
 				frame13.insertText(0, h.number + h.name + h.rate  + "\r\n");
 
