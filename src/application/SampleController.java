@@ -249,7 +249,8 @@ public class SampleController {
 				raceID = rdb.GetRaceID(textURL.getText());
 				raceExist = false;
 			}
-			int hosei = 0;
+			System.out.println(raceExist);
+			int hosei = 0; 
 			for (int i = 0; i <  horseElements.size()/2; i++) {
 				try {
 					String name = horseElements.get(i).text();
@@ -266,6 +267,7 @@ public class SampleController {
 						}
 						String[] pos = beforeElements.get(i).text().split("");
 						try {
+							System.out.println(pos[pos.length-1]);
 							h.position = RankMap.get(pos[pos.length-1]);
 						}
 						catch (Exception e)
@@ -369,7 +371,7 @@ public class SampleController {
 				frame10.insertText(0, h.number + h.name + h.rate + "\r\n");
 
 			}
-			else if(h.position < 18) 
+			else if(h.position < 19) 
 			{
 				frame14.insertText(0, h.number + h.name + h.rate + "\r\n");
 			}
@@ -396,7 +398,7 @@ public class SampleController {
 				frame11.insertText(0, h.number + h.name + h.rate + "\r\n");
 
 			}
-			else if(h.position < 18) 
+			else if(h.position < 19) 
 			{
 				frame15.insertText(0, h.number + h.name +  h.rate +"\r\n");
 			}
@@ -422,7 +424,7 @@ public class SampleController {
 				frame12.insertText(0, h.number + h.name +  h.rate +"\r\n");
 
 			}
-			else if(h.position < 18) 
+			else if(h.position < 19) 
 			{
 				frame16.insertText(0, h.number + h.name +  h.rate +"\r\n");
 			}
