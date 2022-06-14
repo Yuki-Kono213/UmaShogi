@@ -291,7 +291,7 @@ public class SampleController {
 								Document horseData = Jsoup.connect(address).get();
 								Elements HorseElements = horseData.select(".sortobject tr");
 	
-								labelArray[h.number].setText(strArray[h.number] +  HorseElements.get(0).text());
+								labelArray[h.number].setText(strArray[h.number] +  HorseElements.get(0).text() + RacePointCheck((strArray[h.number] +  HorseElements.get(0).text() ), h));
 								h.pastRace = labelArray[h.number].getText();
 								new HorseDB().UseHorseDataBase(new String[] {"insert", h.name, raceID.toString(), Integer.toString(h.position),
 										h.pastRace,  Integer.toString(h.frame)});
@@ -300,7 +300,7 @@ public class SampleController {
 							}
 							else 
 							{
-								labelArray[h.number].setText(horseText);
+								labelArray[h.number].setText(horseText + RacePointCheck(horseText, h));
 								
 							}
 						}
@@ -323,6 +323,68 @@ public class SampleController {
 		}
 	}
 
+	private String RacePointCheck(String s, Horse h) 
+	{
+		String text = "";
+		if(s.contains(("H")) && h.position < 5) 
+		{
+			text += "不利";
+		}
+		else if(s.contains(("H")) && h.position < 9) 
+		{
+			text += "やや不利";
+		}
+		else if(s.contains(("S")) && h.position > 6)
+		{
+			text += "やや不利";	
+		}
+		else if(s.contains(("S")) && h.position > 12)
+		{
+			text += "不利";	
+		}
+		else if(s.contains(("S")) && h.position < 5) 
+		{
+			text += "有利";
+		}
+		else if(s.contains(("S")) && h.position < 9) 
+		{
+			text += "やや有利";
+		}
+		else if(s.contains(("H")) && h.position > 8)
+		{
+			text += "やや有利";	
+		}
+		else if(s.contains(("H")) && h.position > 12)
+		{
+			text += "有利";	
+		}
+		
+		String[] array = s.split(" ");
+		
+		System.out.println(array[7]);
+		if(array[7].equals("1")) 
+		{
+			text += "勝利";
+			
+		}
+		else if(Double.parseDouble(array[14]) < 0.2) 
+		{
+			text += "惜敗";
+			
+		}
+		else if(Double.parseDouble(array[14]) < 0.3) 
+		{
+			text += "敗北";
+			
+		}
+		else 
+		{
+			text += "大敗";
+		}
+			return text;
+	}
+	
+	
 	private void SetTextField(Horse h) 
 	{
 		if(h.frame == 1 || h.frame == 2) 
