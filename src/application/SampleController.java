@@ -200,7 +200,12 @@ public class SampleController {
 
 		};
 		try {
+			System.out.println(textURL.getText(textURL.getText().length() - 1, textURL.getText().length()));
 			// jsoupを使用して当ブログのトップページへアクセス
+			if(textURL.getText(textURL.getText().length() - 1, textURL.getText().length()).equals("/")) 
+			{
+				textURL.setText(textURL.getText() + "umabashira.html");
+			}
 			Document doc = Jsoup.connect(textURL.getText()).get();
 
 
@@ -267,7 +272,6 @@ public class SampleController {
 						}
 						String[] pos = beforeElements.get(i).text().split("");
 						try {
-							System.out.println(pos[pos.length-1]);
 							h.position = RankMap.get(pos[pos.length-1]);
 						}
 						catch (Exception e)
@@ -286,21 +290,20 @@ public class SampleController {
 							HorseDB hdb = new HorseDB();
 							hdb.create();
 							String horseText = hdb.returnPastRace(h.name, raceID);
-							if(!raceExist || horseText == null) {
+							if(!raceExist || horseText == null || horseText.equals("")) {
 								String address = "https://www.keibalab.jp" + horseURLElements.get(i).attr("href");
 								Document horseData = Jsoup.connect(address).get();
 								Elements HorseElements = horseData.select(".sortobject tr");
 	
-								labelArray[h.number].setText(strArray[h.number] +  HorseElements.get(0).text() + RacePointCheck((strArray[h.number] +  HorseElements.get(0).text() ), h));
-								h.pastRace = labelArray[h.number].getText();
+								h.pastRace =  HorseElements.get(0).text();
 								new HorseDB().UseHorseDataBase(new String[] {"insert", h.name, raceID.toString(), Integer.toString(h.position),
 										h.pastRace,  Integer.toString(h.frame)});
-	
+								labelArray[h.number].setText(strArray[h.number] +  HorseElements.get(0).text() + RacePointCheck((strArray[h.number] +  HorseElements.get(0).text() ), h));
 								Thread.sleep(1000);
 							}
 							else 
 							{
-								labelArray[h.number].setText(horseText + RacePointCheck(horseText, h));
+								labelArray[h.number].setText(strArray[h.number] + horseText + RacePointCheck(horseText, h));
 								
 							}
 						}
@@ -357,6 +360,10 @@ public class SampleController {
 		else if(s.contains(("H")) && h.position > 12)
 		{
 			text += "有利";	
+		}
+		else if(s.contains(("M")))
+		{
+			text += "互角";	
 		}
 		
 		String[] array = s.split(" ");
