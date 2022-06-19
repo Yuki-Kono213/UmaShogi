@@ -218,7 +218,7 @@ public class SampleController {
 			Elements stageElements  = doc.select("#topicPath ul li");
 			textRaceStage.setText(stageElements.get(3).text().split("競馬")[0]);
 			Elements horseElements  = doc.select("a.tategaki.bamei");
-			Elements beforeElements  = doc.select(".zensou.std11 span,.BeforRaces.past1");
+			Elements beforeElements  = doc.select(".zensou.std11 span,.BeforRaces");
 			Elements frameElements  = doc.select(".wakuban td:matchesOwn([1-8])");
 			Elements RangeElements  = doc.select(".classCourseSyokin.clearfix li");
 			textRaceName.setText(doc.select(".raceTitle.fL").get(0).text());
@@ -254,12 +254,11 @@ public class SampleController {
 				raceID = rdb.GetRaceID(textURL.getText());
 				raceExist = false;
 			}
-			System.out.println(raceExist);
 			int hosei = 0; 
 			for (int i = 0; i <  horseElements.size()/2; i++) {
 				try {
 					String name = horseElements.get(i).text();
-					if(name != "" && horseList.stream().noneMatch(a -> a.name.equals(name))) {
+					//if(name != "" && horseList.stream().noneMatch(a -> a.name.equals(name))) {
 						Horse h = new Horse();
 						h.name = horseElements.get(i).text();
 
@@ -270,14 +269,21 @@ public class SampleController {
 						{
 							hosei--;
 						}
-						String[] pos = beforeElements.get(i).text().split("");
 						try {
-							h.position = RankMap.get(pos[pos.length-1]);
+							for(int i2 = 0; i2 < 6; i2++) {
+								String[] pos = beforeElements.get(i + i2 * horseElements.size() / 2 ).text().split("");
+								if(!pos[pos.length-1].equals("－")) {
+									h.position = RankMap.get(pos[pos.length-1]);
+									break;
+								}
+							}
 						}
 						catch (Exception e)
 						{
-							h.position = 19;
 
+						}
+						if(h.position == 0) {
+							h.position = 19;
 						}
 						h.frame = Integer.parseInt(frameElements.get(i).text());
 						h.number = Math.abs(horseElements.size()/2 -i);
@@ -290,15 +296,19 @@ public class SampleController {
 							HorseDB hdb = new HorseDB();
 							hdb.create();
 							String horseText = hdb.returnPastRace(h.name, raceID);
-							if(!raceExist || horseText == null || horseText.equals("")) {
+							if(!raceExist || horseText.isEmpty() || horseText.equals("null")) {
 								String address = "https://www.keibalab.jp" + horseURLElements.get(i).attr("href");
 								Document horseData = Jsoup.connect(address).get();
 								Elements HorseElements = horseData.select(".sortobject tr");
-	
-								h.pastRace =  HorseElements.get(0).text();
+								for(int i2 = 0; i2 < 10; i2++) {
+									if(HorseElements.get(i2).text().split(" ").length > 22) {
+										h.pastRace =  HorseElements.get(i2).text();
+										break;
+									}
+								}
 								new HorseDB().UseHorseDataBase(new String[] {"insert", h.name, raceID.toString(), Integer.toString(h.position),
 										h.pastRace,  Integer.toString(h.frame)});
-								labelArray[h.number].setText(strArray[h.number] +  HorseElements.get(0).text() + RacePointCheck((strArray[h.number] +  HorseElements.get(0).text() ), h));
+								labelArray[h.number].setText(strArray[h.number] +  h.pastRace + RacePointCheck((strArray[h.number] +  h.pastRace ), h));
 								Thread.sleep(1000);
 							}
 							else 
@@ -311,7 +321,7 @@ public class SampleController {
 
 							e.printStackTrace();
 						}
-					}
+					//}
 
 
 				} catch (Exception e) {
@@ -337,13 +347,13 @@ public class SampleController {
 		{
 			text += "やや不利";
 		}
-		else if(s.contains(("S")) && h.position > 6)
-		{
-			text += "やや不利";	
-		}
 		else if(s.contains(("S")) && h.position > 12)
 		{
 			text += "不利";	
+		}
+		else if(s.contains(("S")) && h.position > 6)
+		{
+			text += "やや不利";	
 		}
 		else if(s.contains(("S")) && h.position < 5) 
 		{
@@ -353,13 +363,13 @@ public class SampleController {
 		{
 			text += "やや有利";
 		}
-		else if(s.contains(("H")) && h.position > 8)
-		{
-			text += "やや有利";	
-		}
 		else if(s.contains(("H")) && h.position > 12)
 		{
 			text += "有利";	
+		}
+		else if(s.contains(("H")) && h.position > 8)
+		{
+			text += "やや有利";	
 		}
 		else if(s.contains(("M")))
 		{
@@ -368,7 +378,6 @@ public class SampleController {
 		
 		String[] array = s.split(" ");
 		
-		System.out.println(array[7]);
 		if(array[7].equals("1")) 
 		{
 			text += "勝利";
@@ -381,12 +390,20 @@ public class SampleController {
 		}
 		else if(Double.parseDouble(array[14]) < 0.3) 
 		{
+			text += "敗戦";
+			
+		}else if(Double.parseDouble(array[14]) < 0.5) 
+		{
 			text += "敗北";
+			
+		}else if(Double.parseDouble(array[14]) < 1.0) 
+		{
+			text += "大敗";
 			
 		}
 		else 
 		{
-			text += "大敗";
+			text += "惨敗";
 		}
 			return text;
 	}
