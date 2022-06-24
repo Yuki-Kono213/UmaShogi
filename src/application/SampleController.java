@@ -211,12 +211,11 @@ public class SampleController {
 
 			Element rate = doc.select(".seirei.std9").get(1);
 			Elements rateElements = rate.getAllElements();
-			Elements rateSpanElements = rateElements.select("span");
+			Elements rateSpanElements = rateElements.select("td");
 
 			Elements horseURLElements  = doc.select("div[class~=BameiWrap.*] > a");
 
 			Elements stageElements  = doc.select("#topicPath ul li");
-			textRaceStage.setText(stageElements.get(3).text().split("競馬")[0]);
 			Elements horseElements  = doc.select("a.tategaki.bamei");
 			Elements beforeElements  = doc.select(".zensou.std11 span,.BeforRaces");
 			Elements frameElements  = doc.select(".wakuban td:matchesOwn([1-8])");
@@ -255,19 +254,20 @@ public class SampleController {
 				raceExist = false;
 			}
 			int hosei = 0; 
+			int j = 0;
 			for (int i = 0; i <  horseElements.size()/2; i++) {
+				j = i + 18 - horseElements.size()/2;
 				try {
 					String name = horseElements.get(i).text();
 					//if(name != "" && horseList.stream().noneMatch(a -> a.name.equals(name))) {
 						Horse h = new Horse();
 						h.name = horseElements.get(i).text();
+						
 
-						if(rateSpanElements.size() != 0 && !rateSpanElements.get(i*2 + hosei).text().equals("除外") ) {
-							h.rate = Double.parseDouble(rateSpanElements.get(i *2 + hosei).text());
-						}
-						else if(rateSpanElements.size() != 0 && rateSpanElements.get(i*2 + hosei).text().equals("除外"))
-						{
-							hosei--;
+						if(rateSpanElements.size() != 0 && !rateSpanElements.get(j).text().equals("除外") && 
+								!rateSpanElements.get(j).text().isEmpty()) {
+							System.out.println(j + rateSpanElements.get(j).text());
+							h.rate = Double.parseDouble(rateSpanElements.get(j).select("span").get(0).text());
 						}
 						try {
 							for(int i2 = 0; i2 < 6; i2++) {
