@@ -1,6 +1,7 @@
 package application;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,8 +13,11 @@ import org.jsoup.select.Elements;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 //Javaでスクレイピングを行う
 public class SampleController {
 
@@ -97,7 +101,52 @@ public class SampleController {
 	private TextField textRaceRange;
 	@FXML
 	private TextField textRaceStage;
-
+	@FXML
+	private TableView <HorseData> table;
+	@FXML
+	private TableColumn <HorseData,String> numberTable;
+	@FXML
+	private TableColumn <HorseData,String> dateTable;
+	@FXML
+	private TableColumn <HorseData,String> raceStageTable;
+	@FXML
+	private TableColumn <HorseData,String> rangeTable;
+	@FXML
+	private TableColumn <HorseData,String> weatherTable;
+	@FXML
+	private TableColumn <HorseData,String> stageTable;
+	@FXML
+	private TableColumn <HorseData,String> raceNameTable;
+	@FXML
+	private TableColumn <HorseData,String> expectTable;
+	@FXML
+	private TableColumn <HorseData,String> resultTable;
+	@FXML
+	private TableColumn <HorseData,String> jockeyTable;
+	@FXML
+	private TableColumn <HorseData,String> jockeyWeightTable;
+	@FXML
+	private TableColumn <HorseData,String> horseCountTable;
+	@FXML
+	private TableColumn <HorseData,String> startNoTable;
+	@FXML
+	private TableColumn <HorseData,String> frameNoTable;
+	@FXML
+	private TableColumn <HorseData,String> timeTable;
+	@FXML
+	private TableColumn <HorseData,String> behindTable;
+	@FXML
+	private TableColumn <HorseData,String> paceTable;
+	@FXML
+	private TableColumn <HorseData,String> lastTable;
+	@FXML
+	private TableColumn <HorseData,String> weightTable;
+	@FXML
+	private TableColumn <HorseData,String> runRankTable;
+	@FXML
+	private TableColumn <HorseData,String> topHorseTable;
+	@FXML
+	private TableColumn <HorseData,String> analysisTable;
 	Map<String,Integer> RankMap = new HashMap<>(){
 		{
 			put("①", 1);
@@ -119,6 +168,31 @@ public class SampleController {
 			put("⑰", 17);
 			put("⑱", 18);
 			put("－", 19);
+		}
+	};
+	
+	Map<String,String> RankTableMap = new HashMap<>(){
+		{
+
+			put("1", "①");
+			put("2", "②");
+			put("3", "③");
+			put("4", "④");
+			put("5", "⑤");
+			put("6", "⑥");
+			put("7", "⑦");
+			put("8", "⑧");
+			put("9", "⑨");
+			put("10", "⑩");
+			put("11", "⑪");
+			put("12", "⑫");
+			put("13", "⑬");
+			put("14", "⑭");
+			put("15", "⑮");
+			put("16", "⑯");
+			put("17", "⑰");
+			put("18", "⑱");
+			put("　", "　");
 		}
 	};
 
@@ -174,31 +248,51 @@ public class SampleController {
 	};
 
 	public void GetURL() {
+		
 
-		Label[] labelArray = {
-				horseLabel1,
-				horseLabel1,
-				horseLabel2,
-				horseLabel3,
-				horseLabel4,
-				horseLabel5,
-				horseLabel6,
-				horseLabel7,
-				horseLabel8,
-				horseLabel9,
-				horseLabel10,
-				horseLabel11,
-				horseLabel12,
-				horseLabel13,
-				horseLabel14,
-				horseLabel15,
-				horseLabel16,
-				horseLabel17,
-				horseLabel18,
-				horseLabel19,
-				horseLabel20
+		numberTable.setCellValueFactory(new PropertyValueFactory<HorseData, String>("no"));
+		
+		dateTable.setCellValueFactory(new PropertyValueFactory<HorseData, String>("date"));
+		
+		raceStageTable.setCellValueFactory(new PropertyValueFactory<HorseData, String>("raceStage"));
+		
+		rangeTable.setCellValueFactory(new PropertyValueFactory<HorseData, String>("range"));
+		
+		weatherTable.setCellValueFactory(new PropertyValueFactory<HorseData, String>("weather"));
+		
+		stageTable.setCellValueFactory(new PropertyValueFactory<HorseData, String>("stage"));
+		
+		raceNameTable.setCellValueFactory(new PropertyValueFactory<HorseData, String>("raceName"));
+		
+		expectTable.setCellValueFactory(new PropertyValueFactory<HorseData, String>("expect"));
+		
+		resultTable.setCellValueFactory(new PropertyValueFactory<HorseData, String>("result"));
+		
+		jockeyTable.setCellValueFactory(new PropertyValueFactory<HorseData, String>("jockey"));
+		
+		jockeyWeightTable.setCellValueFactory(new PropertyValueFactory<HorseData, String>("jockeyWeight"));
 
-		};
+		horseCountTable.setCellValueFactory(new PropertyValueFactory<HorseData, String>("horseCount"));
+		
+		startNoTable.setCellValueFactory(new PropertyValueFactory<HorseData, String>("startNo"));
+		
+		frameNoTable.setCellValueFactory(new PropertyValueFactory<HorseData, String>("frameNo"));
+		
+		timeTable.setCellValueFactory(new PropertyValueFactory<HorseData, String>("time"));
+		
+		behindTable.setCellValueFactory(new PropertyValueFactory<HorseData, String>("behind"));
+		
+		paceTable.setCellValueFactory(new PropertyValueFactory<HorseData, String>("pace"));
+		
+		lastTable.setCellValueFactory(new PropertyValueFactory<HorseData, String>("last"));
+		
+		weightTable.setCellValueFactory(new PropertyValueFactory<HorseData, String>("weight"));
+		
+		runRankTable.setCellValueFactory(new PropertyValueFactory<HorseData, String>("runRank"));
+		
+		topHorseTable.setCellValueFactory(new PropertyValueFactory<HorseData, String>("topHorse"));
+		
+		analysisTable.setCellValueFactory(new PropertyValueFactory<HorseData, String>("analysis"));
 		try {
 			System.out.println(textURL.getText(textURL.getText().length() - 1, textURL.getText().length()));
 			// jsoupを使用して当ブログのトップページへアクセス
@@ -226,12 +320,6 @@ public class SampleController {
 			List<Horse> horseList = new ArrayList<Horse>();
 
 			//System.out.println( beforeElements );
-			Integer cnt = 0;
-			for(Label l : labelArray) {
-				l.setText(strArray[cnt]);
-				cnt++;
-
-			}
 
 			RaceDB rdb = new RaceDB();
 			Integer raceID = rdb.GetRaceID(textURL.getText());
@@ -308,12 +396,37 @@ public class SampleController {
 								}
 								new HorseDB().UseHorseDataBase(new String[] {"insert", h.name, raceID.toString(), Integer.toString(h.position),
 										h.pastRace,  Integer.toString(h.frame)});
-								labelArray[h.number].setText(strArray[h.number] +  h.pastRace + RacePointCheck((strArray[h.number] +  h.pastRace ), h));
+
+								List<String> horseString = new ArrayList<String>(Arrays.asList(horseText.split(" ")));
+								
+
+								if(horseString.get(19).equals("B")) {
+									horseString.remove(19);
+								}
+								table.getItems().add(new HorseData(strArray[h.number],horseString.get(0),horseString.get(1),horseString.get(2),horseString.get(3),horseString.get(4),horseString.get(5),
+										horseString.get(6),horseString.get(7),horseString.get(8),horseString.get(9),horseString.get(10),horseString.get(11),horseString.get(12),horseString.get(13),
+										horseString.get(14), horseString.get(15) + horseString.get(16) + horseString.get(17), horseString.get(18), horseString.get(19),  
+										RankTableMap.get(horseString.get(horseString.size() - 5)) + RankTableMap.get(horseString.get(horseString.size() - 4)) 
+												+RankTableMap.get(horseString.get(horseString.size() - 3))+ RankTableMap.get(horseString.get(horseString.size() - 2)), horseString.get(horseString.size() - 1), RacePointCheck((strArray[h.number] +  h.pastRace ), h)));
 								Thread.sleep(1000);
 							}
 							else 
 							{
-								labelArray[h.number].setText(strArray[h.number] + horseText + RacePointCheck(horseText, h));
+
+								List<String> horseString = new ArrayList<String>(Arrays.asList(horseText.split(" ")));
+								
+								if(horseString.get(19).equals("B")) {
+									horseString.remove(19);
+								}
+
+							
+								
+								table.getItems().add(new HorseData(strArray[h.number],horseString.get(0),horseString.get(1),horseString.get(2),horseString.get(3),horseString.get(4),horseString.get(5),
+									horseString.get(6),horseString.get(7),horseString.get(8),horseString.get(9),horseString.get(10),horseString.get(11),horseString.get(12),horseString.get(13),
+									horseString.get(14), horseString.get(15) + horseString.get(16) + horseString.get(17), horseString.get(18), horseString.get(19),  
+									RankTableMap.get(horseString.get(horseString.size() - 5)) + RankTableMap.get(horseString.get(horseString.size() - 4)) 
+											+RankTableMap.get(horseString.get(horseString.size() - 3))+ RankTableMap.get(horseString.get(horseString.size() - 2)), horseString.get(horseString.size() - 1), RacePointCheck(horseText, h)));
+
 								
 							}
 						}

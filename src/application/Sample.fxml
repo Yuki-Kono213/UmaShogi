@@ -2,6 +2,8 @@
 
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -36,25 +38,31 @@
       <Button layoutX="544.0" layoutY="11.0" mnemonicParsing="false" onAction="#GetURL" text="URL取得" />
       <Label layoutX="345.0" layoutY="44.0" text="場名" />
       <TextField fx:id="textRaceStage" layoutX="369.0" layoutY="40.0" prefHeight="26.0" prefWidth="91.0" />
-      <Label fx:id="horseLabel1" layoutX="616.0" layoutY="67.0" text="馬1" />
-      <Label fx:id="horseLabel2"  layoutX="616.0" layoutY="85.0" text="馬2" />
-      <Label fx:id="horseLabel3"  layoutX="616.0" layoutY="103.0" text="馬3" />
-      <Label fx:id="horseLabel4"  layoutX="616.0" layoutY="121.0" text="馬4" />
-      <Label fx:id="horseLabel5"  layoutX="616.0" layoutY="139.0" text="馬5" />
-      <Label fx:id="horseLabel6"  layoutX="616.0" layoutY="157.0" text="馬6" />
-      <Label fx:id="horseLabel7"  layoutX="616.0" layoutY="175.0" text="馬7" />
-      <Label fx:id="horseLabel8"  layoutX="616.0" layoutY="193.0" text="馬8" />
-      <Label fx:id="horseLabel9"  layoutX="616.0" layoutY="211.0" text="馬9" />
-      <Label fx:id="horseLabel10"  layoutX="616.0" layoutY="229.0" text="馬10" />
-      <Label fx:id="horseLabel11"  layoutX="616.0" layoutY="247.0" text="馬11" />
-      <Label fx:id="horseLabel12"  layoutX="616.0" layoutY="265.0" text="馬12" />
-      <Label fx:id="horseLabel13"  layoutX="616.0" layoutY="283.0" text="馬13" />
-      <Label fx:id="horseLabel14"  layoutX="616.0" layoutY="301.0" text="馬14" />
-      <Label fx:id="horseLabel15"  layoutX="616.0" layoutY="319.0" text="馬15" />
-      <Label fx:id="horseLabel16"  layoutX="616.0" layoutY="337.0" text="馬16" />
-      <Label fx:id="horseLabel17"  layoutX="616.0" layoutY="355.0" text="馬17" />
-      <Label fx:id="horseLabel18"  layoutX="616.0" layoutY="373.0" text="馬18" />
-      <Label fx:id="horseLabel19"  layoutX="616.0" layoutY="391.0" text="馬19" />
-      <Label fx:id="horseLabel20"  layoutX="616.0" layoutY="409.0" text="馬20" />
+      <TableView fx:id="table" layoutX="616.0" layoutY="67.0" prefHeight="600.0" prefWidth="898.0">
+        <columns>
+            <TableColumn fx:id="numberTable" prefWidth="20.0" text="No" />
+            <TableColumn fx:id="dateTable" prefWidth="40.0" text="日付" />
+            <TableColumn fx:id="raceStageTable" prefWidth="60.0" text="レース場" />
+          <TableColumn fx:id="rangeTable" prefWidth="40.0" text="距離" />
+          <TableColumn fx:id="weatherTable" prefWidth="20.0" text="天" />
+            <TableColumn fx:id="stageTable" prefWidth="20.0" text="場" />
+            <TableColumn fx:id="raceNameTable" prefWidth="75.0" text="レース名" />
+            <TableColumn fx:id="expectTable" prefWidth="20.0" text="人" />
+            <TableColumn fx:id="resultTable" prefWidth="20.0" text="着" />
+            <TableColumn fx:id="jockeyTable" prefWidth="75.0" text="騎手" />
+            <TableColumn fx:id="jockeyWeightTable" prefWidth="40.0" text="斤量" />
+            <TableColumn fx:id="horseCountTable" prefWidth="20.0" text="頭" />
+            <TableColumn fx:id="startNoTable" prefWidth="20.0" text="番" />
+            <TableColumn fx:id="frameNoTable" prefWidth="20.0" text="枠" />
+            <TableColumn fx:id="timeTable" prefWidth="75.0" text="タイム" />
+            <TableColumn fx:id="behindTable" prefWidth="20.0" text="差" />
+            <TableColumn fx:id="paceTable" prefWidth="75.0" text="ペース" />
+            <TableColumn fx:id="lastTable" prefWidth="40.0" text="上り" />
+            <TableColumn fx:id="weightTable" prefWidth="40.0" text="体重" />
+            <TableColumn fx:id="runRankTable" prefWidth="40.0" text="道中" />
+            <TableColumn fx:id="topHorseTable" prefWidth="40.0" text="1着" />
+            <TableColumn fx:id="analysisTable" prefWidth="75.0" text="分析" />
+        </columns>
+      </TableView>
    </children>
 </AnchorPane>
