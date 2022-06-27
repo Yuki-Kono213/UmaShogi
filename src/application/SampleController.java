@@ -2,6 +2,7 @@ package application;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,8 +12,8 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -21,46 +22,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 //Javaでスクレイピングを行う
 public class SampleController {
 
-	@FXML
-	private Label horseLabel1;
-	@FXML
-	private Label horseLabel2;
-	@FXML
-	private Label horseLabel3;
-	@FXML
-	private Label horseLabel4;
-	@FXML
-	private Label horseLabel5;
-	@FXML
-	private Label horseLabel6;
-	@FXML
-	private Label horseLabel7;
-	@FXML
-	private Label horseLabel8;
-	@FXML
-	private Label horseLabel9;
-	@FXML
-	private Label horseLabel10;
-	@FXML
-	private Label horseLabel11;
-	@FXML
-	private Label horseLabel12;
-	@FXML
-	private Label horseLabel13;
-	@FXML
-	private Label horseLabel14;
-	@FXML
-	private Label horseLabel15;
-	@FXML
-	private Label horseLabel16;
-	@FXML
-	private Label horseLabel17;
-	@FXML
-	private Label horseLabel18;
-	@FXML
-	private Label horseLabel19;
-	@FXML
-	private Label horseLabel20;
 	@FXML
 	private TextField textURL;
 	@FXML
@@ -105,6 +66,8 @@ public class SampleController {
 	private TableView <HorseData> table;
 	@FXML
 	private TableColumn <HorseData,String> numberTable;
+	@FXML
+	private TableColumn <HorseData,String> nameTable;
 	@FXML
 	private TableColumn <HorseData,String> dateTable;
 	@FXML
@@ -251,6 +214,9 @@ public class SampleController {
 		
 
 		numberTable.setCellValueFactory(new PropertyValueFactory<HorseData, String>("no"));
+		
+		nameTable.setCellValueFactory(new PropertyValueFactory<HorseData, String>("name"));
+		
 		
 		dateTable.setCellValueFactory(new PropertyValueFactory<HorseData, String>("date"));
 		
@@ -403,7 +369,7 @@ public class SampleController {
 								if(horseString.get(19).equals("B")) {
 									horseString.remove(19);
 								}
-								table.getItems().add(new HorseData(strArray[h.number],horseString.get(0),horseString.get(1),horseString.get(2),horseString.get(3),horseString.get(4),horseString.get(5),
+								table.getItems().add(new HorseData(strArray[h.number],h.name,horseString.get(0),horseString.get(1),horseString.get(2),horseString.get(3),horseString.get(4),horseString.get(5),
 										horseString.get(6),horseString.get(7),horseString.get(8),horseString.get(9),horseString.get(10),horseString.get(11),horseString.get(12),horseString.get(13),
 										horseString.get(14), horseString.get(15) + horseString.get(16) + horseString.get(17), horseString.get(18), horseString.get(19),  
 										RankTableMap.get(horseString.get(horseString.size() - 5)) + RankTableMap.get(horseString.get(horseString.size() - 4)) 
@@ -421,7 +387,7 @@ public class SampleController {
 
 							
 								
-								table.getItems().add(new HorseData(strArray[h.number],horseString.get(0),horseString.get(1),horseString.get(2),horseString.get(3),horseString.get(4),horseString.get(5),
+								table.getItems().add(new HorseData(strArray[h.number],h.name,horseString.get(0),horseString.get(1),horseString.get(2),horseString.get(3),horseString.get(4),horseString.get(5),
 									horseString.get(6),horseString.get(7),horseString.get(8),horseString.get(9),horseString.get(10),horseString.get(11),horseString.get(12),horseString.get(13),
 									horseString.get(14), horseString.get(15) + horseString.get(16) + horseString.get(17), horseString.get(18), horseString.get(19),  
 									RankTableMap.get(horseString.get(horseString.size() - 5)) + RankTableMap.get(horseString.get(horseString.size() - 4)) 
@@ -447,6 +413,9 @@ public class SampleController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		Comparator<HorseData> comparator =
+				  Comparator.<HorseData, String>comparing(model -> model.getNo());
+		FXCollections.sort(table.getItems(), comparator);
 	}
 
 	private String RacePointCheck(String s, Horse h) 

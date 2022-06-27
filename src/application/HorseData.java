@@ -3,6 +3,7 @@ package application;
 public class HorseData 
 {
 	private String no;
+	private String name;
 	private String raceStage;
 	private String date;
 	private String range;
@@ -25,10 +26,11 @@ public class HorseData
 	private String topHorse;
 	private String analysis;
 	
-	  public HorseData(String no, String date, String raceStage, String range,String weather,String stage,String raceName,String expect,String result,String jockey,String jockeyWeight,
+	  public HorseData(String no, String name, String date, String raceStage, String range,String weather,String stage,String raceName,String expect,String result,String jockey,String jockeyWeight,
 			  String horseCount,String startNo,String frameNo,String time,String behind,String pace,String last,String weight,String runRank,String topHorse,String analysis) {
 
 			 this.no = no;
+			 this.name = name;
 			 this.raceStage = raceStage;
 			 this.date = date;
 			 this.range = range;
@@ -54,6 +56,8 @@ public class HorseData
 	  /* getter,setterがないとTableViewに反映されない */
 	  public String getNo(){ return no; }
 	  public void setNo(String no){ this.no = no; }
+	  public String getName(){ return name; }
+	  public void setName(String name){ this.name = name; }
 	  public String getRaceStage(){ return raceStage; }
 	  public void setRaseStage(String raceStage){ this.raceStage = raceStage; }
 	  public String getDate(){ return date; }
