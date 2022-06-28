@@ -313,12 +313,10 @@ public class SampleController {
 				raceID = rdb.GetRaceID(textURL.getText());
 				raceExist = false;
 			}
-			int hosei = 0; 
 			int j = 0;
 			for (int i = 0; i <  horseElements.size()/2; i++) {
 				j = i + 18 - horseElements.size()/2;
 				try {
-					String name = horseElements.get(i).text();
 					//if(name != "" && horseList.stream().noneMatch(a -> a.name.equals(name))) {
 						Horse h = new Horse();
 						h.name = horseElements.get(i).text();
@@ -355,7 +353,12 @@ public class SampleController {
 							HorseDB hdb = new HorseDB();
 							hdb.create();
 							String horseText = hdb.returnPastRace(h.name, raceID);
-							if(!raceExist || horseText.isEmpty() || horseText.equals("null")) {
+							System.out.println(horseText.split(" ")[0]);
+							System.out.println(labelRaceDate.getText());
+							if(!raceExist || horseText.isEmpty() || horseText.equals("null") || 
+									LocalDate.parse(horseText.split(" ")[0], DateTimeFormatter.ofPattern("yyyy/[]M/[]d"))
+									.isBefore(LocalDate.parse(labelRaceDate.getText(), DateTimeFormatter.ofPattern("yyyy/[]M/[]d")).plusDays(1)) 
+									) {
 								String address = "https://www.keibalab.jp" + horseURLElements.get(i).attr("href");
 								Document horseData = Jsoup.connect(address).get();
 								Elements HorseElements = horseData.select(".sortobject tr");
