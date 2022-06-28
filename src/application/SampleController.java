@@ -353,8 +353,6 @@ public class SampleController {
 							HorseDB hdb = new HorseDB();
 							hdb.create();
 							String horseText = hdb.returnPastRace(h.name, raceID);
-							System.out.println(horseText.split(" ")[0]);
-							System.out.println(labelRaceDate.getText());
 							if(!raceExist || horseText.isEmpty() || horseText.equals("null") || 
 									LocalDate.parse(horseText.split(" ")[0], DateTimeFormatter.ofPattern("yyyy/[]M/[]d"))
 									.isBefore(LocalDate.parse(labelRaceDate.getText(), DateTimeFormatter.ofPattern("yyyy/[]M/[]d")).plusDays(1)) 
