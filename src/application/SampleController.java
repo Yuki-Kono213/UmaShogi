@@ -16,6 +16,7 @@ import org.jsoup.select.Elements;
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -27,7 +28,7 @@ public class SampleController {
 	@FXML
 	private TextField textURL;
 	@FXML
-	private TextField textRaceName;
+	private Label labelRaceName;
 	@FXML
 	private TextArea frame4;
 	@FXML
@@ -61,11 +62,11 @@ public class SampleController {
 	@FXML
 	private TextArea frame13;
 	@FXML
-	private TextField textRaceRange;
+	private Label labelRaceRange;
 	@FXML
-	private TextField textRaceStage;
+	private Label labelRaceStage;
 	@FXML
-	private TextField textRaceDate;
+	private Label labelRaceDate;
 	@FXML
 	private TableView <HorseData> table;
 	@FXML
@@ -284,10 +285,10 @@ public class SampleController {
 			Elements frameElements  = doc.select(".wakuban td:matchesOwn([1-8])");
 			Elements dateElements  = doc.select(".fL.ml10 .bold");
 			Elements rangeElements  = doc.select(".classCourseSyokin.clearfix li");
-			textRaceName.setText(doc.select(".raceTitle.fL").get(0).text());
-			textRaceRange.setText(rangeElements.get(1).text().split(" ")[0]);
-			textRaceStage.setText(stageElements.get(3).text().split("競馬")[0]);
-			textRaceDate.setText(dateElements.get(0).text().split("\\(")[0]);
+			labelRaceName.setText(doc.select(".raceTitle.fL").get(0).text());
+			labelRaceRange.setText(rangeElements.get(1).text().split(" ")[0]);
+			labelRaceStage.setText(stageElements.get(3).text().split("競馬")[0]);
+			labelRaceDate.setText(dateElements.get(0).text().split("\\(")[0]);
 			List<Horse> horseList = new ArrayList<Horse>();
 
 			//System.out.println( beforeElements );
@@ -305,7 +306,7 @@ public class SampleController {
 				}
 
 				rdm.RaceURL = textURL.getText();
-				rdm.RaceName = textRaceName.getText();
+				rdm.RaceName = labelRaceName.getText();
 
 				rdb.UseRaceDataBase( new String[] {"insert",rdm.RaceName, rdm.RaceURL});
 
@@ -360,7 +361,7 @@ public class SampleController {
 								Elements HorseElements = horseData.select(".sortobject tr");
 								for(int i2 = 0; i2 < 10; i2++) {
 									if(HorseElements.get(i2).text().split(" ").length > 22 && 
-											LocalDate.parse(HorseElements.get(i2).text().split(" ")[0], DateTimeFormatter.ofPattern("yyyy/[]M/[]d")).isBefore(LocalDate.parse(textRaceDate.getText(), DateTimeFormatter.ofPattern("yyyy/[]M/[]d"))) 
+											LocalDate.parse(HorseElements.get(i2).text().split(" ")[0], DateTimeFormatter.ofPattern("yyyy/[]M/[]d")).isBefore(LocalDate.parse(labelRaceDate.getText(), DateTimeFormatter.ofPattern("yyyy/[]M/[]d"))) 
 									) {
 										h.pastRace =  HorseElements.get(i2).text();
 										break;
