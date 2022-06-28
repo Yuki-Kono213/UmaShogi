@@ -1,5 +1,7 @@
 package application;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -62,6 +64,8 @@ public class SampleController {
 	private TextField textRaceRange;
 	@FXML
 	private TextField textRaceStage;
+	@FXML
+	private TextField textRaceDate;
 	@FXML
 	private TableView <HorseData> table;
 	@FXML
@@ -274,15 +278,16 @@ public class SampleController {
 			Elements rateSpanElements = rateElements.select("td");
 
 			Elements horseURLElements  = doc.select("div[class~=BameiWrap.*] > a");
-
 			Elements stageElements  = doc.select("#topicPath ul li");
 			Elements horseElements  = doc.select("a.tategaki.bamei");
 			Elements beforeElements  = doc.select(".zensou.std11 span,.BeforRaces");
 			Elements frameElements  = doc.select(".wakuban td:matchesOwn([1-8])");
-			Elements RangeElements  = doc.select(".classCourseSyokin.clearfix li");
+			Elements dateElements  = doc.select(".fL.ml10 .bold");
+			Elements rangeElements  = doc.select(".classCourseSyokin.clearfix li");
 			textRaceName.setText(doc.select(".raceTitle.fL").get(0).text());
-			String[] Range = RangeElements.get(1).text().split(" ");
-			textRaceRange.setText(Range[0]);
+			textRaceRange.setText(rangeElements.get(1).text().split(" ")[0]);
+			textRaceStage.setText(stageElements.get(3).text().split("競馬")[0]);
+			textRaceDate.setText(dateElements.get(0).text().split("\\(")[0]);
 			List<Horse> horseList = new ArrayList<Horse>();
 
 			//System.out.println( beforeElements );
@@ -292,7 +297,7 @@ public class SampleController {
 			boolean raceExist = true;
 			if(raceID == -1) {
 				RaceDataManager rdm = new RaceDataManager(); 
-				if(RangeElements.get(0).text().contains("芝")) {
+				if(rangeElements.get(0).text().contains("芝")) {
 					rdm.glass = true;
 				}
 				else {
@@ -320,7 +325,6 @@ public class SampleController {
 
 						if(rateSpanElements.size() != 0 && !rateSpanElements.get(j).text().equals("除外") && 
 								!rateSpanElements.get(j).text().isEmpty()) {
-							System.out.println(j + rateSpanElements.get(j).text());
 							h.rate = Double.parseDouble(rateSpanElements.get(j).select("span").get(0).text());
 						}
 						try {
@@ -355,7 +359,9 @@ public class SampleController {
 								Document horseData = Jsoup.connect(address).get();
 								Elements HorseElements = horseData.select(".sortobject tr");
 								for(int i2 = 0; i2 < 10; i2++) {
-									if(HorseElements.get(i2).text().split(" ").length > 22) {
+									if(HorseElements.get(i2).text().split(" ").length > 22 && 
+											LocalDate.parse(HorseElements.get(i2).text().split(" ")[0], DateTimeFormatter.ofPattern("yyyy/[]M/[]d")).isBefore(LocalDate.parse(textRaceDate.getText(), DateTimeFormatter.ofPattern("yyyy/[]M/[]d"))) 
+									) {
 										h.pastRace =  HorseElements.get(i2).text();
 										break;
 									}
@@ -363,7 +369,7 @@ public class SampleController {
 								new HorseDB().UseHorseDataBase(new String[] {"insert", h.name, raceID.toString(), Integer.toString(h.position),
 										h.pastRace,  Integer.toString(h.frame)});
 
-								List<String> horseString = new ArrayList<String>(Arrays.asList(horseText.split(" ")));
+								List<String> horseString = new ArrayList<String>(Arrays.asList(h.pastRace.split(" ")));
 								
 
 								if(horseString.get(19).equals("B")) {
@@ -385,7 +391,8 @@ public class SampleController {
 									horseString.remove(19);
 								}
 
-							
+
+								System.out.println(horseString.get(17));
 								
 								table.getItems().add(new HorseData(strArray[h.number],h.name,horseString.get(0),horseString.get(1),horseString.get(2),horseString.get(3),horseString.get(4),horseString.get(5),
 									horseString.get(6),horseString.get(7),horseString.get(8),horseString.get(9),horseString.get(10),horseString.get(11),horseString.get(12),horseString.get(13),

@@ -29,7 +29,9 @@
       <TextArea fx:id="frame13" layoutX="468.0" layoutY="273.0" prefHeight="80.0" prefWidth="156.0" />
       <Label layoutX="627.0" layoutY="76.0" text="レース名" />
       <Label layoutX="626.0" layoutY="111.0" text="距離" />
+      <Label layoutX="626.0" layoutY="171.0" text="日付" />
       <TextField fx:id="textRaceRange" layoutX="676.0" layoutY="107.0" prefHeight="26.0" prefWidth="91.0" />
+      <TextField fx:id="textRaceDate" layoutX="676.0" layoutY="171.0" prefHeight="26.0" prefWidth="91.0" />
       <Button layoutX="656.0" layoutY="9.0" mnemonicParsing="false" onAction="#ClearText" text="消去" />
       <Button layoutX="607.0" layoutY="9.0" mnemonicParsing="false" onAction="#SaveRace" text="保存" />
       <Label layoutX="14.0" layoutY="13.0" text="URL" />

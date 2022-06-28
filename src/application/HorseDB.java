@@ -6,14 +6,9 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
-import java.util.Date;
-
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 public class HorseDB {
 
@@ -158,64 +153,7 @@ public class HorseDB {
 		
 		
 		
-		public ObservableList<String> ReturnPaymentList(int id) throws ClassNotFoundException, SQLException 
-		{
-			ObservableList<String> items =FXCollections.observableArrayList();
-			ResultSet resultSet = null;
-			try {
-				create();
-				String SQL;
-				if(id > 0) {
-					SQL = "SELECT * FROM " + TABLE_NAME + " WHERE CLIENT_ID = '"+id+"'";
-				}
-				else 
-				{
-					return null;
-				}
-				resultSet = _statement.executeQuery(SQL);
-				boolean br = resultSet.first();
-				if(br == false) {
-					return items;
-				}
-				do{
-					SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSSS");
-					Date date = new Date(resultSet.getLong("PUBLISHED_AT"));
-					String addname = formatter.format(date);
-					items.add(addname);
-				}while(resultSet.next());
-			}
-			catch(Exception ex){
-
-			      System.out.println(ex);
-				
-			}
-			finally {
-				close();
-				resultSet.close();
-			}
-			return items;
-		}
 		
-		public Integer GetPaymentID(int id) throws SQLException 
-		{
-			ResultSet resultSetID = null;
-			try {
-				create();
-				String SQLID = "SELECT ID FROM " + TABLE_NAME +" WHERE CLIENT_ID = '"+id+"'";
-				resultSetID = _statement.executeQuery(SQLID);
-				resultSetID.last();
-				System.out.println(resultSetID);
-				payment_ID = resultSetID.getInt("ID");
-			}
-			catch(Exception ex)
-			{
-				
-			}finally{
-				resultSetID.close();
-				close();
-			}
-			return payment_ID;
-		}
 		/*
 		 * SELECT処理を実行します。
 		 */
