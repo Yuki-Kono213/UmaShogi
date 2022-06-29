@@ -115,6 +115,7 @@ public class SampleController {
 	private TableColumn <HorseData,String> topHorseTable;
 	@FXML
 	private TableColumn <HorseData,String> analysisTable;
+	
 	Map<String,Integer> RankMap = new HashMap<>(){
 		{
 			put("①", 1);
@@ -265,6 +266,8 @@ public class SampleController {
 		
 		analysisTable.setCellValueFactory(new PropertyValueFactory<HorseData, String>("analysis"));
 		try {
+			table.getItems().clear(); 
+			ClearText();
 			System.out.println(textURL.getText(textURL.getText().length() - 1, textURL.getText().length()));
 			// jsoupを使用して当ブログのトップページへアクセス
 			if(textURL.getText(textURL.getText().length() - 1, textURL.getText().length()).equals("/")) 
@@ -354,8 +357,8 @@ public class SampleController {
 							hdb.create();
 							String horseText = hdb.returnPastRace(h.name, raceID);
 							if(!raceExist || horseText.isEmpty() || horseText.equals("null") || 
-									LocalDate.parse(horseText.split(" ")[0], DateTimeFormatter.ofPattern("yyyy/[]M/[]d"))
-									.isBefore(LocalDate.parse(labelRaceDate.getText(), DateTimeFormatter.ofPattern("yyyy/[]M/[]d")).plusDays(1)) 
+									LocalDate.parse(labelRaceDate.getText(), DateTimeFormatter.ofPattern("yyyy/[]M/[]d"))
+									.isBefore(LocalDate.parse(horseText.split(" ")[0], DateTimeFormatter.ofPattern("yyyy/[]M/[]d")).plusDays(1)) 
 									) {
 								String address = "https://www.keibalab.jp" + horseURLElements.get(i).attr("href");
 								Document horseData = Jsoup.connect(address).get();
@@ -377,11 +380,7 @@ public class SampleController {
 								if(horseString.get(19).equals("B")) {
 									horseString.remove(19);
 								}
-								table.getItems().add(new HorseData(strArray[h.number],h.name,horseString.get(0),horseString.get(1),horseString.get(2),horseString.get(3),horseString.get(4),horseString.get(5),
-										horseString.get(6),horseString.get(7),horseString.get(8),horseString.get(9),horseString.get(10),horseString.get(11),horseString.get(12),horseString.get(13),
-										horseString.get(14), horseString.get(15) + horseString.get(16) + horseString.get(17), horseString.get(18), horseString.get(19),  
-										RankTableMap.get(horseString.get(horseString.size() - 5)) + RankTableMap.get(horseString.get(horseString.size() - 4)) 
-												+RankTableMap.get(horseString.get(horseString.size() - 3))+ RankTableMap.get(horseString.get(horseString.size() - 2)), horseString.get(horseString.size() - 1), RacePointCheck((strArray[h.number] +  h.pastRace ), h)));
+								SetTable(h, horseString, strArray[h.number] +  h.pastRace );
 								Thread.sleep(1000);
 							}
 							else 
@@ -396,14 +395,7 @@ public class SampleController {
 
 								System.out.println(horseString.get(17));
 								
-								table.getItems().add(new HorseData(strArray[h.number],h.name,horseString.get(0),horseString.get(1),horseString.get(2),horseString.get(3),horseString.get(4),horseString.get(5),
-									horseString.get(6),horseString.get(7),horseString.get(8),horseString.get(9),horseString.get(10),horseString.get(11),horseString.get(12),horseString.get(13),
-									horseString.get(14), horseString.get(15) + horseString.get(16) + horseString.get(17), horseString.get(18), horseString.get(19),  
-									RankTableMap.get(horseString.get(horseString.size() - 5)) + RankTableMap.get(horseString.get(horseString.size() - 4)) 
-											+RankTableMap.get(horseString.get(horseString.size() - 3))+ RankTableMap.get(horseString.get(horseString.size() - 2)), horseString.get(horseString.size() - 1), RacePointCheck(horseText, h)));
-
-								
-							}
+								SetTable(h, horseString, horseText);}
 						}
 						catch(Exception e) {
 
@@ -427,6 +419,17 @@ public class SampleController {
 		FXCollections.sort(table.getItems(), comparator);
 	}
 
+	
+	private void SetTable(Horse h, List<String>horseString, String horseText) {
+		table.getItems().add(new HorseData(strArray[h.number],h.name,horseString.get(0),horseString.get(1),horseString.get(2),horseString.get(3),horseString.get(4),horseString.get(5),
+				horseString.get(6),horseString.get(7),horseString.get(8),horseString.get(9),horseString.get(10),horseString.get(11),horseString.get(12),horseString.get(13),
+				horseString.get(14), horseString.get(15) + horseString.get(16) + horseString.get(17), horseString.get(18), horseString.get(19),  
+				RankTableMap.get(horseString.get(horseString.size() - 5)) + RankTableMap.get(horseString.get(horseString.size() - 4)) 
+						+RankTableMap.get(horseString.get(horseString.size() - 3))+ RankTableMap.get(horseString.get(horseString.size() - 2)), horseString.get(horseString.size() - 1), RacePointCheck(horseText, h)));
+
+			
+		
+	}
 	private String RacePointCheck(String s, Horse h) 
 	{
 		String text = "";
