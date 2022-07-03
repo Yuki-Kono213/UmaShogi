@@ -382,7 +382,8 @@ public class SampleController {
 										findPastRace = true;
 									}
 									pastRaceCount++;
-									if(HorseElements.get(i2).text().split(" ").length > 22 && Integer.parseInt(HorseElements.get(i2).text().split(" ")[7]) < 4 &&
+									if(HorseElements.get(i2).text().split(" ").length > 22 && ((Integer.parseInt(HorseElements.get(i2).text().split(" ")[10]) > 7 && Integer.parseInt(HorseElements.get(i2).text().split(" ")[7]) < 4 ) ||
+											 ((Integer.parseInt(HorseElements.get(i2).text().split(" ")[10]) < 8 && Integer.parseInt(HorseElements.get(i2).text().split(" ")[7]) < 2 ) )) &&
 											LocalDate.parse(HorseElements.get(i2).text().split(" ")[0], DateTimeFormatter.ofPattern("yyyy/[]M/[]d")).isBefore(LocalDate.parse(labelRaceDate.getText(), DateTimeFormatter.ofPattern("yyyy/[]M/[]d"))))
 									{
 										pastGoodRaceCount++;
