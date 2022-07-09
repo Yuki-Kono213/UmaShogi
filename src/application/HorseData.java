@@ -26,10 +26,11 @@ public class HorseData
 	private String topHorse;
 	private String analysis;
 	private String goodRace;
+	private String pastRace;
 	
 	
 	  public HorseData(String no, String name, String date, String raceStage, String range,String weather,String stage,String raceName,String expect,String result,String jockey,String jockeyWeight,
-			  String horseCount,String frameNo,String startNo,String time,String behind,String pace,String last,String weight,String runRank,String topHorse,String analysis, String goodRace) {
+			  String horseCount,String frameNo,String startNo,String time,String behind,String pace,String last,String weight,String runRank,String topHorse,String analysis, String goodRace, String pastRace) {
 
 			 this.no = no;
 			 this.name = name;
@@ -55,6 +56,7 @@ public class HorseData
 			 this.topHorse = topHorse;
 			 this.analysis = analysis;
 			 this.goodRace = goodRace;
+			 this.pastRace = pastRace;
 	  }
 	  /* getter,setterがないとTableViewに反映されない */
 	  public String getNo(){ return no; }
@@ -105,4 +107,6 @@ public class HorseData
 	  public void setHorseCount(String horseCount){ this.horseCount = horseCount; }
 	  public String getGoodRace(){ return goodRace; }
 	  public void setGoodRace(String goodRace){ this.goodRace = goodRace; }
+	  public String getPastRace(){ return pastRace; }
+	  public void setPastRace(String pastRace){ this.goodRace = pastRace; }
 }

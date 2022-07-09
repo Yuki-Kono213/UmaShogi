@@ -118,6 +118,8 @@ public class SampleController {
 	private TableColumn <HorseData,String> analysisTable;
 	@FXML
 	private TableColumn <HorseData,String> multipleTable;
+	@FXML
+	private TableColumn <HorseData,String> pastRaceTable;
 	
 	Map<String,Integer> RankMap = new HashMap<>(){
 		{
@@ -268,7 +270,10 @@ public class SampleController {
 		topHorseTable.setCellValueFactory(new PropertyValueFactory<HorseData, String>("topHorse"));
 		
 		analysisTable.setCellValueFactory(new PropertyValueFactory<HorseData, String>("analysis"));
+		
 		multipleTable.setCellValueFactory(new PropertyValueFactory<HorseData, String>("goodRace"));
+		
+		pastRaceTable.setCellValueFactory(new PropertyValueFactory<HorseData, String>("pastRace"));
 		try {
 			table.getItems().clear(); 
 			ClearText();
@@ -369,30 +374,34 @@ public class SampleController {
 									) {
 								String address = "https://www.keibalab.jp" + horseURLElements.get(i).attr("href");
 								Document horseData = Jsoup.connect(address).get();
+								String pastRace = "";
 								Elements HorseElements = horseData.select(".sortobject tr");
 								boolean findPastRace = false;
 								int pastRaceCount = 0;
 								int pastGoodRaceCount = 0;
-								
 								for(int i2 = 0; i2 < HorseElements.size(); i2++) {
-									if(!findPastRace && HorseElements.get(i2).text().split(" ").length > 22 && 
-											LocalDate.parse(HorseElements.get(i2).text().split(" ")[0], DateTimeFormatter.ofPattern("yyyy/[]M/[]d")).isBefore(LocalDate.parse(labelRaceDate.getText(), DateTimeFormatter.ofPattern("yyyy/[]M/[]d"))) 
-									) {
-										h.pastRace =  HorseElements.get(i2).text();
-										findPastRace = true;
+									if(HorseElements.get(i2).text().split(" ").length > 22 && LocalDate.parse(HorseElements.get(i2).text().split(" ")[0], 
+											DateTimeFormatter.ofPattern("yyyy/[]M/[]d")).isBefore(LocalDate.parse(labelRaceDate.getText(), DateTimeFormatter.ofPattern("yyyy/[]M/[]d")))) {
+										if(!findPastRace) 
+										{
+											h.pastRace =  HorseElements.get(i2).text();
+											findPastRace = true;
+										}
+										if( ((Integer.parseInt(HorseElements.get(i2).text().split(" ")[10]) > 7 && Integer.parseInt(HorseElements.get(i2).text().split(" ")[7]) < 4 ) ||
+												 ((Integer.parseInt(HorseElements.get(i2).text().split(" ")[10]) < 8 && Integer.parseInt(HorseElements.get(i2).text().split(" ")[7]) < 3 ) )))
+										{
+											pastGoodRaceCount++;
+											
+										}
+										if(pastRaceCount < 5)
+										{
+											pastRace += strArray[Integer.parseInt(HorseElements.get(i2).text().split(" ")[7])];
+										}
+										pastRaceCount++;
 									}
-									pastRaceCount++;
-									if(HorseElements.get(i2).text().split(" ").length > 22 && ((Integer.parseInt(HorseElements.get(i2).text().split(" ")[10]) > 7 && Integer.parseInt(HorseElements.get(i2).text().split(" ")[7]) < 4 ) ||
-											 ((Integer.parseInt(HorseElements.get(i2).text().split(" ")[10]) < 8 && Integer.parseInt(HorseElements.get(i2).text().split(" ")[7]) < 2 ) )) &&
-											LocalDate.parse(HorseElements.get(i2).text().split(" ")[0], DateTimeFormatter.ofPattern("yyyy/[]M/[]d")).isBefore(LocalDate.parse(labelRaceDate.getText(), DateTimeFormatter.ofPattern("yyyy/[]M/[]d"))))
-									{
-										pastGoodRaceCount++;
-										
-									}
-							
 								}
 								System.out.println(" " + (double)pastGoodRaceCount * 100.0 / (double)pastRaceCount);
-								h.pastRace += " " + decimalFormat.format((double)pastGoodRaceCount * 100.0 / (double)pastRaceCount);
+								h.pastRace += " " + decimalFormat.format((double)pastGoodRaceCount * 100.0 / (double)pastRaceCount) + " " + pastRace;
 								new HorseDB().UseHorseDataBase(new String[] {"insert", h.name, raceID.toString(), Integer.toString(h.position),
 										h.pastRace,  Integer.toString(h.frame)});
 
@@ -446,8 +455,9 @@ public class SampleController {
 		table.getItems().add(new HorseData(strArray[h.number],h.name,horseString.get(0),horseString.get(1),horseString.get(2),horseString.get(3),horseString.get(4),horseString.get(5),
 				horseString.get(6),horseString.get(7),horseString.get(8),horseString.get(9),horseString.get(10),horseString.get(11),horseString.get(12),horseString.get(13),
 				horseString.get(14), horseString.get(15) + horseString.get(16) + horseString.get(17), horseString.get(18), horseString.get(19),  
-				RankTableMap.get(horseString.get(horseString.size() - 6)) + RankTableMap.get(horseString.get(horseString.size() - 5)) 
-						+RankTableMap.get(horseString.get(horseString.size() - 4))+ RankTableMap.get(horseString.get(horseString.size() - 3)), horseString.get(horseString.size() - 2), RacePointCheck(horseText, h), horseString.get(horseString.size() - 1)));
+				RankTableMap.get(horseString.get(horseString.size() - 7)) + RankTableMap.get(horseString.get(horseString.size() - 6)) 
+						+RankTableMap.get(horseString.get(horseString.size() - 5))+ RankTableMap.get(horseString.get(horseString.size() - 4)), horseString.get(horseString.size() - 3), RacePointCheck(horseText, h), horseString.get(horseString.size() - 2)
+						, horseString.get(horseString.size() - 1)));
 
 			
 		
