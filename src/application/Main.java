@@ -15,7 +15,7 @@ public class Main extends Application {
 		try {
 			Rectangle2D d = Screen.getPrimary().getVisualBounds();
 			AnchorPane root = (AnchorPane)FXMLLoader.load(getClass().getResource("Sample.fxml"));
-			Scene scene = new Scene(root, d.getWidth(), d.getHeight());
+			Scene scene = new Scene(root, d.getWidth(), d.getHeight() - 40);
 			scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 			primaryStage.setScene(scene);
 			primaryStage.show();

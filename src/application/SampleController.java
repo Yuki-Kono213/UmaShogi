@@ -120,7 +120,10 @@ public class SampleController {
 	private TableColumn <HorseData,String> multipleTable;
 	@FXML
 	private TableColumn <HorseData,String> pastRaceTable;
-	
+	@FXML
+	private TableColumn <HorseData,String> numberTable1;
+	@FXML
+	private TableColumn <HorseData,String> nameTable1;
 	Map<String,Integer> RankMap = new HashMap<>(){
 		{
 			put("①", 1);
@@ -274,6 +277,9 @@ public class SampleController {
 		multipleTable.setCellValueFactory(new PropertyValueFactory<HorseData, String>("goodRace"));
 		
 		pastRaceTable.setCellValueFactory(new PropertyValueFactory<HorseData, String>("pastRace"));
+		
+		numberTable1.setCellValueFactory(new PropertyValueFactory<HorseData, String>("no"));
+		nameTable1.setCellValueFactory(new PropertyValueFactory<HorseData, String>("name"));
 		try {
 			table.getItems().clear(); 
 			ClearText();
