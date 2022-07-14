@@ -8,6 +8,8 @@ public class Horse
 	public int number;
 	public int frame;
 	public String pastRace;
+	public String pastRaceCondition;
+	
 	
 	
 }

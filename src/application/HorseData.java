@@ -27,10 +27,21 @@ public class HorseData
 	private String analysis;
 	private String goodRace;
 	private String pastRace;
+
+	private String glassGoodRaceResult;
+	private String glassBitHeavyRaceResult;
+	private String glassHeavyRaceResult;
+	private String glassBadRaceResult;
+	private String dirtGoodRaceResult;
+	private String dirtBitHeavyRaceResult;
+	private String dirtHeavyRaceResult;
+	private String dirtBadRaceResult;
 	
 	
 	  public HorseData(String no, String name, String date, String raceStage, String range,String weather,String stage,String raceName,String expect,String result,String jockey,String jockeyWeight,
-			  String horseCount,String frameNo,String startNo,String time,String behind,String pace,String last,String weight,String runRank,String topHorse,String analysis, String goodRace, String pastRace) {
+			  String horseCount,String frameNo,String startNo,String time,String behind,String pace,String last,String weight,String runRank,String topHorse,String analysis, String goodRace, String pastRace
+			  ,String glassGoodRaceResult, String glassBitHeavyRaceResult,String glassHeavyRaceResult,  String glassBadRaceResult
+			  ,String dirtGoodRaceResult,  String dirtBitHeavyRaceResult, String dirtHeavyRaceResult, String dirtBadRaceResult) {
 
 			 this.no = no;
 			 this.name = name;
@@ -57,6 +68,14 @@ public class HorseData
 			 this.analysis = analysis;
 			 this.goodRace = goodRace;
 			 this.pastRace = pastRace;
+			 this.glassGoodRaceResult = glassGoodRaceResult;
+			 this.glassBitHeavyRaceResult = glassBitHeavyRaceResult;
+			 this.glassHeavyRaceResult = glassHeavyRaceResult;
+			 this.glassBadRaceResult = glassBadRaceResult;
+			 this.dirtGoodRaceResult = dirtGoodRaceResult;
+			 this.dirtBitHeavyRaceResult = dirtBitHeavyRaceResult;
+			 this.dirtHeavyRaceResult = dirtHeavyRaceResult;
+			 this.dirtBadRaceResult = dirtBadRaceResult;
 	  }
 	  /* getter,setterがないとTableViewに反映されない */
 	  public String getNo(){ return no; }
@@ -108,5 +127,21 @@ public class HorseData
 	  public String getGoodRace(){ return goodRace; }
 	  public void setGoodRace(String goodRace){ this.goodRace = goodRace; }
 	  public String getPastRace(){ return pastRace; }
-	  public void setPastRace(String pastRace){ this.goodRace = pastRace; }
+	  public void setPastRace(String pastRace){ this.pastRace = pastRace; }
+	  public String getGlassGoodRaceResult(){ return glassGoodRaceResult; }
+	  public void setGlassGoodRaceResult(String glassGoodRaceResult){ this.glassGoodRaceResult = glassGoodRaceResult; }
+	  public String getGlassBitHeavyRaceResult(){ return glassBitHeavyRaceResult; }
+	  public void setGlassBitHeavyRaceResult(String glassBitHeavyRaceResult){ this.glassBitHeavyRaceResult = glassBitHeavyRaceResult; }
+	  public String getGlassHeavyRaceResult(){ return glassHeavyRaceResult; }
+	  public void setGlassHeavyRaceResult(String glassHeavyRaceResult){ this.glassHeavyRaceResult = glassHeavyRaceResult; }
+	  public String getGlassBadRaceResult(){ return glassBadRaceResult; }
+	  public void setGlassBadRaceResult(String glassBadRaceResult){ this.glassBadRaceResult = glassBadRaceResult; }
+	  public String getDirtGoodRaceResult(){ return dirtGoodRaceResult; }
+	  public void setDirtGoodRaceResult(String dirtGoodRaceResult){ this.dirtGoodRaceResult = dirtGoodRaceResult; }
+	  public String getDirtBitHeavyRaceResult(){ return dirtBitHeavyRaceResult; }
+	  public void setDirtBitHeavyRaceResult(String dirtBitHeavyRaceResult){ this.dirtBitHeavyRaceResult = dirtBitHeavyRaceResult; }
+	  public String getDirtHeavyRaceResult(){ return dirtHeavyRaceResult; }
+	  public void setDirtHeavyRaceResult(String dirtHeavyRaceResult){ this.dirtHeavyRaceResult = dirtHeavyRaceResult; }
+	  public String getDirtBadRaceResult(){ return dirtBadRaceResult; }
+	  public void setDirtBadRaceResult(String dirtBadRaceResult){ this.dirtBadRaceResult = dirtBadRaceResult; }
 }

@@ -143,7 +143,7 @@ public class HorseDB {
 			if("select".equals(command)) {
 				
 			}else if("insert".equals(command)) {
-				executeInsert(args[1],Integer.parseInt(args[2]),Integer.parseInt(args[3]),args[4],Integer.parseInt(args[5]));
+				executeInsert(args[1],Integer.parseInt(args[2]),Integer.parseInt(args[3]),args[4],Integer.parseInt(args[5]), args[6]);
 			}else if("update".equals(command)) {
 
 				executeUpdate(args[1]);
@@ -169,6 +169,7 @@ public class HorseDB {
 				}
 				do{
 					pastRace = resultSet.getString("PASTRACE");
+					pastRace += resultSet.getString("PASTRACECONDITION");
 					
 					System.out.println("name:" + "'"+name+"'");
 				}while(resultSet.next());
@@ -194,12 +195,12 @@ public class HorseDB {
 		 * @param name
 		 * @param password
 		 */
-		private void executeInsert(String name, Integer raceID, Integer position, String pastRace, Integer frame)
+		private void executeInsert(String name, Integer raceID, Integer position, String pastRace, Integer frame, String pastRaceCondition)
 			throws SQLException{
 			// SQL文を発行
 			int updateCount = _statement.executeUpdate("INSERT INTO " + TABLE_NAME + 
-					" (NAME,RACEID,POSITION,PASTRACE,FRAME) VALUES "
-					+ "('"+name+"' , '"+raceID+"', '"+position+"', '"+pastRace+"', '"+frame+"')");
+					" (NAME,RACEID,POSITION,PASTRACE,FRAME, pastRaceCondition) VALUES "
+					+ "('"+name+"' , '"+raceID+"', '"+position+"', '"+pastRace+"', '"+frame+"', '"+pastRaceCondition+"')");
 			System.out.println("Insert: " + updateCount);
 			
 		}

@@ -124,6 +124,22 @@ public class SampleController {
 	private TableColumn <HorseData,String> numberTable1;
 	@FXML
 	private TableColumn <HorseData,String> nameTable1;
+	@FXML
+	private TableColumn <HorseData,String> glassGoodRaceResult;
+	@FXML
+	private TableColumn <HorseData,String> glassBitHeavyRaceResult;
+	@FXML
+	private TableColumn <HorseData,String> glassHeavyRaceResult;
+	@FXML
+	private TableColumn <HorseData,String> glassBadRaceResult;
+	@FXML
+	private TableColumn <HorseData,String> dirtGoodRaceResult;
+	@FXML
+	private TableColumn <HorseData,String> dirtBitHeavyRaceResult;
+	@FXML
+	private TableColumn <HorseData,String> dirtHeavyRaceResult;
+	@FXML
+	private TableColumn <HorseData,String> dirtBadRaceResult;
 	Map<String,Integer> RankMap = new HashMap<>(){
 		{
 			put("①", 1);
@@ -280,6 +296,16 @@ public class SampleController {
 		
 		numberTable1.setCellValueFactory(new PropertyValueFactory<HorseData, String>("no"));
 		nameTable1.setCellValueFactory(new PropertyValueFactory<HorseData, String>("name"));
+		
+
+		glassGoodRaceResult.setCellValueFactory(new PropertyValueFactory<HorseData, String>("glassGoodRaceResult"));
+		glassBitHeavyRaceResult.setCellValueFactory(new PropertyValueFactory<HorseData, String>("glassBitHeavyRaceResult"));
+		glassHeavyRaceResult.setCellValueFactory(new PropertyValueFactory<HorseData, String>("glassHeavyRaceResult"));
+		glassBadRaceResult.setCellValueFactory(new PropertyValueFactory<HorseData, String>("glassBadRaceResult"));
+		dirtGoodRaceResult.setCellValueFactory(new PropertyValueFactory<HorseData, String>("dirtGoodRaceResult"));
+		dirtBitHeavyRaceResult.setCellValueFactory(new PropertyValueFactory<HorseData, String>("dirtBitHeavyRaceResult"));
+		dirtHeavyRaceResult.setCellValueFactory(new PropertyValueFactory<HorseData, String>("dirtHeavyRaceResult"));
+		dirtBadRaceResult.setCellValueFactory(new PropertyValueFactory<HorseData, String>("dirtBadRaceResult"));
 		try {
 			table.getItems().clear(); 
 			ClearText();
@@ -385,6 +411,7 @@ public class SampleController {
 								boolean findPastRace = false;
 								int pastRaceCount = 0;
 								int pastGoodRaceCount = 0;
+								String[] pastRaceCondition = new String[] {"","","","","","","",""};
 								for(int i2 = 0; i2 < HorseElements.size(); i2++) {
 									if(HorseElements.get(i2).text().split(" ").length > 22 && LocalDate.parse(HorseElements.get(i2).text().split(" ")[0], 
 											DateTimeFormatter.ofPattern("yyyy/[]M/[]d")).isBefore(LocalDate.parse(labelRaceDate.getText(), DateTimeFormatter.ofPattern("yyyy/[]M/[]d")))) {
@@ -403,27 +430,62 @@ public class SampleController {
 										{
 											pastRace += strArray[Integer.parseInt(HorseElements.get(i2).text().split(" ")[7])];
 										}
+										if(HorseElements.get(i2).text().split(" ")[2].contains("芝") && HorseElements.get(i2).text().split(" ")[4].contains("良") && pastRaceCondition[0].length() < 5) {
+											pastRaceCondition[0] += strArray[Integer.parseInt(HorseElements.get(i2).text().split(" ")[7])];
+										}
+										else if(HorseElements.get(i2).text().split(" ")[2].contains("芝") && HorseElements.get(i2).text().split(" ")[4].contains("稍") && pastRaceCondition[1].length() < 5) {
+											pastRaceCondition[1] += strArray[Integer.parseInt(HorseElements.get(i2).text().split(" ")[7])];
+										}
+										else if(HorseElements.get(i2).text().split(" ")[2].contains("芝") && HorseElements.get(i2).text().split(" ")[4].contains("重") && pastRaceCondition[2].length() < 5) {
+											pastRaceCondition[2] += strArray[Integer.parseInt(HorseElements.get(i2).text().split(" ")[7])];
+										}
+										else if(HorseElements.get(i2).text().split(" ")[2].contains("芝") && HorseElements.get(i2).text().split(" ")[4].contains("不") && pastRaceCondition[3].length() < 5) {
+											pastRaceCondition[3] += strArray[Integer.parseInt(HorseElements.get(i2).text().split(" ")[7])];
+										}
+										else if(HorseElements.get(i2).text().split(" ")[2].contains("ダ") && HorseElements.get(i2).text().split(" ")[4].contains("良") && pastRaceCondition[4].length() < 5) {
+											pastRaceCondition[4] += strArray[Integer.parseInt(HorseElements.get(i2).text().split(" ")[7])];
+										}
+										else if(HorseElements.get(i2).text().split(" ")[2].contains("ダ") && HorseElements.get(i2).text().split(" ")[4].contains("稍") && pastRaceCondition[5].length() < 5) {
+											pastRaceCondition[5] += strArray[Integer.parseInt(HorseElements.get(i2).text().split(" ")[7])];
+										}
+										else if(HorseElements.get(i2).text().split(" ")[2].contains("ダ") && HorseElements.get(i2).text().split(" ")[4].contains("重") && pastRaceCondition[6].length() < 5) {
+											pastRaceCondition[6] += strArray[Integer.parseInt(HorseElements.get(i2).text().split(" ")[7])];
+										}
+										else if(HorseElements.get(i2).text().split(" ")[2].contains("ダ") && HorseElements.get(i2).text().split(" ")[4].contains("不") && pastRaceCondition[7].length() < 5) {
+											pastRaceCondition[7] += strArray[Integer.parseInt(HorseElements.get(i2).text().split(" ")[7])];
+										}
 										pastRaceCount++;
+									}
+								}
+								
+								for(int k = 0; k < 8; k++){
+									if(pastRaceCondition[k].isEmpty()) 
+									{
+										pastRaceCondition[k] = "出走なし";
 									}
 								}
 								System.out.println(" " + (double)pastGoodRaceCount * 100.0 / (double)pastRaceCount);
 								h.pastRace += " " + decimalFormat.format((double)pastGoodRaceCount * 100.0 / (double)pastRaceCount) + " " + pastRace;
+								h.pastRaceCondition = pastRaceCondition[0] + " " + pastRaceCondition[1] + " " + pastRaceCondition[2] + " " + pastRaceCondition[3] + " " + 
+										pastRaceCondition[4] + " " + pastRaceCondition[5] + " " + pastRaceCondition[6] + " " + pastRaceCondition[7];
+								System.out.println(h.pastRaceCondition);
 								new HorseDB().UseHorseDataBase(new String[] {"insert", h.name, raceID.toString(), Integer.toString(h.position),
-										h.pastRace,  Integer.toString(h.frame)});
+										h.pastRace,  Integer.toString(h.frame), h.pastRaceCondition});
 
 								List<String> horseString = new ArrayList<String>(Arrays.asList(h.pastRace.split(" ")));
+								List<String> horseConditionString = new ArrayList<String>(Arrays.asList(h.pastRaceCondition.split("[ ]+")));
 								
-
 								if(horseString.get(19).equals("B")) {
 									horseString.remove(19);
 								}
-								SetTable(h, horseString, strArray[h.number] +  h.pastRace );
+								SetTable(h, horseString, strArray[h.number] +  h.pastRace , horseConditionString);
 								Thread.sleep(1000);
 							}
 							else 
 							{
 
 								List<String> horseString = new ArrayList<String>(Arrays.asList(horseText.split(" ")));
+								List<String> horseConditionString = new ArrayList<String>(Arrays.asList(h.pastRaceCondition.split("[ ]+")));
 								
 								if(horseString.get(19).equals("B")) {
 									horseString.remove(19);
@@ -432,7 +494,7 @@ public class SampleController {
 
 								System.out.println(horseString.get(17));
 								
-								SetTable(h, horseString, horseText);}
+								SetTable(h, horseString, horseText, horseConditionString);}
 						}
 						catch(Exception e) {
 
@@ -457,13 +519,14 @@ public class SampleController {
 	}
 
 	
-	private void SetTable(Horse h, List<String>horseString, String horseText) {
+	private void SetTable(Horse h, List<String>horseString, String horseText, List<String>pastRaceCondition) {
 		table.getItems().add(new HorseData(strArray[h.number],h.name,horseString.get(0),horseString.get(1),horseString.get(2),horseString.get(3),horseString.get(4),horseString.get(5),
 				horseString.get(6),horseString.get(7),horseString.get(8),horseString.get(9),horseString.get(10),horseString.get(11),horseString.get(12),horseString.get(13),
 				horseString.get(14), horseString.get(15) + horseString.get(16) + horseString.get(17), horseString.get(18), horseString.get(19),  
 				RankTableMap.get(horseString.get(horseString.size() - 7)) + RankTableMap.get(horseString.get(horseString.size() - 6)) 
 						+RankTableMap.get(horseString.get(horseString.size() - 5))+ RankTableMap.get(horseString.get(horseString.size() - 4)), horseString.get(horseString.size() - 3), RacePointCheck(horseText, h), horseString.get(horseString.size() - 2)
-						, horseString.get(horseString.size() - 1)));
+						, horseString.get(horseString.size() - 1), pastRaceCondition.get(0),pastRaceCondition.get(1),pastRaceCondition.get(2) ,pastRaceCondition.get(3),pastRaceCondition.get(4)
+						, pastRaceCondition.get(5) ,pastRaceCondition.get(6) ,pastRaceCondition.get(7)));
 
 			
 		

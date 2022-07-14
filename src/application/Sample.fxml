@@ -69,6 +69,14 @@
             <TableColumn fx:id="pastRaceTable" prefWidth="75.0" text="過去5走" />
             <TableColumn fx:id="numberTable1" prefWidth="30.0" text="No" />
             <TableColumn fx:id="nameTable1" prefWidth="100.0" text="馬名" />
+            <TableColumn fx:id="glassGoodRaceResult" prefWidth="100.0" text="芝良5走" />
+            <TableColumn fx:id="glassBitHeavyRaceResult" prefWidth="100.0" text="芝稍5走" />
+            <TableColumn fx:id="glassHeavyRaceResult" prefWidth="100.0" text="芝重5走" />
+            <TableColumn fx:id="glassBadRaceResult" prefWidth="100.0" text="芝不5走" />
+            <TableColumn fx:id="dirtGoodRaceResult" prefWidth="100.0" text="ダ良5走" />
+            <TableColumn fx:id="dirtBitHeavyRaceResult" prefWidth="100.0" text="ダ稍5走" />
+            <TableColumn fx:id="dirtHeavyRaceResult" prefWidth="100.0" text="ダ重5走" />
+            <TableColumn fx:id="dirtBadRaceResult" prefWidth="100.0" text="ダ不5走" />
         </columns>
       </TableView>
    </children>
