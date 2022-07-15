@@ -399,10 +399,10 @@ public class SampleController {
 
 							HorseDB hdb = new HorseDB();
 							hdb.create();
-							String horseText = hdb.returnPastRace(h.name, raceID);
-							if(!raceExist || horseText.isEmpty() || horseText.equals("null") || 
+							String[] horseText = hdb.returnPastRace(h.name, raceID);
+							if(!raceExist || horseText[0].isEmpty() || horseText.equals("null") || 
 									LocalDate.parse(labelRaceDate.getText(), DateTimeFormatter.ofPattern("yyyy/[]M/[]d"))
-									.isBefore(LocalDate.parse(horseText.split(" ")[0], DateTimeFormatter.ofPattern("yyyy/[]M/[]d")).plusDays(1)) 
+									.isBefore(LocalDate.parse(horseText[0].split(" ")[0], DateTimeFormatter.ofPattern("yyyy/[]M/[]d")).plusDays(1)) 
 									) {
 								String address = "https://www.keibalab.jp" + horseURLElements.get(i).attr("href");
 								Document horseData = Jsoup.connect(address).get();
@@ -484,8 +484,8 @@ public class SampleController {
 							else 
 							{
 
-								List<String> horseString = new ArrayList<String>(Arrays.asList(horseText.split(" ")));
-								List<String> horseConditionString = new ArrayList<String>(Arrays.asList(h.pastRaceCondition.split("[ ]+")));
+								List<String> horseString = new ArrayList<String>(Arrays.asList(horseText[0].split(" ")));
+								List<String> horseConditionString = new ArrayList<String>(Arrays.asList(horseText[1].split("[ ]+")));
 								
 								if(horseString.get(19).equals("B")) {
 									horseString.remove(19);
@@ -494,7 +494,7 @@ public class SampleController {
 
 								System.out.println(horseString.get(17));
 								
-								SetTable(h, horseString, horseText, horseConditionString);}
+								SetTable(h, horseString, horseText[0], horseConditionString);}
 						}
 						catch(Exception e) {
 

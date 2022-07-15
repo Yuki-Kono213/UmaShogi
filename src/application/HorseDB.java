@@ -157,21 +157,19 @@ public class HorseDB {
 		/*
 		 * SELECT処理を実行します。
 		 */
-		public String returnPastRace(String name, Integer raceID)
+		public String[] returnPastRace(String name, Integer raceID)
 			throws SQLException{
-			String pastRace = "";
+			String[] pastRace = new String[2];
 			ResultSet resultSet = _statement.executeQuery("SELECT * FROM " + TABLE_NAME +" WHERE NAME = '"+name+"' AND "
 					+ "RACEID = '"+raceID+"'");
 			try{
 				boolean br = resultSet.first();
 				if(br == false) {
-					return "";
+					return new String[]{"",""};
 				}
 				do{
-					pastRace = resultSet.getString("PASTRACE");
-					pastRace += resultSet.getString("PASTRACECONDITION");
-					
-					System.out.println("name:" + "'"+name+"'");
+					pastRace[0] = resultSet.getString("PASTRACE");
+					pastRace[1] = resultSet.getString("PASTRACECONDITION");
 				}while(resultSet.next());
 			}finally{
 				resultSet.close();
@@ -199,7 +197,7 @@ public class HorseDB {
 			throws SQLException{
 			// SQL文を発行
 			int updateCount = _statement.executeUpdate("INSERT INTO " + TABLE_NAME + 
-					" (NAME,RACEID,POSITION,PASTRACE,FRAME, pastRaceCondition) VALUES "
+					" (NAME,RACEID,POSITION,PASTRACE,FRAME, PASTRACECONDITION) VALUES "
 					+ "('"+name+"' , '"+raceID+"', '"+position+"', '"+pastRace+"', '"+frame+"', '"+pastRaceCondition+"')");
 			System.out.println("Insert: " + updateCount);
 			
