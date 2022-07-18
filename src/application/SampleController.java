@@ -141,7 +141,11 @@ public class SampleController {
 	@FXML
 	private TableColumn <HorseData,String> dirtBadRaceResult;
 	@FXML
-	private TableColumn <HorseData,String> pastMaxSpeedGood;
+	private TableColumn <HorseData,String> pastMaxSpeed;
+	@FXML
+	private TableColumn <HorseData,String> pastMaxPace;
+	@FXML
+	private TableColumn <HorseData,String> pastMaxSpeedLast;
 	Map<String,Integer> RankMap = new HashMap<>(){
 		{
 			put("①", 1);
@@ -308,7 +312,9 @@ public class SampleController {
 		dirtBitHeavyRaceResult.setCellValueFactory(new PropertyValueFactory<HorseData, String>("dirtBitHeavyRaceResult"));
 		dirtHeavyRaceResult.setCellValueFactory(new PropertyValueFactory<HorseData, String>("dirtHeavyRaceResult"));
 		dirtBadRaceResult.setCellValueFactory(new PropertyValueFactory<HorseData, String>("dirtBadRaceResult"));
-		pastMaxSpeedGood.setCellValueFactory(new PropertyValueFactory<HorseData, String>("pastMaxSpeedGood"));
+		pastMaxSpeed.setCellValueFactory(new PropertyValueFactory<HorseData, String>("pastMaxSpeed"));
+		pastMaxPace.setCellValueFactory(new PropertyValueFactory<HorseData, String>("pastMaxPace"));
+		pastMaxSpeedLast.setCellValueFactory(new PropertyValueFactory<HorseData, String>("pastMaxSpeedLast"));
 		try {
 			table.getItems().clear(); 
 			ClearText();
@@ -417,6 +423,8 @@ public class SampleController {
 								int pastGoodRaceCount = 0;
 								String[] pastRaceCondition = new String[] {"","","","","","","",""};
 								String pastMaxGoodTime = "1年未走";
+								String pastMaxGoodPace = "1年未走";
+								String pastMaxGoodLast = "1年未走";
 								for(int i2 = 0; i2 < HorseElements.size(); i2++) {
 									if(HorseElements.get(i2).text().split(" ").length > 22 && LocalDate.parse(HorseElements.get(i2).text().split(" ")[0], 
 											DateTimeFormatter.ofPattern("yyyy/[]M/[]d")).isBefore(LocalDate.parse(labelRaceDate.getText(), DateTimeFormatter.ofPattern("yyyy/[]M/[]d")))) {
@@ -460,9 +468,12 @@ public class SampleController {
 											pastRaceCondition[7] += strArray[Integer.parseInt(HorseElements.get(i2).text().split(" ")[7])];
 										}
 										
-										if(LocalDate.parse(HorseElements.get(i2).text().split(" ")[0],DateTimeFormatter.ofPattern("yyyy/[]M/[]d")).isAfter(LocalDate.now().minusYears(1)) && HorseElements.get(i2).text().split(" ")[2].equals(labelRaceRange.getText().substring(0,5)) && HorseElements.get(i2).text().split(" ")[4].contains("良") 
+										if(LocalDate.parse(HorseElements.get(i2).text().split(" ")[0],DateTimeFormatter.ofPattern("yyyy/[]M/[]d")).isAfter(LocalDate.now().minusYears(1)) && HorseElements.get(i2).text().split(" ")[2].equals(labelRaceRange.getText().substring(0,5))
 												&&  (pastMaxGoodTime.equals("1年未走") || (!pastMaxGoodTime.equals("1年未走") && CalcTime(pastMaxGoodTime, HorseElements.get(i2).text().split(" ")[13])))) {
-											pastMaxGoodTime = HorseElements.get(i2).text().split(" ")[13];
+											pastMaxGoodTime = HorseElements.get(i2).text().split(" ")[13] + HorseElements.get(i2).text().split(" ")[4] + HorseElements.get(i2).text().split(" ")[1];
+											
+											pastMaxGoodPace = HorseElements.get(i2).text().split(" ")[15] + HorseElements.get(i2).text().split(" ")[16] + HorseElements.get(i2).text().split(" ")[17] ;
+											pastMaxGoodLast = HorseElements.get(i2).text().split(" ")[18];
 										}
 										
 										pastRaceCount++;
@@ -478,7 +489,8 @@ public class SampleController {
 								h.pastRace += " " + decimalFormat.format((double)pastGoodRaceCount * 100.0 / (double)pastRaceCount) + " " + pastRace;
 								System.out.println(pastMaxGoodTime);
 								h.pastRaceCondition = pastRaceCondition[0] + " " + pastRaceCondition[1] + " " + pastRaceCondition[2] + " " + pastRaceCondition[3] + " " + 
-										pastRaceCondition[4] + " " + pastRaceCondition[5] + " " + pastRaceCondition[6] + " " + pastRaceCondition[7] + " " +pastMaxGoodTime;
+										pastRaceCondition[4] + " " + pastRaceCondition[5] + " " + pastRaceCondition[6] + " " + pastRaceCondition[7] + " " +pastMaxGoodTime
+										+ " " + pastMaxGoodPace + " " + pastMaxGoodLast;
 								new HorseDB().UseHorseDataBase(new String[] {"insert", h.name, raceID.toString(), Integer.toString(h.position),
 										h.pastRace,  Integer.toString(h.frame), h.pastRaceCondition});
 
@@ -536,7 +548,7 @@ public class SampleController {
 				RankTableMap.get(horseString.get(horseString.size() - 7)) + RankTableMap.get(horseString.get(horseString.size() - 6)) 
 						+RankTableMap.get(horseString.get(horseString.size() - 5))+ RankTableMap.get(horseString.get(horseString.size() - 4)), horseString.get(horseString.size() - 3), RacePointCheck(horseText, h), horseString.get(horseString.size() - 2)
 						, horseString.get(horseString.size() - 1), pastRaceCondition.get(0),pastRaceCondition.get(1),pastRaceCondition.get(2) ,pastRaceCondition.get(3),pastRaceCondition.get(4)
-						, pastRaceCondition.get(5) ,pastRaceCondition.get(6) ,pastRaceCondition.get(7), pastRaceCondition.get(8)));
+						, pastRaceCondition.get(5) ,pastRaceCondition.get(6) ,pastRaceCondition.get(7), pastRaceCondition.get(8), pastRaceCondition.get(9),pastRaceCondition.get(10)));
 
 			
 		

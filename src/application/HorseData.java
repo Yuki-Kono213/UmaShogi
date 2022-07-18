@@ -37,7 +37,9 @@ public class HorseData
 	private String dirtHeavyRaceResult;
 	private String dirtBadRaceResult;
 	
-	private String pastMaxSpeedGood;
+	private String pastMaxSpeed;
+	private String pastMaxPace;
+	private String pastMaxSpeedLast;
 
 	
 	
@@ -45,7 +47,8 @@ public class HorseData
 	  public HorseData(String no, String name, String date, String raceStage, String range,String weather,String stage,String raceName,String expect,String result,String jockey,String jockeyWeight,
 			  String horseCount,String frameNo,String startNo,String time,String behind,String pace,String last,String weight,String runRank,String topHorse,String analysis, String goodRace, String pastRace
 			  ,String glassGoodRaceResult, String glassBitHeavyRaceResult,String glassHeavyRaceResult,  String glassBadRaceResult
-			  ,String dirtGoodRaceResult,  String dirtBitHeavyRaceResult, String dirtHeavyRaceResult, String dirtBadRaceResult, String pastMaxSpeedGood) {
+			  ,String dirtGoodRaceResult,  String dirtBitHeavyRaceResult, String dirtHeavyRaceResult, String dirtBadRaceResult, String pastMaxSpeed,
+			  String pastMaxPace, String pastMaxSpeedLast) {
 
 			 this.no = no;
 			 this.name = name;
@@ -80,7 +83,9 @@ public class HorseData
 			 this.dirtBitHeavyRaceResult = dirtBitHeavyRaceResult;
 			 this.dirtHeavyRaceResult = dirtHeavyRaceResult;
 			 this.dirtBadRaceResult = dirtBadRaceResult;
-			 this.pastMaxSpeedGood = pastMaxSpeedGood;
+			 this.pastMaxSpeed = pastMaxSpeed;
+			 this.pastMaxPace = pastMaxPace;
+			 this.pastMaxSpeedLast = pastMaxSpeedLast;
 	  }
 	  /* getter,setterがないとTableViewに反映されない */
 	  public String getNo(){ return no; }
@@ -150,6 +155,10 @@ public class HorseData
 	  public String getDirtBadRaceResult(){ return dirtBadRaceResult; }
 	  public void setDirtBadRaceResult(String dirtBadRaceResult){ this.dirtBadRaceResult = dirtBadRaceResult; }
 	  
-	  public String getPastMaxSpeedGood(){ return pastMaxSpeedGood; }
-	  public void setPastMaxSpeedGood(String pastMaxSpeedGood){ this.pastMaxSpeedGood = pastMaxSpeedGood; }
+	  public String getPastMaxSpeed(){ return pastMaxSpeed; }
+	  public void setPastMaxSpeed(String pastMaxSpeed){ this.pastMaxSpeed = pastMaxSpeed; }
+	  public String getPastMaxPace(){ return pastMaxPace; }
+	  public void setPastMaxPace(String pastMaxPace){ this.pastMaxPace = pastMaxPace; }
+	  public String getPastMaxSpeedLast(){ return pastMaxSpeedLast; }
+	  public void setPastMaxSpeedLast(String pastMaxSpeedLast){ this.pastMaxSpeedLast = pastMaxSpeedLast; }
 }
