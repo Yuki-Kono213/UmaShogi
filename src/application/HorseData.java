@@ -37,11 +37,15 @@ public class HorseData
 	private String dirtHeavyRaceResult;
 	private String dirtBadRaceResult;
 	
+	private String pastMaxSpeedGood;
+
+	
+	
 	
 	  public HorseData(String no, String name, String date, String raceStage, String range,String weather,String stage,String raceName,String expect,String result,String jockey,String jockeyWeight,
 			  String horseCount,String frameNo,String startNo,String time,String behind,String pace,String last,String weight,String runRank,String topHorse,String analysis, String goodRace, String pastRace
 			  ,String glassGoodRaceResult, String glassBitHeavyRaceResult,String glassHeavyRaceResult,  String glassBadRaceResult
-			  ,String dirtGoodRaceResult,  String dirtBitHeavyRaceResult, String dirtHeavyRaceResult, String dirtBadRaceResult) {
+			  ,String dirtGoodRaceResult,  String dirtBitHeavyRaceResult, String dirtHeavyRaceResult, String dirtBadRaceResult, String pastMaxSpeedGood) {
 
 			 this.no = no;
 			 this.name = name;
@@ -76,6 +80,7 @@ public class HorseData
 			 this.dirtBitHeavyRaceResult = dirtBitHeavyRaceResult;
 			 this.dirtHeavyRaceResult = dirtHeavyRaceResult;
 			 this.dirtBadRaceResult = dirtBadRaceResult;
+			 this.pastMaxSpeedGood = pastMaxSpeedGood;
 	  }
 	  /* getter,setterがないとTableViewに反映されない */
 	  public String getNo(){ return no; }
@@ -144,4 +149,7 @@ public class HorseData
 	  public void setDirtHeavyRaceResult(String dirtHeavyRaceResult){ this.dirtHeavyRaceResult = dirtHeavyRaceResult; }
 	  public String getDirtBadRaceResult(){ return dirtBadRaceResult; }
 	  public void setDirtBadRaceResult(String dirtBadRaceResult){ this.dirtBadRaceResult = dirtBadRaceResult; }
+	  
+	  public String getPastMaxSpeedGood(){ return pastMaxSpeedGood; }
+	  public void setPastMaxSpeedGood(String pastMaxSpeedGood){ this.pastMaxSpeedGood = pastMaxSpeedGood; }
 }
