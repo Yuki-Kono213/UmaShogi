@@ -2,7 +2,6 @@ package application;
 
 import java.text.DecimalFormat;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -364,7 +363,6 @@ public class SampleController {
 			}
 
 	        String pattern = "#.###";
-	        DateTimeFormatter dtFt = DateTimeFormatter.ofPattern("m:ss.n");
 	        DecimalFormat decimalFormat =  new DecimalFormat(pattern);
 			int j = 0;
 			for (int i = 0; i <  horseElements.size()/2; i++) {
@@ -406,7 +404,7 @@ public class SampleController {
 							HorseDB hdb = new HorseDB();
 							hdb.create();
 							String[] horseText = hdb.returnPastRace(h.name, raceID);
-							if(!raceExist || horseText[0].isEmpty() || horseText.equals("null") || 
+							if(!raceExist || horseText[0].isEmpty() || 
 									LocalDate.parse(labelRaceDate.getText(), DateTimeFormatter.ofPattern("yyyy/[]M/[]d"))
 									.isBefore(LocalDate.parse(horseText[0].split(" ")[0], DateTimeFormatter.ofPattern("yyyy/[]M/[]d")).plusDays(1)) 
 									) {
@@ -419,7 +417,6 @@ public class SampleController {
 								int pastGoodRaceCount = 0;
 								String[] pastRaceCondition = new String[] {"","","","","","","",""};
 								String pastMaxGoodTime = "1年未走";
-								String pastMaxSameConditionGoodTime = "1年未走";
 								for(int i2 = 0; i2 < HorseElements.size(); i2++) {
 									if(HorseElements.get(i2).text().split(" ").length > 22 && LocalDate.parse(HorseElements.get(i2).text().split(" ")[0], 
 											DateTimeFormatter.ofPattern("yyyy/[]M/[]d")).isBefore(LocalDate.parse(labelRaceDate.getText(), DateTimeFormatter.ofPattern("yyyy/[]M/[]d")))) {
@@ -464,7 +461,7 @@ public class SampleController {
 										}
 										
 										if(LocalDate.parse(HorseElements.get(i2).text().split(" ")[0],DateTimeFormatter.ofPattern("yyyy/[]M/[]d")).isAfter(LocalDate.now().minusYears(1)) && HorseElements.get(i2).text().split(" ")[2].equals(labelRaceRange.getText().substring(0,5)) && HorseElements.get(i2).text().split(" ")[4].contains("良") 
-												&&  (pastMaxGoodTime.equals("1年未走") || (!pastMaxGoodTime.equals("1年未走") && LocalDateTime.parse(pastMaxGoodTime, dtFt).isBefore(LocalDateTime.parse(HorseElements.get(i2).text().split(" ")[13], dtFt))))) {
+												&&  (pastMaxGoodTime.equals("1年未走") || (!pastMaxGoodTime.equals("1年未走") && CalcTime(pastMaxGoodTime, HorseElements.get(i2).text().split(" ")[13])))) {
 											pastMaxGoodTime = HorseElements.get(i2).text().split(" ")[13];
 										}
 										
@@ -616,6 +613,18 @@ public class SampleController {
 			return text;
 	}
 	
+	
+	private boolean CalcTime(String max, String newRace) 
+	{
+		int maxTime = Integer.parseInt(max.substring(0,1)) * 600 +  Integer.parseInt(max.substring(2,4)) * 10 + Integer.parseInt(max.substring(5,6));
+		int newTime = Integer.parseInt(newRace.substring(0,1)) * 600 +  Integer.parseInt(newRace.substring(2,4)) * 10 + Integer.parseInt(newRace.substring(5,6));
+		
+		if(newTime < maxTime) {
+			return true;
+		}
+		
+		return false;
+	}
 	
 	private void SetTextField(Horse h) 
 	{
