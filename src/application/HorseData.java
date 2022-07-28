@@ -3,6 +3,7 @@ import java.util.List;
 
 public class HorseData 
 {
+	
 	private String no;
 	private String name;
 	private String raceStage;
@@ -75,7 +76,7 @@ public class HorseData
 			 int time = (Integer.parseInt(this.time.substring(0,1)) * 600 +  Integer.parseInt(this.time.substring(2,4)) * 10 + Integer.parseInt(this.time.substring(5,6)));
 			 time = time * RaceRange / Integer.parseInt(horseString.get(2).substring(1,5));
 					
-			 this.sameRangeTime = Integer.toString((time / 600)) + ":" + Integer.toString(time % 600 / 10) + "." + Integer.toString(time % 10);
+			 this.sameRangeTime = Integer.toString((time / 600)) + ":" + String.format("%02d",time % 600 / 10) + "." + Integer.toString(time % 10);
 			 this.goodRace = horseString.get(horseString.size() - 2);
 			 this.pastRace = horseString.get(horseString.size() - 1);
 			 this.glassGoodRaceResult = pastRaceCondition.get(0);
