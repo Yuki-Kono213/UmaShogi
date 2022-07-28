@@ -61,6 +61,7 @@
             <TableColumn fx:id="behindTable" prefWidth="40.0" text="差" />
             <TableColumn fx:id="paceTable" prefWidth="75.0" text="ペース" />
             <TableColumn fx:id="lastTable" prefWidth="40.0" text="上り" />
+            <TableColumn fx:id="sameRangeTimeTable" prefWidth="50.0" text="補正T" />
             <TableColumn fx:id="weightTable" prefWidth="80.0" text="体重" />
             <TableColumn fx:id="runRankTable" prefWidth="70.0" text="道中" />
             <TableColumn fx:id="topHorseTable" prefWidth="100.0" text="1着" />

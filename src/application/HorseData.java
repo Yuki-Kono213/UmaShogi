@@ -1,4 +1,5 @@
 package application;
+import java.util.List;
 
 public class HorseData 
 {
@@ -21,6 +22,7 @@ public class HorseData
 	private String behind;
 	private String pace;
 	private String last;
+	private String sameRangeTime;
 	private String weight;
 	private String runRank;
 	private String topHorse;
@@ -44,48 +46,49 @@ public class HorseData
 	
 	
 	
-	  public HorseData(String no, String name, String date, String raceStage, String range,String weather,String stage,String raceName,String expect,String result,String jockey,String jockeyWeight,
-			  String horseCount,String frameNo,String startNo,String time,String behind,String pace,String last,String weight,String runRank,String topHorse,String analysis, String goodRace, String pastRace
-			  ,String glassGoodRaceResult, String glassBitHeavyRaceResult,String glassHeavyRaceResult,  String glassBadRaceResult
-			  ,String dirtGoodRaceResult,  String dirtBitHeavyRaceResult, String dirtHeavyRaceResult, String dirtBadRaceResult, String pastMaxSpeed,
-			  String pastMaxPace, String pastMaxSpeedLast) {
+	  public HorseData(String no, String name, String analysis, List<String> horseString, List<String>pastRaceCondition, int RaceRange) {
 
 			 this.no = no;
 			 this.name = name;
-			 this.raceStage = raceStage;
-			 this.date = date;
-			 this.range = range;
-			 this.weather = weather;
-			 this.stage = stage;
-			 this.raceName = raceName;
-			 this.expect = expect;
-			 this.result = result;
-			 this.jockey = jockey;
-			 this.jockeyWeight = jockeyWeight;
-			 this.horseCount = horseCount;
-			 this.startNo = startNo;
-			 this.frameNo = frameNo;
-			 this.time = time;
-			 this.behind = behind;
-			 this.pace = pace;
-			 this.last = last;
-			 this.weight = weight;
-			 this.runRank = runRank;
-			 this.topHorse = topHorse;
+			 this.date =horseString.get(0);
+			 this.raceStage = horseString.get(1);
+			 this.range = horseString.get(2);
+			 this.weather = horseString.get(3);
+			 this.stage = horseString.get(4);
+			 this.raceName = horseString.get(5);
+			 this.expect = horseString.get(6);
+			 this.result = horseString.get(7);
+			 this.jockey = horseString.get(8);
+			 this.jockeyWeight = horseString.get(9);
+			 this.horseCount = horseString.get(10);
+			 this.startNo = horseString.get(11);
+			 this.frameNo = horseString.get(12);
+			 this.time = horseString.get(13);
+			 this.behind = horseString.get(14);
+			 this.pace = horseString.get(15) + horseString.get(16) + horseString.get(17);
+			 this.last =  horseString.get(18);
+			 this.weight =  horseString.get(19);
+			 this.runRank = SampleController.RankTableMap.get(horseString.get(horseString.size() - 7)) + SampleController.RankTableMap.get(horseString.get(horseString.size() - 6)) 
+				+SampleController.RankTableMap.get(horseString.get(horseString.size() - 5))+ SampleController.RankTableMap.get(horseString.get(horseString.size() - 4));
+			 this.topHorse = horseString.get(horseString.size() - 4);
 			 this.analysis = analysis;
-			 this.goodRace = goodRace;
-			 this.pastRace = pastRace;
-			 this.glassGoodRaceResult = glassGoodRaceResult;
-			 this.glassBitHeavyRaceResult = glassBitHeavyRaceResult;
-			 this.glassHeavyRaceResult = glassHeavyRaceResult;
-			 this.glassBadRaceResult = glassBadRaceResult;
-			 this.dirtGoodRaceResult = dirtGoodRaceResult;
-			 this.dirtBitHeavyRaceResult = dirtBitHeavyRaceResult;
-			 this.dirtHeavyRaceResult = dirtHeavyRaceResult;
-			 this.dirtBadRaceResult = dirtBadRaceResult;
-			 this.pastMaxSpeed = pastMaxSpeed;
-			 this.pastMaxPace = pastMaxPace;
-			 this.pastMaxSpeedLast = pastMaxSpeedLast;
+			 int time = (Integer.parseInt(this.time.substring(0,1)) * 600 +  Integer.parseInt(this.time.substring(2,4)) * 10 + Integer.parseInt(this.time.substring(5,6)));
+			 time = time * RaceRange / Integer.parseInt(horseString.get(2).substring(1,5));
+					
+			 this.sameRangeTime = Integer.toString((time / 600)) + ":" + Integer.toString(time % 600 / 10) + "." + Integer.toString(time % 10);
+			 this.goodRace = horseString.get(horseString.size() - 2);
+			 this.pastRace = horseString.get(horseString.size() - 1);
+			 this.glassGoodRaceResult = pastRaceCondition.get(0);
+			 this.glassBitHeavyRaceResult = pastRaceCondition.get(1);
+			 this.glassHeavyRaceResult = pastRaceCondition.get(2);
+			 this.glassBadRaceResult = pastRaceCondition.get(3);
+			 this.dirtGoodRaceResult = pastRaceCondition.get(4);
+			 this.dirtBitHeavyRaceResult = pastRaceCondition.get(5);
+			 this.dirtHeavyRaceResult = pastRaceCondition.get(6);
+			 this.dirtBadRaceResult = pastRaceCondition.get(7);
+			 this.pastMaxSpeed = pastRaceCondition.get(8);
+			 this.pastMaxPace = pastRaceCondition.get(9);
+			 this.pastMaxSpeedLast = pastRaceCondition.get(10);
 	  }
 	  /* getter,setterがないとTableViewに反映されない */
 	  public String getNo(){ return no; }
@@ -124,6 +127,8 @@ public class HorseData
 	  public void setPace(String pace){ this.pace = pace; }
 	  public String getLast(){ return last; }
 	  public void setLast(String last){ this.last = last; }
+	  public String getSameRangeTime(){ return sameRangeTime; }
+	  public void setSameRangeTime(String sameRangeTime){ this.sameRangeTime = sameRangeTime; }
 	  public String getWeight(){ return weight; }
 	  public void setWeight(String weight){ this.weight = weight; }
 	  public String getRunRank(){ return runRank; }

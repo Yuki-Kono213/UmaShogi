@@ -26,6 +26,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 //Javaでスクレイピングを行う
 public class SampleController {
 
+	private int raceRange = 0;
 	@FXML
 	private TextField textURL;
 	@FXML
@@ -109,6 +110,8 @@ public class SampleController {
 	@FXML
 	private TableColumn <HorseData,String> lastTable;
 	@FXML
+	private TableColumn <HorseData,String> sameRangeTimeTable;
+	@FXML
 	private TableColumn <HorseData,String> weightTable;
 	@FXML
 	private TableColumn <HorseData,String> runRankTable;
@@ -170,7 +173,7 @@ public class SampleController {
 		}
 	};
 	
-	Map<String,String> RankTableMap = new HashMap<>(){
+	public static Map<String,String> RankTableMap = new HashMap<>(){
 		{
 
 			put("1", "①");
@@ -281,6 +284,7 @@ public class SampleController {
 		frameNoTable.setCellValueFactory(new PropertyValueFactory<HorseData, String>("frameNo"));
 		
 		timeTable.setCellValueFactory(new PropertyValueFactory<HorseData, String>("time"));
+		sameRangeTimeTable.setCellValueFactory(new PropertyValueFactory<HorseData, String>("sameRangeTime"));
 		
 		behindTable.setCellValueFactory(new PropertyValueFactory<HorseData, String>("behind"));
 		
@@ -338,9 +342,10 @@ public class SampleController {
 			Elements frameElements  = doc.select(".wakuban td:matchesOwn([1-8])");
 			Elements dateElements  = doc.select(".fL.ml10 .bold");
 			Elements rangeElements  = doc.select(".classCourseSyokin.clearfix li");
-			Elements conditionElements  = doc.select(".classCourseSyokin.clearfix li");
+			//Elements conditionElements  = doc.select(".classCourseSyokin.clearfix li");
 			labelRaceName.setText(doc.select(".raceTitle.fL").get(0).text());
 			labelRaceRange.setText(rangeElements.get(1).text().split(" ")[0]);
+			raceRange = Integer.parseInt(rangeElements.get(1).text().split(" ")[0].substring(1,5));
 			labelRaceStage.setText(stageElements.get(3).text().split("競馬")[0]);
 			labelRaceDate.setText(dateElements.get(0).text().split("\\(")[0]);
 			List<Horse> horseList = new ArrayList<Horse>();
@@ -542,13 +547,7 @@ public class SampleController {
 
 	
 	private void SetTable(Horse h, List<String>horseString, String horseText, List<String>pastRaceCondition) {
-		table.getItems().add(new HorseData(strArray[h.number],h.name,horseString.get(0),horseString.get(1),horseString.get(2),horseString.get(3),horseString.get(4),horseString.get(5),
-				horseString.get(6),horseString.get(7),horseString.get(8),horseString.get(9),horseString.get(10),horseString.get(11),horseString.get(12),horseString.get(13),
-				horseString.get(14), horseString.get(15) + horseString.get(16) + horseString.get(17), horseString.get(18), horseString.get(19),  
-				RankTableMap.get(horseString.get(horseString.size() - 7)) + RankTableMap.get(horseString.get(horseString.size() - 6)) 
-						+RankTableMap.get(horseString.get(horseString.size() - 5))+ RankTableMap.get(horseString.get(horseString.size() - 4)), horseString.get(horseString.size() - 3), RacePointCheck(horseText, h), horseString.get(horseString.size() - 2)
-						, horseString.get(horseString.size() - 1), pastRaceCondition.get(0),pastRaceCondition.get(1),pastRaceCondition.get(2) ,pastRaceCondition.get(3),pastRaceCondition.get(4)
-						, pastRaceCondition.get(5) ,pastRaceCondition.get(6) ,pastRaceCondition.get(7), pastRaceCondition.get(8), pastRaceCondition.get(9),pastRaceCondition.get(10)));
+		table.getItems().add(new HorseData(strArray[h.number],h.name,RacePointCheck(horseText, h),horseString,pastRaceCondition,raceRange));
 
 			
 		
