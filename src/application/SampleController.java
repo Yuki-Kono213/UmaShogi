@@ -1,5 +1,6 @@
 package application;
 
+import java.io.IOException;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -149,6 +150,12 @@ public class SampleController {
 	private TableColumn <HorseData,String> pastMaxPace;
 	@FXML
 	private TableColumn <HorseData,String> pastMaxSpeedLast;
+	@FXML
+	private TextField txtPaddockURL;
+
+	@FXML
+	private TextField txtPaddockURL1;
+	
 	Map<String,Integer> RankMap = new HashMap<>(){
 		{
 			put("①", 1);
@@ -170,6 +177,71 @@ public class SampleController {
 			put("⑰", 17);
 			put("⑱", 18);
 			put("－", 19);
+		}
+	};
+	
+	Map<String,String> raceURL = new HashMap<>(){
+		{
+			put("1", "1");
+			put("2", "2");
+			put("3", "3");
+			put("4", "4");
+			put("5", "5");
+			put("6", "6");
+			put("7", "7");
+			put("8", "8");
+			put("9", "9");
+			put("10", "a");
+			put("11", "b");
+			put("12", "c");
+		}
+	};
+	
+	Map<String,String> stageURL = new HashMap<>(){
+		{
+			put("札幌", "1");
+			put("函館", "2");
+			put("福島", "3");
+			put("新潟", "4");
+			put("東京", "5");
+			put("中山", "6");
+			put("中京", "7");
+			put("京都", "8");
+			put("阪神", "9");
+			put("小倉", "a");
+		}
+	};
+	
+	
+	Map<String,String> stageKeibaRaboURL = new HashMap<>(){
+		{
+			put("札幌", "01");
+			put("函館", "02");
+			put("福島", "03");
+			put("新潟", "04");
+			put("東京", "05");
+			put("中山", "06");
+			put("中京", "07");
+			put("京都", "08");
+			put("阪神", "09");
+			put("小倉", "10");
+		}
+	};
+	
+	Map<String,String> raceKeibaLaboURL = new HashMap<>(){
+		{
+			put("1", "01");
+			put("2", "02");
+			put("3", "03");
+			put("4", "04");
+			put("5", "05");
+			put("6", "06");
+			put("7", "07");
+			put("8", "08");
+			put("9", "09");
+			put("10", "10");
+			put("11", "11");
+			put("12", "12");
 		}
 	};
 	
@@ -319,6 +391,8 @@ public class SampleController {
 		pastMaxSpeed.setCellValueFactory(new PropertyValueFactory<HorseData, String>("pastMaxSpeed"));
 		pastMaxPace.setCellValueFactory(new PropertyValueFactory<HorseData, String>("pastMaxPace"));
 		pastMaxSpeedLast.setCellValueFactory(new PropertyValueFactory<HorseData, String>("pastMaxSpeedLast"));
+
+		TextField[] arrayPaddockURL = new TextField[]{txtPaddockURL,txtPaddockURL1};
 		try {
 			table.getItems().clear(); 
 			ClearText();
@@ -540,11 +614,65 @@ public class SampleController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		 table.getSelectionModel().selectedItemProperty().addListener((observable, oldVal, newVal) ->
+	        {
+
+	        	String dateText = newVal.getDate();
+	        	String stageText = newVal.getRaceStage();
+	        	String rangeText = newVal.getRange();
+	        	String nameText = toHalfWidth(newVal.getRaceName());
+				try {
+					Document laboDoc = Jsoup.connect("https://www.keibalab.jp/db/race/" + dateText.substring(0,10).replace("/","")).get();
+					Elements stageel = laboDoc.select(".table-striped.std11");
+					String[] singleStageel = new String[2];
+					for(int i = 0; i < stageel.size(); i++) {
+						if(stageel.get(i).text().contains(stageText.substring(2,4)))
+						{
+							singleStageel = stageel.get(i).text().split("頭");
+							break;
+						}
+					}
+
+					ArrayList<Integer> raceCnt = new ArrayList<Integer>();
+					
+					
+
+					System.out.println(nameText);
+					System.out.println(rangeText);
+					for(int i = 0; i < singleStageel.length; i++) {
+						System.out.println(singleStageel[i]);
+						if(singleStageel[i].contains(nameText) && singleStageel[i].contains(rangeText))
+						{
+							raceCnt.add(i + 1);
+						}
+					}
+					
+					for(int i = 0; i < raceCnt.size(); i++) {
+						arrayPaddockURL[i].setText("https://regist.prc.jp/api/windowopen.aspx?target=race/"
+		        			 + dateText.substring(0,4) + "/" + dateText.substring(0,10).replace("/", "") + "/" + dateText.substring(2,4) + stageURL.get(stageText.substring(2,4)) 
+		        			 + raceURL.get(stageText.substring(0,1)) + raceURL.get(stageText.substring(4,stageText.length())) + raceCnt.get(i).toString()
+		        	 + "_p&quality=1");
+					}
+				} catch (IOException e) {
+					// TODO 自動生成された catch ブロック
+					e.printStackTrace();
+				}
+	        });
 		Comparator<HorseData> comparator =
 				  Comparator.<HorseData, String>comparing(model -> model.getNo());
 		FXCollections.sort(table.getItems(), comparator);
 	}
 
+	public static String toHalfWidth(String s) {
+		  StringBuilder sb = new StringBuilder(s);
+		  for (int i = 0; i < s.length(); i++) {
+		    char c = s.charAt(i);
+		    if (0xFF10 <= c && c <= 0xFF19) {
+		      sb.setCharAt(i, (char) (c - 0xFEE0));
+		    }
+		  }
+		  return sb.toString();
+		}
 	
 	private void SetTable(Horse h, List<String>horseString, String horseText, List<String>pastRaceCondition) {
 		table.getItems().add(new HorseData(strArray[h.number],h.name,RacePointCheck(horseText, h),horseString,pastRaceCondition,raceRange));

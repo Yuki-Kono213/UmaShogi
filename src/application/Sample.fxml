@@ -11,6 +11,8 @@
 <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="1200.0" prefWidth="1480.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.SampleController">
    <children>
       <Label fx:id="labelRaceName" layoutX="676.0" layoutY="72.0" />
+      <TextField fx:id="txtPaddockURL" layoutX="722.0" layoutY="9.0" />
+      <TextField fx:id="txtPaddockURL1" layoutX="722.0" layoutY="50.0" />
       <TextArea fx:id="frame4" layoutY="36.0" prefHeight="80.0" prefWidth="156.0" />
       <TextArea fx:id="frame3" layoutX="156.0" layoutY="36.0" prefHeight="80.0" prefWidth="156.0" />
       <TextArea fx:id="frame2" layoutX="312.0" layoutY="36.0" prefHeight="80.0" prefWidth="156.0" />

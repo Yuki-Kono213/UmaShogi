@@ -71,7 +71,7 @@ public class HorseData
 			 this.weight =  horseString.get(19);
 			 this.runRank = SampleController.RankTableMap.get(horseString.get(horseString.size() - 7)) + SampleController.RankTableMap.get(horseString.get(horseString.size() - 6)) 
 				+SampleController.RankTableMap.get(horseString.get(horseString.size() - 5))+ SampleController.RankTableMap.get(horseString.get(horseString.size() - 4));
-			 this.topHorse = horseString.get(horseString.size() - 4);
+			 this.topHorse = horseString.get(horseString.size() - 3);
 			 this.analysis = analysis;
 			 int time = (Integer.parseInt(this.time.substring(0,1)) * 600 +  Integer.parseInt(this.time.substring(2,4)) * 10 + Integer.parseInt(this.time.substring(5,6)));
 			 time = time * RaceRange / Integer.parseInt(horseString.get(2).substring(1,5));
@@ -97,7 +97,7 @@ public class HorseData
 	  public String getName(){ return name; }
 	  public void setName(String name){ this.name = name; }
 	  public String getRaceStage(){ return raceStage; }
-	  public void setRaseStage(String raceStage){ this.raceStage = raceStage; }
+	  public void setRaceStage(String raceStage){ this.raceStage = raceStage; }
 	  public String getDate(){ return date; }
 	  public void setDate(String date){ this.date = date; }
 	  public String getRange(){ return range; }
@@ -167,4 +167,5 @@ public class HorseData
 	  public void setPastMaxPace(String pastMaxPace){ this.pastMaxPace = pastMaxPace; }
 	  public String getPastMaxSpeedLast(){ return pastMaxSpeedLast; }
 	  public void setPastMaxSpeedLast(String pastMaxSpeedLast){ this.pastMaxSpeedLast = pastMaxSpeedLast; }
+
 }
