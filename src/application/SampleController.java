@@ -17,7 +17,10 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -152,9 +155,13 @@ public class SampleController {
 	private TableColumn <HorseData,String> pastMaxSpeedLast;
 	@FXML
 	private TextField txtPaddockURL;
-
 	@FXML
 	private TextField txtPaddockURL1;
+	
+	@FXML
+	private Button buttonOpenPaddock;
+	@FXML
+	private Button buttonOpenPaddock1;
 	
 	Map<String,Integer> RankMap = new HashMap<>(){
 		{
@@ -393,6 +400,7 @@ public class SampleController {
 		pastMaxSpeedLast.setCellValueFactory(new PropertyValueFactory<HorseData, String>("pastMaxSpeedLast"));
 
 		TextField[] arrayPaddockURL = new TextField[]{txtPaddockURL,txtPaddockURL1};
+		Button[] arrayPaddockButton = new Button[]{buttonOpenPaddock,buttonOpenPaddock1};
 		try {
 			table.getItems().clear(); 
 			ClearText();
@@ -446,7 +454,32 @@ public class SampleController {
 				raceID = rdb.GetRaceID(textURL.getText());
 				raceExist = false;
 			}
-
+			arrayPaddockButton[0].setOnAction( new EventHandler<ActionEvent>() {
+			            public void handle(ActionEvent event) {
+			 
+			            	try {
+								new ProcessBuilder("C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe", arrayPaddockURL[0].getText()).start();
+							} catch (IOException e) {
+								// TODO 自動生成された catch ブロック
+								e.printStackTrace();
+							}
+			            }
+			        });
+			arrayPaddockButton[1].setOnAction( new EventHandler<ActionEvent>() {
+	            public void handle(ActionEvent event) {
+	 
+	            	try {
+						new ProcessBuilder("C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe", arrayPaddockURL[1].getText()).start();
+					} catch (IOException e) {
+						// TODO 自動生成された catch ブロック
+						e.printStackTrace();
+					}
+	            }
+	        });
+				
+			
+			
+			
 	        String pattern = "#.###";
 	        DecimalFormat decimalFormat =  new DecimalFormat(pattern);
 			int j = 0;
@@ -653,6 +686,7 @@ public class SampleController {
 		        			 + raceURL.get(stageText.substring(0,1)) + raceURL.get(stageText.substring(4,stageText.length())) + raceCnt.get(i).toString()
 		        	 + "_p&quality=1");
 					}
+					
 				} catch (IOException e) {
 					// TODO 自動生成された catch ブロック
 					e.printStackTrace();
