@@ -163,6 +163,16 @@ public class SampleController {
 	@FXML
 	private Button buttonOpenPaddock1;
 	
+	@FXML
+	private TextField txtRaceURL;
+	@FXML
+	private TextField txtRaceURL1;
+	
+	@FXML
+	private Button buttonOpenRace;
+	@FXML
+	private Button buttonOpenRace1;
+	
 	Map<String,Integer> RankMap = new HashMap<>(){
 		{
 			put("①", 1);
@@ -401,6 +411,8 @@ public class SampleController {
 
 		TextField[] arrayPaddockURL = new TextField[]{txtPaddockURL,txtPaddockURL1};
 		Button[] arrayPaddockButton = new Button[]{buttonOpenPaddock,buttonOpenPaddock1};
+		TextField[] arrayRaceURL = new TextField[]{txtRaceURL,txtRaceURL1};
+		Button[] arrayRaceButton = new Button[]{buttonOpenRace,buttonOpenRace1};
 		try {
 			table.getItems().clear(); 
 			ClearText();
@@ -477,6 +489,28 @@ public class SampleController {
 	            }
 	        });
 				
+			arrayRaceButton[0].setOnAction( new EventHandler<ActionEvent>() {
+	            public void handle(ActionEvent event) {
+	 
+	            	try {
+						new ProcessBuilder("C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe", arrayRaceURL[0].getText()).start();
+					} catch (IOException e) {
+						// TODO 自動生成された catch ブロック
+						e.printStackTrace();
+					}
+	            }
+	        });
+			arrayRaceButton[1].setOnAction( new EventHandler<ActionEvent>() {
+		        public void handle(ActionEvent event) {
+		
+		        	try {
+						new ProcessBuilder("C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe", arrayRaceURL[1].getText()).start();
+					} catch (IOException e) {
+						// TODO 自動生成された catch ブロック
+						e.printStackTrace();
+					}
+		        }
+		    });
 			
 			
 			
@@ -653,7 +687,16 @@ public class SampleController {
 	        	String dateText = newVal.getDate();
 	        	String stageText = newVal.getRaceStage();
 	        	String rangeText = newVal.getRange();
-	        	String nameText = toHalfWidth(newVal.getRaceName());
+	        	String nameText;
+	        	if(newVal.getRaceName().contains("(")) {
+	        		System.out.println(newVal.getRaceName());
+	        		String[] nameArray = toHalfWidth(newVal.getRaceName()).split("\\(");
+	        		nameText = nameArray[0].replace("Ｓ", "ステークス");
+	        	}
+	        	else 
+	        	{
+	        		nameText = toHalfWidth(newVal.getRaceName()).replace("Ｓ", "ステークス");
+	        	}
 				try {
 					Document laboDoc = Jsoup.connect("https://www.keibalab.jp/db/race/" + dateText.substring(0,10).replace("/","")).get();
 					Elements stageel = laboDoc.select(".table-striped.std11");
@@ -670,21 +713,23 @@ public class SampleController {
 					
 					
 
-					System.out.println(nameText);
-					System.out.println(rangeText);
 					for(int i = 0; i < singleStageel.length; i++) {
-						System.out.println(singleStageel[i]);
 						if(singleStageel[i].contains(nameText) && singleStageel[i].contains(rangeText))
 						{
 							raceCnt.add(i + 1);
 						}
 					}
-					
+
+					System.out.println(raceCnt.size());
 					for(int i = 0; i < raceCnt.size(); i++) {
 						arrayPaddockURL[i].setText("https://regist.prc.jp/api/windowopen.aspx?target=race/"
 		        			 + dateText.substring(0,4) + "/" + dateText.substring(0,10).replace("/", "") + "/" + dateText.substring(2,4) + stageURL.get(stageText.substring(2,4)) 
-		        			 + raceURL.get(stageText.substring(0,1)) + raceURL.get(stageText.substring(4,stageText.length())) + raceCnt.get(i).toString()
+		        			 + raceURL.get(stageText.substring(0,1)) + raceURL.get(stageText.substring(4,stageText.length())) + raceURL.get(raceCnt.get(i).toString())
 		        	 + "_p&quality=1");
+						arrayRaceURL[i].setText("https://regist.prc.jp/api/windowopen.aspx?target=race/"
+			        			 + dateText.substring(0,4) + "/" + dateText.substring(0,10).replace("/", "") + "/" + dateText.substring(2,4) + stageURL.get(stageText.substring(2,4)) 
+			        			 + raceURL.get(stageText.substring(0,1)) + raceURL.get(stageText.substring(4,stageText.length())) + raceURL.get(raceCnt.get(i).toString())
+			        	 + "&quality=1");
 					}
 					
 				} catch (IOException e) {

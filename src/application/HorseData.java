@@ -62,8 +62,8 @@ public class HorseData
 			 this.jockey = horseString.get(8);
 			 this.jockeyWeight = horseString.get(9);
 			 this.horseCount = horseString.get(10);
-			 this.startNo = horseString.get(11);
-			 this.frameNo = horseString.get(12);
+			 this.frameNo = horseString.get(11);
+			 this.startNo = horseString.get(12);
 			 this.time = horseString.get(13);
 			 this.behind = horseString.get(14);
 			 this.pace = horseString.get(15) + horseString.get(16) + horseString.get(17);
