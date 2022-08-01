@@ -91,5 +91,9 @@
       <TextField fx:id="txtRaceURL1" layoutX="948.0" layoutY="50.0" />
       <Button fx:id="buttonOpenRace" layoutX="1104.0" layoutY="9.0" mnemonicParsing="false" text="レース" />
       <Button fx:id="buttonOpenRace1" layoutX="1104.0" layoutY="50.0" mnemonicParsing="false" text="レース" />
+      <TextField fx:id="txtThisPaddockURL" layoutX="638.0" layoutY="207.0" />
+      <Button fx:id="buttonThisPaddock" layoutX="797.0" layoutY="207.0" mnemonicParsing="false" text="パドック" />
+      <TextField fx:id="txtThisRaceURL" layoutX="641.0" layoutY="247.0" />
+      <Button fx:id="buttonThisRace" layoutX="797.0" layoutY="247.0" mnemonicParsing="false" text="レース" />
    </children>
 </AnchorPane>

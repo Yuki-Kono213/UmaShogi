@@ -173,6 +173,17 @@ public class SampleController {
 	@FXML
 	private Button buttonOpenRace1;
 	
+
+	@FXML
+	private TextField txtThisRaceURL;
+	@FXML
+	private TextField txtThisPaddockURL;
+	
+	@FXML
+	private Button buttonThisRace;
+	@FXML
+	private Button buttonThisPaddock;
+	
 	Map<String,Integer> RankMap = new HashMap<>(){
 		{
 			put("①", 1);
@@ -208,6 +219,15 @@ public class SampleController {
 			put("7", "7");
 			put("8", "8");
 			put("9", "9");
+			put("01", "1");
+			put("02", "2");
+			put("03", "3");
+			put("04", "4");
+			put("05", "5");
+			put("06", "6");
+			put("07", "7");
+			put("08", "8");
+			put("09", "9");
 			put("10", "a");
 			put("11", "b");
 			put("12", "c");
@@ -442,7 +462,12 @@ public class SampleController {
 			raceRange = Integer.parseInt(rangeElements.get(1).text().split(" ")[0].substring(1,5));
 			labelRaceStage.setText(stageElements.get(3).text().split("競馬")[0]);
 			labelRaceDate.setText(dateElements.get(0).text().split("\\(")[0]);
+			String[] dateString = labelRaceDate.getText().split("/");
+			labelRaceDate.setText(String.format("%d/%02d/%02d", Integer.parseInt(dateString[0].replace("/", "")), 
+					Integer.parseInt(dateString[1].replace("/", "")), Integer.parseInt(dateString[2].replace("/", ""))));
 			List<Horse> horseList = new ArrayList<Horse>();
+			
+			String day = dateElements.get(0).text().split("日目")[0].substring(dateElements.get(0).text().split("日目")[0].length() -1 ,dateElements.get(0).text().split("日目")[0].length());
 
 			//System.out.println( beforeElements );
 
@@ -512,7 +537,37 @@ public class SampleController {
 		        }
 		    });
 			
+			buttonThisRace.setOnAction( new EventHandler<ActionEvent>() {
+	            public void handle(ActionEvent event) {
+	 
+	            	try {
+						new ProcessBuilder("C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe", txtThisRaceURL.getText()).start();
+					} catch (IOException e) {
+						// TODO 自動生成された catch ブロック
+						e.printStackTrace();
+					}
+	            }
+	        });
+			buttonThisPaddock.setOnAction( new EventHandler<ActionEvent>() {
+		        public void handle(ActionEvent event) {
+		
+		        	try {
+						new ProcessBuilder("C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe", txtThisPaddockURL.getText()).start();
+					} catch (IOException e) {
+						// TODO 自動生成された catch ブロック
+						e.printStackTrace();
+					}
+		        }
+		    });
 			
+			 txtThisPaddockURL.setText("https://regist.prc.jp/api/windowopen.aspx?target=race/"
+       			 + labelRaceDate.getText().substring(0,4) + "/" + labelRaceDate.getText().substring(0,10).replace("/", "") + "/" + labelRaceDate.getText().substring(2,4) + stageURL.get(labelRaceStage.getText().substring(0,2)) 
+       			+ raceURL.get(textURL.getText().substring(40,42))+ raceURL.get(day)  + raceURL.get(textURL.getText().substring(42,44))
+       	 + "_p&quality=1");
+			 txtThisRaceURL.setText("https://regist.prc.jp/api/windowopen.aspx?target=race/"
+	       			 + labelRaceDate.getText().substring(0,4) + "/" + labelRaceDate.getText().substring(0,10).replace("/", "") + "/" + labelRaceDate.getText().substring(2,4) + stageURL.get(labelRaceStage.getText().substring(0,2)) 
+	       			 + raceURL.get(textURL.getText().substring(40,42)) + raceURL.get(day)  + raceURL.get(textURL.getText().substring(42,44))
+	       	 + "&quality=1");
 			
 	        String pattern = "#.###";
 	        DecimalFormat decimalFormat =  new DecimalFormat(pattern);
