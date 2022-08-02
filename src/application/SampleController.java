@@ -466,10 +466,10 @@ public class SampleController {
 			labelRaceDate.setText(String.format("%d/%02d/%02d", Integer.parseInt(dateString[0].replace("/", "")), 
 					Integer.parseInt(dateString[1].replace("/", "")), Integer.parseInt(dateString[2].replace("/", ""))));
 			List<Horse> horseList = new ArrayList<Horse>();
-			
-			String day = dateElements.get(0).text().split("日目")[0].substring(dateElements.get(0).text().split("日目")[0].length() -1 ,dateElements.get(0).text().split("日目")[0].length());
 
-			//System.out.println( beforeElements );
+			String round = dateElements.get(0).text().split("\\) ")[1].substring(0 ,1);
+
+			String day = dateElements.get(0).text().split("日目")[0].substring(dateElements.get(0).text().split("日目")[0].length() -1 ,dateElements.get(0).text().split("日目")[0].length());
 
 			RaceDB rdb = new RaceDB();
 			Integer raceID = rdb.GetRaceID(textURL.getText());
@@ -562,11 +562,11 @@ public class SampleController {
 			
 			 txtThisPaddockURL.setText("https://regist.prc.jp/api/windowopen.aspx?target=race/"
        			 + labelRaceDate.getText().substring(0,4) + "/" + labelRaceDate.getText().substring(0,10).replace("/", "") + "/" + labelRaceDate.getText().substring(2,4) + stageURL.get(labelRaceStage.getText().substring(0,2)) 
-       			+ raceURL.get(textURL.getText().substring(40,42))+ raceURL.get(day)  + raceURL.get(textURL.getText().substring(42,44))
+       			+ raceURL.get(round)+ raceURL.get(day)  + raceURL.get(textURL.getText().substring(42,44))
        	 + "_p&quality=1");
 			 txtThisRaceURL.setText("https://regist.prc.jp/api/windowopen.aspx?target=race/"
 	       			 + labelRaceDate.getText().substring(0,4) + "/" + labelRaceDate.getText().substring(0,10).replace("/", "") + "/" + labelRaceDate.getText().substring(2,4) + stageURL.get(labelRaceStage.getText().substring(0,2)) 
-	       			 + raceURL.get(textURL.getText().substring(40,42)) + raceURL.get(day)  + raceURL.get(textURL.getText().substring(42,44))
+	       			 + raceURL.get(round) + raceURL.get(day)  + raceURL.get(textURL.getText().substring(42,44))
 	       	 + "&quality=1");
 			
 	        String pattern = "#.###";
