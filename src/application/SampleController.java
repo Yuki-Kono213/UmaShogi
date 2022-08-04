@@ -80,6 +80,8 @@ public class SampleController {
 	@FXML
 	private TableColumn <HorseData,String> nameTable;
 	@FXML
+	private TableColumn <HorseData,String> indexTable;
+	@FXML
 	private TableColumn <HorseData,String> dateTable;
 	@FXML
 	private TableColumn <HorseData,String> raceStageTable;
@@ -364,7 +366,8 @@ public class SampleController {
 		numberTable.setCellValueFactory(new PropertyValueFactory<HorseData, String>("no"));
 		
 		nameTable.setCellValueFactory(new PropertyValueFactory<HorseData, String>("name"));
-		
+
+		indexTable.setCellValueFactory(new PropertyValueFactory<HorseData, String>("index"));
 		
 		dateTable.setCellValueFactory(new PropertyValueFactory<HorseData, String>("date"));
 		
@@ -467,10 +470,15 @@ public class SampleController {
 					Integer.parseInt(dateString[1].replace("/", "")), Integer.parseInt(dateString[2].replace("/", ""))));
 			List<Horse> horseList = new ArrayList<Horse>();
 
-			String round = dateElements.get(0).text().split("\\) ")[1].substring(0 ,1);
+			String round = dateElements.get(0).text().split("\\) ")[1].substring(0,1);
+
 
 			String day = dateElements.get(0).text().split("日目")[0].substring(dateElements.get(0).text().split("日目")[0].length() -1 ,dateElements.get(0).text().split("日目")[0].length());
-
+			
+			if(day.equals("0")) {
+				day = "10";
+			}
+			
 			RaceDB rdb = new RaceDB();
 			Integer raceID = rdb.GetRaceID(textURL.getText());
 			boolean raceExist = true;
@@ -561,11 +569,11 @@ public class SampleController {
 		    });
 			
 			 txtThisPaddockURL.setText("https://regist.prc.jp/api/windowopen.aspx?target=race/"
-       			 + labelRaceDate.getText().substring(0,4) + "/" + labelRaceDate.getText().substring(0,10).replace("/", "") + "/" + labelRaceDate.getText().substring(2,4) + stageURL.get(labelRaceStage.getText().substring(0,2)) 
+       			 + labelRaceDate.getText().substring(0,4) + "/" + labelRaceDate.getText().substring(0,10).replace("/", "") + "/" + labelRaceDate.getText().substring(2,4) + stageURL.get(labelRaceStage.getText()) 
        			+ raceURL.get(round)+ raceURL.get(day)  + raceURL.get(textURL.getText().substring(42,44))
        	 + "_p&quality=1");
 			 txtThisRaceURL.setText("https://regist.prc.jp/api/windowopen.aspx?target=race/"
-	       			 + labelRaceDate.getText().substring(0,4) + "/" + labelRaceDate.getText().substring(0,10).replace("/", "") + "/" + labelRaceDate.getText().substring(2,4) + stageURL.get(labelRaceStage.getText().substring(0,2)) 
+	       			 + labelRaceDate.getText().substring(0,4) + "/" + labelRaceDate.getText().substring(0,10).replace("/", "") + "/" + labelRaceDate.getText().substring(2,4) + stageURL.get(labelRaceStage.getText()) 
 	       			 + raceURL.get(round) + raceURL.get(day)  + raceURL.get(textURL.getText().substring(42,44))
 	       	 + "&quality=1");
 			
@@ -796,6 +804,7 @@ public class SampleController {
 				  Comparator.<HorseData, String>comparing(model -> model.getNo());
 		FXCollections.sort(table.getItems(), comparator);
 	}
+	
 
 	public static String toHalfWidth(String s) {
 		  StringBuilder sb = new StringBuilder(s);
@@ -811,7 +820,6 @@ public class SampleController {
 	private void SetTable(Horse h, List<String>horseString, String horseText, List<String>pastRaceCondition) {
 		table.getItems().add(new HorseData(strArray[h.number],h.name,RacePointCheck(horseText, h),horseString,pastRaceCondition,raceRange));
 
-			
 		
 	}
 	private String RacePointCheck(String s, Horse h) 

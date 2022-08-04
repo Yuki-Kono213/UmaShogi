@@ -46,6 +46,7 @@
         <columns>
             <TableColumn fx:id="numberTable" prefWidth="30.0" text="No" />
             <TableColumn fx:id="nameTable" prefWidth="100.0" text="馬名" />
+            <TableColumn fx:id="indexTable" prefWidth="50.0" text="指数" />
             <TableColumn fx:id="dateTable" text="日付" />
             <TableColumn fx:id="raceStageTable" prefWidth="100.0" text="レース場" />
 	        <TableColumn fx:id="rangeTable" text="距離" />

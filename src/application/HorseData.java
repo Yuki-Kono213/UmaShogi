@@ -43,11 +43,12 @@ public class HorseData
 	private String pastMaxSpeed;
 	private String pastMaxPace;
 	private String pastMaxSpeedLast;
+	private String index;
 
+	int timeOrigin;
+	int rangeOrigin;
 	
-	
-	
-	  public HorseData(String no, String name, String analysis, List<String> horseString, List<String>pastRaceCondition, int RaceRange) {
+	  public HorseData(String no, String name, String analysis, List<String> horseString, List<String>pastRaceCondition, int raceRange) {
 
 			 this.no = no;
 			 this.name = name;
@@ -73,10 +74,11 @@ public class HorseData
 				+SampleController.RankTableMap.get(horseString.get(horseString.size() - 5))+ SampleController.RankTableMap.get(horseString.get(horseString.size() - 4));
 			 this.topHorse = horseString.get(horseString.size() - 3);
 			 this.analysis = analysis;
-			 int time = (Integer.parseInt(this.time.substring(0,1)) * 600 +  Integer.parseInt(this.time.substring(2,4)) * 10 + Integer.parseInt(this.time.substring(5,6)));
-			 time = time * RaceRange / Integer.parseInt(horseString.get(2).substring(1,5));
+			 rangeOrigin = Integer.parseInt(horseString.get(2).substring(1,5));
+			 timeOrigin = (Integer.parseInt(this.time.substring(0,1)) * 600 +  Integer.parseInt(this.time.substring(2,4)) * 10 + Integer.parseInt(this.time.substring(5,6)));
+			 timeOrigin  = timeOrigin  * raceRange / rangeOrigin;
 					
-			 this.sameRangeTime = Integer.toString((time / 600)) + ":" + String.format("%02d",time % 600 / 10) + "." + Integer.toString(time % 10);
+			 this.sameRangeTime = Integer.toString((timeOrigin  / 600)) + ":" + String.format("%02d",timeOrigin  % 600 / 10) + "." + Integer.toString(timeOrigin  % 10);
 			 this.goodRace = horseString.get(horseString.size() - 2);
 			 this.pastRace = horseString.get(horseString.size() - 1);
 			 this.glassGoodRaceResult = pastRaceCondition.get(0);
@@ -90,7 +92,53 @@ public class HorseData
 			 this.pastMaxSpeed = pastRaceCondition.get(8);
 			 this.pastMaxPace = pastRaceCondition.get(9);
 			 this.pastMaxSpeedLast = pastRaceCondition.get(10);
+			 calcIndex(raceRange);
 	  }
+	  
+
+	public void calcIndex(int raceRange) {
+
+		double base = 1.0;
+		int score = 3000;
+		
+		if(analysis.contains("やや有利")) {
+			base = 0.97;
+		}
+		else if(analysis.contains("やや不利"))
+		{
+			base = 1.03;
+		}
+		else if(analysis.contains("有利"))
+		{
+			base = 0.95;
+		}
+		else if(analysis.contains("不利"))
+		{
+			base = 1.05;
+		}
+		
+		
+		score -= Double.parseDouble(this.behind) * 50;
+		double count = (18.0 / Double.parseDouble(this.horseCount));
+		int rangeDiff = raceRange - rangeOrigin;
+
+		if(range.contains("ダ")) {
+			rangeDiff *= 0.95; 
+		}
+		score -= timeOrigin + rangeDiff / 10;
+		if(this.pastMaxSpeed.contains(":")) {
+			score -= (Integer.parseInt(this.pastMaxSpeed.substring(0,1)) * 600 +  Integer.parseInt(this.pastMaxSpeed.substring(2,4)) * 10 + Integer.parseInt(this.pastMaxSpeed.substring(5,6)));
+		}
+		else {
+			score -= timeOrigin + rangeDiff / 10;
+			
+		}
+		 
+		score *= base;
+			
+		this.index = String.valueOf(score);
+	}
+		
 	  /* getter,setterがないとTableViewに反映されない */
 	  public String getNo(){ return no; }
 	  public void setNo(String no){ this.no = no; }
@@ -167,5 +215,7 @@ public class HorseData
 	  public void setPastMaxPace(String pastMaxPace){ this.pastMaxPace = pastMaxPace; }
 	  public String getPastMaxSpeedLast(){ return pastMaxSpeedLast; }
 	  public void setPastMaxSpeedLast(String pastMaxSpeedLast){ this.pastMaxSpeedLast = pastMaxSpeedLast; }
+	  public String getIndex(){ return index; }
+	  public void setIndex(String index){ this.index = index; }
 
 }
