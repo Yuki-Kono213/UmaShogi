@@ -696,7 +696,6 @@ public class SampleController {
 									}
 								}
 								h.pastRace += " " + decimalFormat.format((double)pastGoodRaceCount * 100.0 / (double)pastRaceCount) + " " + pastRace;
-								System.out.println(pastMaxGoodTime);
 								h.pastRaceCondition = pastRaceCondition[0] + " " + pastRaceCondition[1] + " " + pastRaceCondition[2] + " " + pastRaceCondition[3] + " " + 
 										pastRaceCondition[4] + " " + pastRaceCondition[5] + " " + pastRaceCondition[6] + " " + pastRaceCondition[7] + " " +pastMaxGoodTime
 										+ " " + pastMaxGoodPace + " " + pastMaxGoodLast;
@@ -723,7 +722,6 @@ public class SampleController {
 								}
 
 
-								System.out.println(horseString.get(17));
 								
 								SetTable(h, horseString, horseText[0], horseConditionString);}
 						}
@@ -752,7 +750,6 @@ public class SampleController {
 	        	String rangeText = newVal.getRange();
 	        	String nameText;
 	        	if(newVal.getRaceName().contains("(")) {
-	        		System.out.println(newVal.getRaceName());
 	        		String[] nameArray = toHalfWidth(newVal.getRaceName()).split("\\(");
 	        		nameText = nameArray[0].replace("Ｓ", "ステークス");
 	        	}
@@ -783,7 +780,6 @@ public class SampleController {
 						}
 					}
 
-					System.out.println(raceCnt.size());
 					for(int i = 0; i < raceCnt.size(); i++) {
 						arrayPaddockURL[i].setText("https://regist.prc.jp/api/windowopen.aspx?target=race/"
 		        			 + dateText.substring(0,4) + "/" + dateText.substring(0,10).replace("/", "") + "/" + dateText.substring(2,4) + stageURL.get(stageText.substring(2,4)) 

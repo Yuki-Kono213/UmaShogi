@@ -47,7 +47,7 @@ public class HorseData
 
 	int timeOrigin;
 	int rangeOrigin;
-	
+	private int score;
 	  public HorseData(String no, String name, String analysis, List<String> horseString, List<String>pastRaceCondition, int raceRange) {
 
 			 this.no = no;
@@ -99,44 +99,97 @@ public class HorseData
 	public void calcIndex(int raceRange) {
 
 		double base = 1.0;
-		int score = 3000;
+		score = 5000;
 		
 		if(analysis.contains("やや有利")) {
-			base = 0.97;
+			base = 0.999;
 		}
 		else if(analysis.contains("やや不利"))
 		{
-			base = 1.03;
+			base = 1.001;
 		}
 		else if(analysis.contains("有利"))
 		{
-			base = 0.95;
+			base = 0.998;
 		}
 		else if(analysis.contains("不利"))
 		{
-			base = 1.05;
+			base = 1.002;
 		}
 		
 		
-		score -= Double.parseDouble(this.behind) * 50;
-		double count = (18.0 / Double.parseDouble(this.horseCount));
-		int rangeDiff = raceRange - rangeOrigin;
+		int rangeDiff = (raceRange - rangeOrigin) / 20;
+		if(!this.analysis.contains("勝利")) {
+
+			score -= Double.parseDouble(this.behind) * 10;
+		}
+		double timeHosei = 1.0;
 
 		if(range.contains("ダ")) {
-			rangeDiff *= 0.95; 
+			timeHosei = 0.93;
+			dirtHosei(this.stage);
 		}
-		score -= timeOrigin + rangeDiff / 10;
+		else 
+		{
+			glassHosei(this.stage);
+		}
+		score -= (timeOrigin + rangeDiff) * timeHosei;
 		if(this.pastMaxSpeed.contains(":")) {
-			score -= (Integer.parseInt(this.pastMaxSpeed.substring(0,1)) * 600 +  Integer.parseInt(this.pastMaxSpeed.substring(2,4)) * 10 + Integer.parseInt(this.pastMaxSpeed.substring(5,6)));
+			score -= (Integer.parseInt(this.pastMaxSpeed.substring(0,1)) * 600 +  Integer.parseInt(this.pastMaxSpeed.substring(2,4)) * 10 + Integer.parseInt(this.pastMaxSpeed.substring(5,6))) * timeHosei;
+			if(range.contains("ダ")) {
+				dirtHosei(this.pastMaxSpeed);
+			}
+			else 
+			{
+				glassHosei(this.pastMaxSpeed);
+			}
 		}
 		else {
-			score -= timeOrigin + rangeDiff / 10;
-			
+			score -= (timeOrigin + rangeDiff) * timeHosei;
+			if(range.contains("ダ")) {
+				dirtHosei(this.stage);
+			}
+			else 
+			{
+				glassHosei(this.stage);
+			}
 		}
 		 
 		score *= base;
 			
 		this.index = String.valueOf(score);
+	}
+	
+	private void dirtHosei(String stage) {
+
+		if(this.stage.contains("稍"))
+		{
+			score -= 3;
+		}
+		else if(this.stage.contains("重"))
+		{
+			score -= 6;
+		}
+		else if(this.stage.contains("不"))
+		{
+			score -= 9;
+		}
+	}
+	
+	private void glassHosei(String stage) {
+
+		if(this.stage.contains("稍"))
+		{
+			score += 3;
+		}
+		else if(this.stage.contains("重"))
+		{
+			score += 6;
+		}
+		else if(this.stage.contains("不"))
+		{
+			score += 9;
+		}
 	}
 		
 	  /* getter,setterがないとTableViewに反映されない */
