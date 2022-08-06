@@ -709,7 +709,7 @@ public class SampleController {
 									horseString.remove(19);
 								}
 								SetTable(h, horseString, strArray[h.number] +  h.pastRace , horseConditionString);
-								Thread.sleep(1000);
+								Thread.sleep(3000);
 							}
 							else 
 							{
@@ -814,7 +814,7 @@ public class SampleController {
 		}
 	
 	private void SetTable(Horse h, List<String>horseString, String horseText, List<String>pastRaceCondition) {
-		table.getItems().add(new HorseData(strArray[h.number],h.name,RacePointCheck(horseText, h),horseString,pastRaceCondition,raceRange));
+		table.getItems().add(new HorseData(strArray[h.number],h.name,RacePointCheck(horseText, h),horseString,pastRaceCondition,raceRange, labelRaceRange.getText()));
 
 		
 	}
