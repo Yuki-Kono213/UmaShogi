@@ -119,15 +119,15 @@ public class HorseData
 			base = 0.999;
 		}
 		
-		int rangeDiff = (raceRange - rangeOrigin) / 10;
-		double gradeDiff = 0.6;
+		int rangeDiff = (raceRange - rangeOrigin) / 20;
+		double gradeDiff = 0.5;
 		if(this.raceName.contains("1勝"))
 		{
-			gradeDiff = 0.8;
+			gradeDiff = 0.6;
 		}
 		else if(this.raceName.contains("2勝"))
 		{
-			gradeDiff = 1.0;
+			gradeDiff = 0.8;
 		}
 		else if(this.raceName.contains("3勝"))
 		{
@@ -138,7 +138,7 @@ public class HorseData
 			gradeDiff = 1.4;
 			System.out.println(this.name);
 		}
-		else if(this.raceName.contains("ＧⅢ"))
+		else if(this.raceName.contains("ＧⅢ") || this.raceName.contains("重賞"))
 		{
 			gradeDiff = 1.6;
 		}
@@ -154,11 +154,11 @@ public class HorseData
 		score -= 2000 * gradeDiff;
 		if(this.analysis.contains("勝利")) {
 			if(Double.parseDouble(this.behind) == 0.0) {
-				score -= 200;
+				score -= 100;
 			}
 			else 
 			{
-				score -= Double.parseDouble(this.behind) * 20000 / (rangeOrigin * 100 / raceRange);
+				score -= Double.parseDouble(this.behind) * 10000 / (rangeOrigin * 100 / raceRange);
 			}
 			
 		}
@@ -203,10 +203,15 @@ public class HorseData
 			score += (timeOrigin * timeHosei + rangeDiff) * 10 + 200;
 		}
 		
-		int pastRaceScore = 0;
+		boolean goodRank = false;
+		int pastRaceScore = 1000;
 		for(int i= 0; i < this.pastRace.length(); i++)
 		{
-			pastRaceScore += Util.RankMap.get(this.pastRace.substring(i,i+1)) * 30;
+			pastRaceScore += Util.RankMap.get(this.pastRace.substring(i,i+1)) * 40;
+			if(Util.RankMap.get(this.pastRace.substring(i,i+1)) < 4 && !goodRank) {
+				goodRank = true;
+				pastRaceScore -= 1000;
+			}
 		
 		}
 		
@@ -226,34 +231,34 @@ public class HorseData
 	private void dirtHosei(String stage, int raceRange) {
 
 		timeHosei = 0.97;
-		if(this.stage.contains("稍"))
+		if(stage.contains("稍"))
 		{
-			score -= 30 * (double)(2000 / raceRange );
+			score += 10 * (double)(raceRange / 600 );
 		}
-		else if(this.stage.contains("重"))
+		else if(stage.contains("重"))
 		{
-			score += 10 * (double)(2000 / raceRange );
+			score += 40 * (double)(raceRange / 600 );
 		}
-		else if(this.stage.contains("不"))
+		else if(stage.contains("不"))
 		{
-			//score += 0 * (double)(2000 / raceRange );
+			score += 60 * (double)(raceRange / 600 );
 		}
 	}
 	
 	private void glassHosei(String stage, int raceRange) {
 
 		timeHosei = 1.0;
-		if(this.stage.contains("稍"))
+		if(stage.contains("稍"))
 		{
-			score -= 40 * (double)(2000 / raceRange );
+			score -= 30 * (double)(raceRange / 600 );
 		}
-		else if(this.stage.contains("重"))
+		else if(stage.contains("重"))
 		{
-			score -= 210 * (double)(2000 / raceRange );
+			score -= 60 * (double)(raceRange / 600 );
 		}
-		else if(this.stage.contains("不"))
+		else if(stage.contains("不"))
 		{
-			score -= 500 * (double)(2000 / raceRange );
+			score -= 190 * (double)(raceRange / 600 );
 		}
 	}
 		
