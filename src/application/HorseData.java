@@ -72,8 +72,8 @@ public class HorseData
 			 this.pace = horseString.get(15) + horseString.get(16) + horseString.get(17);
 			 this.last =  horseString.get(18);
 			 this.weight =  horseString.get(19);
-			 this.runRank = SampleController.RankTableMap.get(horseString.get(horseString.size() - 7)) + SampleController.RankTableMap.get(horseString.get(horseString.size() - 6)) 
-				+SampleController.RankTableMap.get(horseString.get(horseString.size() - 5))+ SampleController.RankTableMap.get(horseString.get(horseString.size() - 4));
+			 this.runRank = Util.RankTableMap.get(horseString.get(horseString.size() - 7)) +  Util.RankTableMap.get(horseString.get(horseString.size() - 6)) 
+				+ Util.RankTableMap.get(horseString.get(horseString.size() - 5))+  Util.RankTableMap.get(horseString.get(horseString.size() - 4));
 			 this.topHorse = horseString.get(horseString.size() - 3);
 			 this.analysis = analysis;
 			 rangeOrigin = Integer.parseInt(horseString.get(2).substring(1,5));
@@ -104,38 +104,67 @@ public class HorseData
 		score = 0;
 		
 		if(analysis.contains("やや有利")) {
-			base = 1.002;
+			base = 1.0005;
 		}
 		else if(analysis.contains("やや不利"))
 		{
-			base = 0.998;
+			base = 0.9995;
 		}
 		else if(analysis.contains("有利"))
 		{
-			base = 1.005;
+			base = 1.001;
 		}
 		else if(analysis.contains("不利"))
 		{
-			base = 0.995;
+			base = 0.999;
 		}
 		
-		int rangeDiff = (raceRange - rangeOrigin) / 15;
-		System.out.println(rangeDiff);
-		if(!this.analysis.contains("勝利")) {
-			if(Double.parseDouble(this.behind) == 0) {
-				score += 200;
+		int rangeDiff = (raceRange - rangeOrigin) / 20;
+		double gradeDiff = 0.6;
+		if(this.raceName.contains("1勝"))
+		{
+			gradeDiff = 0.8;
+		}
+		else if(this.raceName.contains("2勝"))
+		{
+			gradeDiff = 1.0;
+		}
+		else if(this.raceName.contains("3勝"))
+		{
+			gradeDiff = 1.2;
+		}
+		else if(this.raceName.contains("OP") || this.raceName.contains("L") )
+		{
+			gradeDiff = 1.4;
+		}
+		else if(this.raceName.contains("ＧⅢ"))
+		{
+			gradeDiff = 1.6;
+		}
+		else if(this.raceName.contains("ＧⅡ"))
+		{
+			gradeDiff = 1.8;
+		}
+		else if(this.raceName.contains("ＧⅠ"))
+		{
+			gradeDiff = 2.0;
+		}
+		
+		if(this.analysis.contains("勝利")) {
+			if(Double.parseDouble(this.behind) == 0.0) {
+				score -= 1000 * gradeDiff;
 			}
 			else 
 			{
-				score += Double.parseDouble(this.behind) * 50000 / (rangeOrigin * 100 / raceRange);
+				score -= Double.parseDouble(this.behind) * 20000 / (rangeOrigin * 100 / raceRange) + 1000 * gradeDiff;
 			}
+			
 		}
 		else 
 		{
-			score -= Double.parseDouble(this.behind) * 50000 / (rangeOrigin * 100 / raceRange);
+			score += Double.parseDouble(this.behind) * 60000 / (rangeOrigin * 100 / raceRange)  - 1000 * gradeDiff;
 		}
 
-		
 		timeHosei = 1.0; 
 
 		if(range.contains("ダ")) {
@@ -149,7 +178,7 @@ public class HorseData
 		score += (timeOrigin * timeHosei + rangeDiff) * 10;
 		score += (Double.parseDouble(this.jockeyWeight) * 20);
 		if(this.pastMaxSpeed.contains(":") && 
-		Integer.parseInt(this.pastMaxSpeed.substring(0,1)) * 600 +  Integer.parseInt(this.pastMaxSpeed.substring(2,4)) * 10 + Integer.parseInt(this.pastMaxSpeed.substring(5,6))< timeOrigin * timeHosei+ rangeDiff + 30)
+		Integer.parseInt(this.pastMaxSpeed.substring(0,1)) * 600 +  Integer.parseInt(this.pastMaxSpeed.substring(2,4)) * 10 + Integer.parseInt(this.pastMaxSpeed.substring(5,6)) < timeOrigin + rangeDiff + 20)
 		{
 			if(maxRaceField.contains("ダ")) {
 				dirtHosei(this.pastMaxSpeed);
@@ -160,7 +189,6 @@ public class HorseData
 			}
 			
 			score += (Integer.parseInt(this.pastMaxSpeed.substring(0,1)) * 600 +  Integer.parseInt(this.pastMaxSpeed.substring(2,4)) * 10 + Integer.parseInt(this.pastMaxSpeed.substring(5,6))) * timeHosei * 10;
-			
 		}
 		else {
 			if(range.contains("ダ")) {
@@ -170,9 +198,22 @@ public class HorseData
 			{
 				glassHosei(this.stage);
 			}
-			score += (timeOrigin * timeHosei + rangeDiff) * 10 + 300;
+			score += (timeOrigin * timeHosei + rangeDiff) * 10 + 200;
 		}
+		
+		int pastRaceScore = 0;
+		for(int i= 0; i < this.pastRace.length(); i++)
+		{
+			pastRaceScore += Util.RankMap.get(this.pastRace.substring(i,i+1)) * 10;
+		
+		}
+		
+		
 
+		score += pastRaceScore * (double)(5 / this.pastRace.length());
+
+		System.out.println( pastRaceScore * (double)(5 / this.pastRace.length()));
+		
 		score *= base;
 		 
 		score = 100000 - score;
@@ -182,7 +223,7 @@ public class HorseData
 	
 	private void dirtHosei(String stage) {
 
-		timeHosei = 0.95;
+		timeHosei = 0.97;
 		if(this.stage.contains("稍"))
 		{
 			score += 30;
