@@ -351,9 +351,16 @@ public class SampleController {
 
 
 			String day = dateElements.get(0).text().split("日目")[0].substring(dateElements.get(0).text().split("日目")[0].length() -1 ,dateElements.get(0).text().split("日目")[0].length());
-			
-			if(day.equals("0")) {
-				day = "10";
+
+			try {
+				Integer dayInt = Integer.parseInt(dateElements.get(0).text().split("日目")[0].substring(dateElements.get(0).text().split("日目")[0].length() -2 ,dateElements.get(0).text().split("日目")[0].length()));
+				day = dayInt.toString();
+			}
+			catch (NumberFormatException ex)
+			{
+				
+				
+				
 			}
 			
 			RaceDB rdb = new RaceDB();
@@ -508,9 +515,9 @@ public class SampleController {
 								int pastRaceCount = 0;
 								int pastGoodRaceCount = 0;
 								String[] pastRaceCondition = new String[] {"","","","","","","",""};
-								String pastMaxGoodTime = "1年未走";
-								String pastMaxGoodPace = "1年未走";
-								String pastMaxGoodLast = "1年未走";
+								String pastMaxGoodTime = "一年未走";
+								String pastMaxGoodPace = "一年未走";
+								String pastMaxGoodLast = "一年未走";
 								for(int i2 = 0; i2 < HorseElements.size(); i2++) {
 									if(HorseElements.get(i2).text().split(" ").length > 22 && LocalDate.parse(HorseElements.get(i2).text().split(" ")[0], 
 											DateTimeFormatter.ofPattern("yyyy/[]M/[]d")).isBefore(LocalDate.parse(labelRaceDate.getText(), DateTimeFormatter.ofPattern("yyyy/[]M/[]d")))) {
@@ -555,7 +562,7 @@ public class SampleController {
 										}
 										
 										if(LocalDate.parse(HorseElements.get(i2).text().split(" ")[0],DateTimeFormatter.ofPattern("yyyy/[]M/[]d")).isAfter(LocalDate.now().minusYears(1)) && HorseElements.get(i2).text().split(" ")[2].equals(labelRaceRange.getText().substring(0,5))
-												&&  (pastMaxGoodTime.equals("1年未走") || (!pastMaxGoodTime.equals("1年未走") && CalcTime(pastMaxGoodTime, HorseElements.get(i2).text().split(" ")[13])))) {
+												&&  (pastMaxGoodTime.equals("一年未走") || (!pastMaxGoodTime.equals("一年未走") && CalcTime(pastMaxGoodTime, HorseElements.get(i2).text().split(" ")[13])))) {
 											pastMaxGoodTime = HorseElements.get(i2).text().split(" ")[13] + HorseElements.get(i2).text().split(" ")[4] + HorseElements.get(i2).text().split(" ")[1];
 											
 											pastMaxGoodPace = HorseElements.get(i2).text().split(" ")[15] + HorseElements.get(i2).text().split(" ")[16] + HorseElements.get(i2).text().split(" ")[17] ;
@@ -770,13 +777,14 @@ public class SampleController {
 	
 	private boolean CalcTime(String max, String newRace) 
 	{
-		int maxTime = Integer.parseInt(max.substring(0,1)) * 600 +  Integer.parseInt(max.substring(2,4)) * 10 + Integer.parseInt(max.substring(5,6));
-		int newTime = Integer.parseInt(newRace.substring(0,1)) * 600 +  Integer.parseInt(newRace.substring(2,4)) * 10 + Integer.parseInt(newRace.substring(5,6));
-		
-		if(newTime < maxTime) {
-			return true;
+		if(max.contains("0") || max.contains("1") || max.contains("2") || max.contains("3")) {
+			int maxTime = Integer.parseInt(max.substring(0,1)) * 600 +  Integer.parseInt(max.substring(2,4)) * 10 + Integer.parseInt(max.substring(5,6));
+			int newTime = Integer.parseInt(newRace.substring(0,1)) * 600 +  Integer.parseInt(newRace.substring(2,4)) * 10 + Integer.parseInt(newRace.substring(5,6));
+			
+			if(newTime < maxTime) {
+				return true;
+			}
 		}
-		
 		return false;
 	}
 	
