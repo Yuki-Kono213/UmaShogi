@@ -151,7 +151,8 @@ public class HorseData
 		}
 		
 		if(this.analysis.contains("勝利")) {
-			
+
+			score -= 100;
 			score -= 200 * gradeDiff;
 			score -= Double.parseDouble(this.behind) * 2 * ((double)raceRange * 100 /  rangeOrigin) * gradeDiff;
 			
