@@ -503,6 +503,7 @@ public class SampleController {
 							HorseDB hdb = new HorseDB();
 							hdb.create();
 							String[] horseText = hdb.returnPastRace(h.name, raceID);
+							System.out.println(labelRaceDate.getText());
 							if(!raceExist || horseText[0].isEmpty() || 
 									LocalDate.parse(labelRaceDate.getText(), DateTimeFormatter.ofPattern("yyyy/[]M/[]d"))
 									.isBefore(LocalDate.parse(horseText[0].split(" ")[0], DateTimeFormatter.ofPattern("yyyy/[]M/[]d")).plusDays(1)) 
@@ -561,7 +562,7 @@ public class SampleController {
 											pastRaceCondition[7] += strArray[Integer.parseInt(HorseElements.get(i2).text().split(" ")[7])];
 										}
 										
-										if(LocalDate.parse(HorseElements.get(i2).text().split(" ")[0],DateTimeFormatter.ofPattern("yyyy/[]M/[]d")).isAfter(LocalDate.now().minusYears(1)) && HorseElements.get(i2).text().split(" ")[2].equals(labelRaceRange.getText().substring(0,5))
+										if(LocalDate.parse(HorseElements.get(i2).text().split(" ")[0],DateTimeFormatter.ofPattern("yyyy/[]M/[]d")).isAfter(LocalDate.parse(labelRaceDate.getText(), DateTimeFormatter.ofPattern("yyyy/[]M/[]d")).minusYears(1)) && HorseElements.get(i2).text().split(" ")[2].equals(labelRaceRange.getText().substring(0,5))
 												&&  (pastMaxGoodTime.equals("一年未走") || (!pastMaxGoodTime.equals("一年未走") && CalcTime(pastMaxGoodTime, HorseElements.get(i2).text().split(" ")[13])))) {
 											pastMaxGoodTime = HorseElements.get(i2).text().split(" ")[13] + HorseElements.get(i2).text().split(" ")[4] + HorseElements.get(i2).text().split(" ")[1];
 											
@@ -636,12 +637,18 @@ public class SampleController {
 	        	if(newVal.getRaceName().contains("(")) {
 	        		String[] nameArray = toHalfWidth(newVal.getRaceName()).split("\\(");
 	        		nameText = nameArray[0].replace("Ｓ", "ステークス");
+	        		nameText = nameArray[0].replace("ＴＶ", "テレビ杯");
 	        	}
 	        	else 
 	        	{
 	        		nameText = toHalfWidth(newVal.getRaceName()).replace("Ｓ", "ステークス");
+	        		nameText = toHalfWidth(newVal.getRaceName()).replace("ＴＶ", "テレビ杯");
 	        	}
 				try {
+					for(int i = 0; i < arrayPaddockURL.length; i++) {
+						arrayPaddockURL[i].setText("");
+						arrayRaceURL[i].setText("");
+					}
 					Document laboDoc = Jsoup.connect("https://www.keibalab.jp/db/race/" + dateText.substring(0,10).replace("/","")).get();
 					Elements stageel = laboDoc.select(".table-striped.std11");
 					String[] singleStageel = new String[2];

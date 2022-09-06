@@ -201,13 +201,14 @@ public class HorseData
 
 		//boolean goodRank = false;
 		int pastRaceScore = 0;
-		for(int i= 0; i < this.pastRace.length(); i++)
+		for(int i= 0; i < 5; i++)
 		{
-			pastRaceScore += Util.RankMap.get(this.pastRace.substring(i,i+1)) * 10;
-			//if(Util.RankMap.get(this.pastRace.substring(i,i+1)) < 4 && !goodRank) {
-			//	goodRank = true;
-			//	pastRaceScore -= 1000;
-			//}
+			if(i <  this.pastRace.length()) {
+				pastRaceScore += Util.RankMap.get(this.pastRace.substring(i,i+1)) * 10;
+			}
+			else {
+				pastRaceScore += 50;
+			}
 		
 		}
 
