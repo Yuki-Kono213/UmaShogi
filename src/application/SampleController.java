@@ -799,7 +799,12 @@ public class SampleController {
 	{
 		if(h.frame == 1 || h.frame == 2) 
 		{
-			if(h.position < 5) 
+			if(h.position == 1) 
+			{
+				frame1.insertText(0, "逃" + h.number + h.name + h.rate + "\r\n");
+
+			}
+			else if(h.position < 5) 
 			{
 				frame1.insertText(0, h.number + h.name + h.rate + "\r\n");
 
@@ -828,7 +833,12 @@ public class SampleController {
 		}
 		else if(h.frame == 3 || h.frame == 4) 
 		{
-			if(h.position < 5) 
+			if(h.position == 1) 
+			{
+				frame2.insertText(0, "逃" + h.number + h.name + h.rate + "\r\n");
+
+			}
+			else if(h.position < 5) 
 			{
 				frame2.insertText(0, h.number + h.name  + h.rate + "\r\n");
 
@@ -855,7 +865,12 @@ public class SampleController {
 		}
 		else if(h.frame == 5 || h.frame == 6) 
 		{
-			if(h.position < 5) 
+			if(h.position == 1) 
+			{
+				frame3.insertText(0, "逃" + h.number + h.name + h.rate + "\r\n");
+
+			}
+			else if(h.position < 5) 
 			{
 				frame3.insertText(0, h.number + h.name + h.rate + "\r\n");
 
@@ -881,7 +896,12 @@ public class SampleController {
 
 		}else if(h.frame == 7 || h.frame == 8) 
 		{
-			if(h.position < 5) 
+			if(h.position == 1) 
+			{
+				frame4.insertText(0, "逃" + h.number + h.name + h.rate + "\r\n");
+
+			}
+			else if(h.position < 5) 
 			{
 				frame4.insertText(0, h.number + h.name +  h.rate +"\r\n");
 
