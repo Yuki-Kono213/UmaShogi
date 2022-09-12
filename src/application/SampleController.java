@@ -527,11 +527,14 @@ public class SampleController {
 											h.pastRace =  HorseElements.get(i2).text();
 											findPastRace = true;
 										}
-										if( ((Integer.parseInt(HorseElements.get(i2).text().split(" ")[10]) > 7 && Integer.parseInt(HorseElements.get(i2).text().split(" ")[7]) < 4 ) ||
-												 ((Integer.parseInt(HorseElements.get(i2).text().split(" ")[10]) < 8 && Integer.parseInt(HorseElements.get(i2).text().split(" ")[7]) < 3 ) )))
+										if( (((!HorseElements.get(i2).text().contains("止") &&Integer.parseInt(HorseElements.get(i2).text().split(" ")[10]) > 7 && Integer.parseInt(HorseElements.get(i2).text().split(" ")[7]) < 4 ) ||
+												 ((Integer.parseInt(HorseElements.get(i2).text().split(" ")[10]) < 8 && Integer.parseInt(HorseElements.get(i2).text().split(" ")[7]) < 3 ) ))))
 										{
 											pastGoodRaceCount++;
 											
+										}
+										else {
+											continue;
 										}
 										if(pastRaceCount < 5)
 										{
