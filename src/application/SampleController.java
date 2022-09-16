@@ -519,7 +519,9 @@ public class SampleController {
 								String pastMaxGoodTime = "一年未走";
 								String pastMaxGoodPace = "一年未走";
 								String pastMaxGoodLast = "一年未走";
+
 								for(int i2 = 0; i2 < HorseElements.size(); i2++) {
+									System.out.println(HorseElements.get(i2).text().split(" ").length);
 									if(HorseElements.get(i2).text().split(" ").length > 22 && LocalDate.parse(HorseElements.get(i2).text().split(" ")[0], 
 											DateTimeFormatter.ofPattern("yyyy/[]M/[]d")).isBefore(LocalDate.parse(labelRaceDate.getText(), DateTimeFormatter.ofPattern("yyyy/[]M/[]d")))) {
 										if(!findPastRace) 
@@ -527,14 +529,14 @@ public class SampleController {
 											h.pastRace =  HorseElements.get(i2).text();
 											findPastRace = true;
 										}
-										if( (((!HorseElements.get(i2).text().contains("止") &&Integer.parseInt(HorseElements.get(i2).text().split(" ")[10]) > 7 && Integer.parseInt(HorseElements.get(i2).text().split(" ")[7]) < 4 ) ||
+										if(HorseElements.get(i2).text().contains("止")) {
+											continue;
+										}
+										if( (((Integer.parseInt(HorseElements.get(i2).text().split(" ")[10]) > 7 && Integer.parseInt(HorseElements.get(i2).text().split(" ")[7]) < 4 ) ||
 												 ((Integer.parseInt(HorseElements.get(i2).text().split(" ")[10]) < 8 && Integer.parseInt(HorseElements.get(i2).text().split(" ")[7]) < 3 ) ))))
 										{
 											pastGoodRaceCount++;
 											
-										}
-										else {
-											continue;
 										}
 										if(pastRaceCount < 5)
 										{
@@ -583,6 +585,7 @@ public class SampleController {
 										pastRaceCondition[k] = "出走なし";
 									}
 								}
+								
 								h.pastRace += " " + decimalFormat.format((double)pastGoodRaceCount * 100.0 / (double)pastRaceCount) + " " + pastRace;
 								h.pastRaceCondition = pastRaceCondition[0] + " " + pastRaceCondition[1] + " " + pastRaceCondition[2] + " " + pastRaceCondition[3] + " " + 
 										pastRaceCondition[4] + " " + pastRaceCondition[5] + " " + pastRaceCondition[6] + " " + pastRaceCondition[7] + " " +pastMaxGoodTime
@@ -708,6 +711,7 @@ public class SampleController {
 		}
 	
 	private void SetTable(Horse h, List<String>horseString, String horseText, List<String>pastRaceCondition) {
+
 		table.getItems().add(new HorseData(strArray[h.number],h.name,RacePointCheck(horseText, h),horseString,pastRaceCondition,raceRange, labelRaceRange.getText()));
 
 		

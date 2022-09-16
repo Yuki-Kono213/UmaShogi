@@ -83,6 +83,7 @@ public class HorseData
 			 this.sameRangeTime = Integer.toString((timeOrigin  / 600)) + ":" + String.format("%02d",timeOrigin  % 600 / 10) + "." + Integer.toString(timeOrigin  % 10);
 			 this.goodRace = horseString.get(horseString.size() - 2);
 			 this.pastRace = horseString.get(horseString.size() - 1);
+			 System.out.println(horseString.get(horseString.size() - 1));
 			 this.glassGoodRaceResult = pastRaceCondition.get(0);
 			 this.glassBitHeavyRaceResult = pastRaceCondition.get(1);
 			 this.glassHeavyRaceResult = pastRaceCondition.get(2);
@@ -203,7 +204,7 @@ public class HorseData
 		int pastRaceScore = 0;
 		for(int i= 0; i < 5; i++)
 		{
-			if(i <  this.pastRace.length()) {
+			if(i <  this.pastRace.length() && !this.pastRace.substring(i,i+1).equals("－")) {
 				pastRaceScore += Util.RankMap.get(this.pastRace.substring(i,i+1)) * 10;
 			}
 			else {
