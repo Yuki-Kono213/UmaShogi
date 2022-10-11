@@ -8,11 +8,10 @@
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JavaFX"/>
 	<classpathentry kind="con" path="org.eclipse.fx.ide.jdt.core.JAVAFX_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/Users/heart/Downloads/pleiades/workspace/jsoup-1.15.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/heart/Downloads/pleiades/workspace/javafx-sdk-17.0.2/lib/javafx.base.jar"/>
-	<classpathentry kind="lib" path="C:/Users/heart/Downloads/pleiades/workspace/javafx-sdk-17.0.2/lib/javafx.controls.jar"/>
-	<classpathentry kind="lib" path="C:/Users/heart/Downloads/pleiades/workspace/javafx-sdk-17.0.2/lib/javafx.fxml.jar"/>
-	<classpathentry kind="lib" path="C:/Users/heart/Downloads/pleiades/workspace/javafx-sdk-17.0.2/lib/javafx.graphics.jar"/>
+	<classpathentry kind="lib" path="C:/Users/yuki kono/Downloads/pleiades/workspace/javafx-sdk-17.0.2/lib/javafx.base.jar"/>
+	<classpathentry kind="lib" path="C:/Users/yuki kono/Downloads/pleiades/workspace/javafx-sdk-17.0.2/lib/javafx.controls.jar"/>
+	<classpathentry kind="lib" path="C:/Users/yuki kono/Downloads/pleiades/workspace/javafx-sdk-17.0.2/lib/javafx.fxml.jar"/>
+	<classpathentry kind="lib" path="C:/Users/yuki kono/Downloads/pleiades/workspace/javafx-sdk-17.0.2/lib/javafx.graphics.jar"/>
 	<classpathentry kind="lib" path="jsoup-1.15.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
