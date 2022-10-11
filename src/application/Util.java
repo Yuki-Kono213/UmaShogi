@@ -126,4 +126,24 @@ public class Util {
 			put("　", "　");
 		}
 	};
+	
+
+
+	public static boolean isNumber(String val) {
+		try {
+			Integer.parseInt(val);
+			return true;
+		} catch (NumberFormatException nfex) {
+			return false;
+		}
+	}
+	
+	public static boolean returnDateCompare(String raceDate,  String targetDate) {
+			if(Integer.parseInt(raceDate) >= Integer.parseInt(targetDate)) {
+				return true;
+			}
+			else {
+				return false;
+			}
+	}
 }

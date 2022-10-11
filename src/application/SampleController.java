@@ -153,27 +153,97 @@ public class SampleController {
 	private TableColumn <HorseData,String> pastMaxPace;
 	@FXML
 	private TableColumn <HorseData,String> pastMaxSpeedLast;
-	@FXML
-	private TextField txtPaddockURL;
-	@FXML
-	private TextField txtPaddockURL1;
 	
 	@FXML
 	private Button buttonOpenPaddock;
 	@FXML
 	private Button buttonOpenPaddock1;
+	@FXML
+	private Button buttonOpenPaddock2;
+	@FXML
+	private Button buttonOpenPaddock3;
+
+	@FXML
+	private Button buttonOpenPaddock4;
+	@FXML
+	private Button buttonOpenPaddock5;
+
+	@FXML
+	private Button buttonOpenPaddock6;
+	@FXML
+	private Button buttonOpenPaddock7;
 	
+	
+	@FXML
+	private TextField txtPaddockURL;
+	@FXML
+	private TextField txtPaddockURL1;
+	@FXML
+	private TextField txtPaddockURL2;
+	@FXML
+	private TextField txtPaddockURL3;
+	@FXML
+	private TextField txtPaddockURL4;
+	@FXML
+	private TextField txtPaddockURL5;
+	@FXML
+	private TextField txtPaddockURL6;
+	@FXML
+	private TextField txtPaddockURL7;
+	
+
 	@FXML
 	private TextField txtRaceURL;
 	@FXML
 	private TextField txtRaceURL1;
+	@FXML
+	private TextField txtRaceURL2;
+	@FXML
+	private TextField txtRaceURL3;
+	@FXML
+	private TextField txtRaceURL4;
+	@FXML
+	private TextField txtRaceURL5;
+	@FXML
+	private TextField txtRaceURL6;
+	@FXML
+	private TextField txtRaceURL7;
 	
 	@FXML
 	private Button buttonOpenRace;
 	@FXML
 	private Button buttonOpenRace1;
+	@FXML
+	private Button buttonOpenRace2;
+	@FXML
+	private Button buttonOpenRace3;
+	@FXML
+	private Button buttonOpenRace4;
+	@FXML
+	private Button buttonOpenRace5;
+	@FXML
+	private Button buttonOpenRace6;
+	@FXML
+	private Button buttonOpenRace7;
 	
 
+	@FXML
+	private Label labelRace;
+	@FXML
+	private Label labelRace1;
+	@FXML
+	private Label labelRace2;
+	@FXML
+	private Label labelRace3;
+	@FXML
+	private Label labelRace4;
+	@FXML
+	private Label labelRace5;
+	@FXML
+	private Label labelRace6;
+	@FXML
+	private Label labelRace7;
+	
 	@FXML
 	private TextField txtThisRaceURL;
 	@FXML
@@ -309,10 +379,11 @@ public class SampleController {
 		pastMaxPace.setCellValueFactory(new PropertyValueFactory<HorseData, String>("pastMaxPace"));
 		pastMaxSpeedLast.setCellValueFactory(new PropertyValueFactory<HorseData, String>("pastMaxSpeedLast"));
 
-		TextField[] arrayPaddockURL = new TextField[]{txtPaddockURL,txtPaddockURL1};
-		Button[] arrayPaddockButton = new Button[]{buttonOpenPaddock,buttonOpenPaddock1};
-		TextField[] arrayRaceURL = new TextField[]{txtRaceURL,txtRaceURL1};
-		Button[] arrayRaceButton = new Button[]{buttonOpenRace,buttonOpenRace1};
+		TextField[] arrayPaddockURL = new TextField[]{txtPaddockURL,txtPaddockURL1,txtPaddockURL2,txtPaddockURL3,txtPaddockURL4,txtPaddockURL5,txtPaddockURL6,txtPaddockURL7};
+		Button[] arrayPaddockButton = new Button[]{buttonOpenPaddock,buttonOpenPaddock1,buttonOpenPaddock2,buttonOpenPaddock3,buttonOpenPaddock4,buttonOpenPaddock5,buttonOpenPaddock6,buttonOpenPaddock7};
+		TextField[] arrayRaceURL = new TextField[]{txtRaceURL,txtRaceURL1,txtRaceURL2,txtRaceURL3,txtRaceURL4,txtRaceURL5,txtRaceURL6,txtRaceURL7};
+		Button[] arrayRaceButton = new Button[]{buttonOpenRace,buttonOpenRace1,buttonOpenRace2,buttonOpenRace3,buttonOpenRace4,buttonOpenRace5,buttonOpenRace6,buttonOpenRace7};
+		Label[] arrayRaceLabel = new Label[]{labelRace,labelRace1,labelRace2,labelRace3,labelRace4,labelRace5,labelRace6,labelRace7};
 		try {
 			table.getItems().clear(); 
 			ClearText();
@@ -503,10 +574,12 @@ public class SampleController {
 							HorseDB hdb = new HorseDB();
 							hdb.create();
 							String[] horseText = hdb.returnPastRace(h.name, raceID);
+							String address = "https://www.keibalab.jp" + horseURLElements.get(i).attr("href");
+
 							if(!raceExist || horseText[0].isEmpty() || 
 									LocalDate.parse(labelRaceDate.getText(), DateTimeFormatter.ofPattern("yyyy/[]M/[]d"))
 									.isBefore(LocalDate.parse(horseText[0].split(" ")[0], DateTimeFormatter.ofPattern("yyyy/[]M/[]d")).plusDays(1)) ) {
-								String address = "https://www.keibalab.jp" + horseURLElements.get(i).attr("href");
+
 								Document horseData = Jsoup.connect(address).get();
 								String pastRace = "";
 								Elements HorseElements = horseData.select(".sortobject tr");
@@ -596,7 +669,7 @@ public class SampleController {
 								if(horseString.get(19).equals("B")) {
 									horseString.remove(19);
 								}
-								SetTable(h, horseString, strArray[h.number] +  h.pastRace , horseConditionString);
+								SetTable(h, horseString, strArray[h.number] +  h.pastRace , horseConditionString, address);
 								Thread.sleep(3000);
 							}
 							else 
@@ -611,7 +684,7 @@ public class SampleController {
 
 
 								
-								SetTable(h, horseString, horseText[0], horseConditionString);}
+								SetTable(h, horseString, horseText[0], horseConditionString, address);}
 						}
 						catch(Exception e) {
 
@@ -633,58 +706,44 @@ public class SampleController {
 		 table.getSelectionModel().selectedItemProperty().addListener((observable, oldVal, newVal) ->
 	        {
 
-	        	String dateText = newVal.getDate();
-	        	String stageText = newVal.getRaceStage();
-	        	String rangeText = newVal.getRange();
-	        	String nameText;
-	        	if(newVal.getRaceName().contains("(")) {
-	        		String[] nameArray = toHalfWidth(newVal.getRaceName()).split("\\(");
-	        		nameText = nameArray[0].replace("Ｓ", "ステークス");
-	        		nameText = nameArray[0].replace("ＴＶ", "テレビ杯");
-	        	}
-	        	else 
-	        	{
-	        		nameText = toHalfWidth(newVal.getRaceName()).replace("Ｓ", "ステークス");
-	        		nameText = toHalfWidth(newVal.getRaceName()).replace("ＴＶ", "テレビ杯");
-	        	}
+	        	String horseAddress = newVal.getAddress();
+	        	String horseDate= newVal.getDate();
 				try {
 					for(int i = 0; i < arrayPaddockURL.length; i++) {
 						arrayPaddockURL[i].setText("");
 						arrayRaceURL[i].setText("");
 					}
-					Document laboDoc = Jsoup.connect("https://www.keibalab.jp/db/race/" + dateText.substring(0,10).replace("/","")).get();
-					Elements stageel = laboDoc.select(".table-striped.std11");
-					String[] singleStageel = new String[2];
-					for(int i = 0; i < stageel.size(); i++) {
-						if(stageel.get(i).text().contains(stageText.substring(2,4)))
-						{
-							singleStageel = stageel.get(i).text().split("頭");
-							break;
+					Document laboDoc = Jsoup.connect(horseAddress).get();
+					Elements roundel = laboDoc.select(".sortobject td");
+					Elements stageel = laboDoc.select(".sortobject a");
+					int cnt = 0;
+					int rowCnt = 0;
+					for(int i =0 ; i < stageel.size(); i++) {
+						if(stageel.get(i).attr("href").contains("/db/race/")){
+							System.out.println(roundel.get(cnt*25 + 1).text());
+							 if(Util.returnDateCompare(horseDate.replace("/",""), stageel.get(i).attr("href").split("/")[3].substring(0,8))) {
+								String dateText = stageel.get(i).attr("href").split("/")[3];
+								String dayText = "0";
+								if(roundel.get(cnt*25 + 1).text().length() == 6 && Util.isNumber(Util.raceURL.get(roundel.get(cnt*25 + 1).text().substring(4,6)))) {
+									dayText = Util.raceURL.get(roundel.get(cnt*25 + 1).text().substring(4,6));
+								}
+								else {
+									dayText = Util.raceURL.get(roundel.get(cnt*25 + 1).text().substring(4,5));
+								}
+								arrayPaddockURL[rowCnt].setText("https://regist.prc.jp/api/windowopen.aspx?target=race/"
+					        			 + dateText.substring(0,4) + "/" + dateText.substring(0,8) + "/" + dateText.substring(2,4) + Util.raceURL.get(dateText.substring(9,10)) 
+					        			 + Util.raceURL.get(roundel.get(cnt*25 + 1).text().split("回")[0]) + dayText + Util.raceURL.get(dateText.substring(11,12))
+					        	 + "_p&quality=1");
+									arrayRaceURL[rowCnt].setText("https://regist.prc.jp/api/windowopen.aspx?target=race/"
+						        			 + dateText.substring(0,4) + "/" + dateText.substring(0,8) + "/" + dateText.substring(2,4) + Util.raceURL.get(dateText.substring(9,10)) 
+						        			 + Util.raceURL.get(roundel.get(cnt*25 + 1).text().split("回")[0]) + dayText + Util.raceURL.get(dateText.substring(11,12))
+						        	 + "&quality=1");
+									rowCnt++;
+							}
+							cnt++;
 						}
 					}
 
-					ArrayList<Integer> raceCnt = new ArrayList<Integer>();
-					
-					
-
-					for(int i = 0; i < singleStageel.length; i++) {
-						if(singleStageel[i].contains(nameText) && singleStageel[i].contains(rangeText))
-						{
-							raceCnt.add(i + 1);
-						}
-					}
-
-					for(int i = 0; i < raceCnt.size(); i++) {
-						arrayPaddockURL[i].setText("https://regist.prc.jp/api/windowopen.aspx?target=race/"
-		        			 + dateText.substring(0,4) + "/" + dateText.substring(0,10).replace("/", "") + "/" + dateText.substring(2,4) + Util.stageURL.get(stageText.substring(2,4)) 
-		        			 + Util.raceURL.get(stageText.substring(0,1)) + Util.raceURL.get(stageText.substring(4,stageText.length())) + Util.raceURL.get(raceCnt.get(i).toString())
-		        	 + "_p&quality=1");
-						arrayRaceURL[i].setText("https://regist.prc.jp/api/windowopen.aspx?target=race/"
-			        			 + dateText.substring(0,4) + "/" + dateText.substring(0,10).replace("/", "") + "/" + dateText.substring(2,4) + Util.stageURL.get(stageText.substring(2,4)) 
-			        			 + Util.raceURL.get(stageText.substring(0,1)) + Util.raceURL.get(stageText.substring(4,stageText.length())) + Util.raceURL.get(raceCnt.get(i).toString())
-			        	 + "&quality=1");
-					}
-					
 				} catch (IOException e) {
 					// TODO 自動生成された catch ブロック
 					e.printStackTrace();
@@ -707,10 +766,8 @@ public class SampleController {
 		  return sb.toString();
 		}
 	
-	private void SetTable(Horse h, List<String>horseString, String horseText, List<String>pastRaceCondition) {
-
-		table.getItems().add(new HorseData(strArray[h.number],h.name,RacePointCheck(horseText, h),horseString,pastRaceCondition,raceRange, labelRaceRange.getText()));
-
+	private void SetTable(Horse h, List<String>horseString, String horseText, List<String>pastRaceCondition, String address) {
+		table.getItems().add(new HorseData(strArray[h.number],h.name,RacePointCheck(horseText, h),horseString,pastRaceCondition,raceRange, labelRaceRange.getText(),address));
 		
 	}
 	private String RacePointCheck(String s, Horse h) 

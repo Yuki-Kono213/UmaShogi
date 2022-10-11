@@ -30,6 +30,7 @@ public class HorseData
 	private String analysis;
 	private String goodRace;
 	private String pastRace;
+	private String address;
 
 	private String glassGoodRaceResult;
 	private String glassBitHeavyRaceResult;
@@ -50,7 +51,7 @@ public class HorseData
 	private int score;
 	double timeHosei;
 	
-	  public HorseData(String no, String name, String analysis, List<String> horseString, List<String>pastRaceCondition, int raceRange, String maxRaceField) {
+	  public HorseData(String no, String name, String analysis, List<String> horseString, List<String>pastRaceCondition, int raceRange, String maxRaceField, String address) {
 
 			 this.no = no;
 			 this.name = name;
@@ -95,6 +96,7 @@ public class HorseData
 			 this.pastMaxSpeed = pastRaceCondition.get(8);
 			 this.pastMaxPace = pastRaceCondition.get(9);
 			 this.pastMaxSpeedLast = pastRaceCondition.get(10);
+			 this.address = address;
 			 calcIndex(raceRange, maxRaceField);
 	  }
 	  
@@ -261,6 +263,8 @@ public class HorseData
 	}
 		
 	  /* getter,setterがないとTableViewに反映されない */
+	  public String getAddress(){ return address; }
+	  public void setAddress(String address){ this.address = address; }
 	  public String getNo(){ return no; }
 	  public void setNo(String no){ this.no = no; }
 	  public String getName(){ return name; }
