@@ -306,6 +306,13 @@ public class SampleController {
 			"⑳"
 
 	};
+	
+
+	TextField[] arrayPaddockURL = new TextField[]{txtPaddockURL,txtPaddockURL1,txtPaddockURL2,txtPaddockURL3,txtPaddockURL4,txtPaddockURL5,txtPaddockURL6,txtPaddockURL7};
+	Button[] arrayPaddockButton = new Button[]{buttonOpenPaddock,buttonOpenPaddock1,buttonOpenPaddock2,buttonOpenPaddock3,buttonOpenPaddock4,buttonOpenPaddock5,buttonOpenPaddock6,buttonOpenPaddock7};
+	TextField[] arrayRaceURL = new TextField[]{txtRaceURL,txtRaceURL1,txtRaceURL2,txtRaceURL3,txtRaceURL4,txtRaceURL5,txtRaceURL6,txtRaceURL7};
+	Button[] arrayRaceButton = new Button[]{buttonOpenRace,buttonOpenRace1,buttonOpenRace2,buttonOpenRace3,buttonOpenRace4,buttonOpenRace5,buttonOpenRace6,buttonOpenRace7};
+	Label[] arrayRaceLabel = new Label[]{labelRace,labelRace1,labelRace2,labelRace3,labelRace4,labelRace5,labelRace6,labelRace7};
 
 	public void GetURL() {
 		
@@ -379,11 +386,6 @@ public class SampleController {
 		pastMaxPace.setCellValueFactory(new PropertyValueFactory<HorseData, String>("pastMaxPace"));
 		pastMaxSpeedLast.setCellValueFactory(new PropertyValueFactory<HorseData, String>("pastMaxSpeedLast"));
 
-		TextField[] arrayPaddockURL = new TextField[]{txtPaddockURL,txtPaddockURL1,txtPaddockURL2,txtPaddockURL3,txtPaddockURL4,txtPaddockURL5,txtPaddockURL6,txtPaddockURL7};
-		Button[] arrayPaddockButton = new Button[]{buttonOpenPaddock,buttonOpenPaddock1,buttonOpenPaddock2,buttonOpenPaddock3,buttonOpenPaddock4,buttonOpenPaddock5,buttonOpenPaddock6,buttonOpenPaddock7};
-		TextField[] arrayRaceURL = new TextField[]{txtRaceURL,txtRaceURL1,txtRaceURL2,txtRaceURL3,txtRaceURL4,txtRaceURL5,txtRaceURL6,txtRaceURL7};
-		Button[] arrayRaceButton = new Button[]{buttonOpenRace,buttonOpenRace1,buttonOpenRace2,buttonOpenRace3,buttonOpenRace4,buttonOpenRace5,buttonOpenRace6,buttonOpenRace7};
-		Label[] arrayRaceLabel = new Label[]{labelRace,labelRace1,labelRace2,labelRace3,labelRace4,labelRace5,labelRace6,labelRace7};
 		try {
 			table.getItems().clear(); 
 			ClearText();
@@ -454,74 +456,8 @@ public class SampleController {
 				raceID = rdb.GetRaceID(textURL.getText());
 				raceExist = false;
 			}
-			arrayPaddockButton[0].setOnAction( new EventHandler<ActionEvent>() {
-			            public void handle(ActionEvent event) {
-			 
-			            	try {
-								new ProcessBuilder("C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe", arrayPaddockURL[0].getText()).start();
-							} catch (IOException e) {
-								// TODO 自動生成された catch ブロック
-								e.printStackTrace();
-							}
-			            }
-			        });
-			arrayPaddockButton[1].setOnAction( new EventHandler<ActionEvent>() {
-	            public void handle(ActionEvent event) {
-	 
-	            	try {
-						new ProcessBuilder("C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe", arrayPaddockURL[1].getText()).start();
-					} catch (IOException e) {
-						// TODO 自動生成された catch ブロック
-						e.printStackTrace();
-					}
-	            }
-	        });
-				
-			arrayRaceButton[0].setOnAction( new EventHandler<ActionEvent>() {
-	            public void handle(ActionEvent event) {
-	 
-	            	try {
-						new ProcessBuilder("C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe", arrayRaceURL[0].getText()).start();
-					} catch (IOException e) {
-						// TODO 自動生成された catch ブロック
-						e.printStackTrace();
-					}
-	            }
-	        });
-			arrayRaceButton[1].setOnAction( new EventHandler<ActionEvent>() {
-		        public void handle(ActionEvent event) {
-		
-		        	try {
-						new ProcessBuilder("C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe", arrayRaceURL[1].getText()).start();
-					} catch (IOException e) {
-						// TODO 自動生成された catch ブロック
-						e.printStackTrace();
-					}
-		        }
-		    });
 			
-			buttonThisRace.setOnAction( new EventHandler<ActionEvent>() {
-	            public void handle(ActionEvent event) {
-	 
-	            	try {
-						new ProcessBuilder("C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe", txtThisRaceURL.getText()).start();
-					} catch (IOException e) {
-						// TODO 自動生成された catch ブロック
-						e.printStackTrace();
-					}
-	            }
-	        });
-			buttonThisPaddock.setOnAction( new EventHandler<ActionEvent>() {
-		        public void handle(ActionEvent event) {
-		
-		        	try {
-						new ProcessBuilder("C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe", txtThisPaddockURL.getText()).start();
-					} catch (IOException e) {
-						// TODO 自動生成された catch ブロック
-						e.printStackTrace();
-					}
-		        }
-		    });
+			SetEventButton();
 			
 			 txtThisPaddockURL.setText("https://regist.prc.jp/api/windowopen.aspx?target=race/"
        			 + labelRaceDate.getText().substring(0,4) + "/" + labelRaceDate.getText().substring(0,10).replace("/", "") + "/" + labelRaceDate.getText().substring(2,4) + Util.stageURL.get(labelRaceStage.getText()) 
@@ -987,6 +923,211 @@ public class SampleController {
 			}
 		}
 
+	}
+	
+	private void SetEventButton() {
+		arrayPaddockButton[0].setOnAction( new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+ 
+            	try {
+					new ProcessBuilder("C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe", arrayPaddockURL[0].getText()).start();
+				} catch (IOException e) {
+					// TODO 自動生成された catch ブロック
+					e.printStackTrace();
+				}
+            }
+        });
+		arrayPaddockButton[1].setOnAction( new EventHandler<ActionEvent>() {
+		    public void handle(ActionEvent event) {
+		
+		    	try {
+					new ProcessBuilder("C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe", arrayPaddockURL[1].getText()).start();
+				} catch (IOException e) {
+					// TODO 自動生成された catch ブロック
+					e.printStackTrace();
+				}
+		    }
+		});
+		arrayPaddockButton[2].setOnAction( new EventHandler<ActionEvent>() {
+		    public void handle(ActionEvent event) {
+		
+		    	try {
+					new ProcessBuilder("C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe", arrayPaddockURL[2].getText()).start();
+				} catch (IOException e) {
+					// TODO 自動生成された catch ブロック
+					e.printStackTrace();
+				}
+		    }
+		});
+		arrayPaddockButton[3].setOnAction( new EventHandler<ActionEvent>() {
+		    public void handle(ActionEvent event) {
+		
+		    	try {
+					new ProcessBuilder("C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe", arrayPaddockURL[3].getText()).start();
+				} catch (IOException e) {
+					// TODO 自動生成された catch ブロック
+					e.printStackTrace();
+				}
+		    }
+		});
+		arrayPaddockButton[4].setOnAction( new EventHandler<ActionEvent>() {
+		    public void handle(ActionEvent event) {
+		
+		    	try {
+					new ProcessBuilder("C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe", arrayPaddockURL[4].getText()).start();
+				} catch (IOException e) {
+					// TODO 自動生成された catch ブロック
+					e.printStackTrace();
+				}
+		    }
+		});
+		arrayPaddockButton[5].setOnAction( new EventHandler<ActionEvent>() {
+		    public void handle(ActionEvent event) {
+		
+		    	try {
+					new ProcessBuilder("C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe", arrayPaddockURL[5].getText()).start();
+				} catch (IOException e) {
+					// TODO 自動生成された catch ブロック
+					e.printStackTrace();
+				}
+		    }
+		});
+		arrayPaddockButton[6].setOnAction( new EventHandler<ActionEvent>() {
+		    public void handle(ActionEvent event) {
+		
+		    	try {
+					new ProcessBuilder("C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe", arrayPaddockURL[6].getText()).start();
+				} catch (IOException e) {
+					// TODO 自動生成された catch ブロック
+					e.printStackTrace();
+				}
+		    }
+		});
+		arrayPaddockButton[7].setOnAction( new EventHandler<ActionEvent>() {
+		    public void handle(ActionEvent event) {
+		
+		    	try {
+					new ProcessBuilder("C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe", arrayPaddockURL[7].getText()).start();
+				} catch (IOException e) {
+					// TODO 自動生成された catch ブロック
+					e.printStackTrace();
+				}
+		    }
+		});
+			
+		arrayRaceButton[0].setOnAction( new EventHandler<ActionEvent>() {
+		    public void handle(ActionEvent event) {
+		
+		    	try {
+					new ProcessBuilder("C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe", arrayRaceURL[0].getText()).start();
+				} catch (IOException e) {
+					// TODO 自動生成された catch ブロック
+					e.printStackTrace();
+				}
+		    }
+		});
+		arrayRaceButton[1].setOnAction( new EventHandler<ActionEvent>() {
+		    public void handle(ActionEvent event) {
+		
+		    	try {
+					new ProcessBuilder("C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe", arrayRaceURL[1].getText()).start();
+				} catch (IOException e) {
+					// TODO 自動生成された catch ブロック
+					e.printStackTrace();
+				}
+		    }
+		});
+		arrayRaceButton[2].setOnAction( new EventHandler<ActionEvent>() {
+		    public void handle(ActionEvent event) {
+		
+		    	try {
+					new ProcessBuilder("C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe", arrayRaceURL[2].getText()).start();
+				} catch (IOException e) {
+					// TODO 自動生成された catch ブロック
+					e.printStackTrace();
+				}
+		    }
+		});
+		arrayRaceButton[3].setOnAction( new EventHandler<ActionEvent>() {
+		    public void handle(ActionEvent event) {
+		
+		    	try {
+					new ProcessBuilder("C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe", arrayRaceURL[3].getText()).start();
+				} catch (IOException e) {
+					// TODO 自動生成された catch ブロック
+					e.printStackTrace();
+				}
+		    }
+		});
+		arrayRaceButton[4].setOnAction( new EventHandler<ActionEvent>() {
+		    public void handle(ActionEvent event) {
+		
+		    	try {
+					new ProcessBuilder("C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe", arrayRaceURL[4].getText()).start();
+				} catch (IOException e) {
+					// TODO 自動生成された catch ブロック
+					e.printStackTrace();
+				}
+		    }
+		});
+		arrayRaceButton[5].setOnAction( new EventHandler<ActionEvent>() {
+		    public void handle(ActionEvent event) {
+		
+		    	try {
+					new ProcessBuilder("C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe", arrayRaceURL[5].getText()).start();
+				} catch (IOException e) {
+					// TODO 自動生成された catch ブロック
+					e.printStackTrace();
+				}
+		    }
+		});
+		arrayRaceButton[6].setOnAction( new EventHandler<ActionEvent>() {
+		    public void handle(ActionEvent event) {
+		
+		    	try {
+					new ProcessBuilder("C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe", arrayRaceURL[6].getText()).start();
+				} catch (IOException e) {
+					// TODO 自動生成された catch ブロック
+					e.printStackTrace();
+				}
+		    }
+		});
+		arrayRaceButton[7].setOnAction( new EventHandler<ActionEvent>() {
+		    public void handle(ActionEvent event) {
+		
+		    	try {
+					new ProcessBuilder("C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe", arrayRaceURL[7].getText()).start();
+				} catch (IOException e) {
+					// TODO 自動生成された catch ブロック
+					e.printStackTrace();
+				}
+		    }
+		});
+		
+
+		buttonThisRace.setOnAction( new EventHandler<ActionEvent>() {
+            public void handle(ActionEvent event) {
+ 
+            	try {
+					new ProcessBuilder("C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe", txtThisRaceURL.getText()).start();
+				} catch (IOException e) {
+					// TODO 自動生成された catch ブロック
+					e.printStackTrace();
+				}
+            }
+        });
+		buttonThisPaddock.setOnAction( new EventHandler<ActionEvent>() {
+	        public void handle(ActionEvent event) {
+	
+	        	try {
+					new ProcessBuilder("C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe", txtThisPaddockURL.getText()).start();
+				} catch (IOException e) {
+					// TODO 自動生成された catch ブロック
+					e.printStackTrace();
+				}
+	        }
+	    });
+		
 	}
 
 }
