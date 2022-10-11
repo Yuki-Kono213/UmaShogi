@@ -720,7 +720,6 @@ public class SampleController {
 					int rowCnt = 0;
 					for(int i =0 ; i < stageel.size(); i++) {
 						if(stageel.get(i).attr("href").contains("/db/race/")){
-							System.out.println(roundel.get(cnt*25 + 1).text());
 							 if(Util.returnDateCompare(horseDate.replace("/",""), stageel.get(i).attr("href").split("/")[3].substring(0,8))) {
 								String dateText = stageel.get(i).attr("href").split("/")[3];
 								String dayText = "0";
@@ -731,14 +730,15 @@ public class SampleController {
 									dayText = Util.raceURL.get(roundel.get(cnt*25 + 1).text().substring(4,5));
 								}
 								arrayPaddockURL[rowCnt].setText("https://regist.prc.jp/api/windowopen.aspx?target=race/"
-					        			 + dateText.substring(0,4) + "/" + dateText.substring(0,8) + "/" + dateText.substring(2,4) + Util.raceURL.get(dateText.substring(9,10)) 
-					        			 + Util.raceURL.get(roundel.get(cnt*25 + 1).text().split("回")[0]) + dayText + Util.raceURL.get(dateText.substring(11,12))
+					        			 + dateText.substring(0,4) + "/" + dateText.substring(0,8) + "/" + dateText.substring(2,4) + Util.raceURL.get(dateText.substring(8,10)) 
+					        			 + Util.raceURL.get(roundel.get(cnt*25 + 1).text().split("回")[0]) + dayText + Util.raceURL.get(dateText.substring(10,12))
 					        	 + "_p&quality=1");
 									arrayRaceURL[rowCnt].setText("https://regist.prc.jp/api/windowopen.aspx?target=race/"
-						        			 + dateText.substring(0,4) + "/" + dateText.substring(0,8) + "/" + dateText.substring(2,4) + Util.raceURL.get(dateText.substring(9,10)) 
-						        			 + Util.raceURL.get(roundel.get(cnt*25 + 1).text().split("回")[0]) + dayText + Util.raceURL.get(dateText.substring(11,12))
+						        			 + dateText.substring(0,4) + "/" + dateText.substring(0,8) + "/" + dateText.substring(2,4) + Util.raceURL.get(dateText.substring(8,10)) 
+						        			 + Util.raceURL.get(roundel.get(cnt*25 + 1).text().split("回")[0]) + dayText + Util.raceURL.get(dateText.substring(10,12))
 						        	 + "&quality=1");
 									rowCnt++;
+									System.out.println(dateText);
 							}
 							cnt++;
 						}
