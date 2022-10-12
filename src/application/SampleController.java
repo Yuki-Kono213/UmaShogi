@@ -208,6 +208,23 @@ public class SampleController {
 	private TextField txtRaceURL6;
 	@FXML
 	private TextField txtRaceURL7;
+
+	@FXML
+	private TextField txtResultURL;
+	@FXML
+	private TextField txtResultURL1;
+	@FXML
+	private TextField txtResultURL2;
+	@FXML
+	private TextField txtResultURL3;
+	@FXML
+	private TextField txtResultURL4;
+	@FXML
+	private TextField txtResultURL5;
+	@FXML
+	private TextField txtResultURL6;
+	@FXML
+	private TextField txtResultURL7;
 	
 	@FXML
 	private Button buttonOpenRace;
@@ -313,6 +330,7 @@ public class SampleController {
 	TextField[] arrayRaceURL;
 	Button[] arrayRaceButton;
 	Label[] arrayRaceLabel;
+	TextField[] arrayResultURL;
 
 	public void GetURL() {
 		
@@ -461,6 +479,7 @@ public class SampleController {
 			arrayRaceURL = new TextField[]{txtRaceURL,txtRaceURL1,txtRaceURL2,txtRaceURL3,txtRaceURL4,txtRaceURL5,txtRaceURL6,txtRaceURL7};
 			arrayRaceButton = new Button[]{buttonOpenRace,buttonOpenRace1,buttonOpenRace2,buttonOpenRace3,buttonOpenRace4,buttonOpenRace5,buttonOpenRace6,buttonOpenRace7};
 			arrayRaceLabel = new Label[]{labelRace,labelRace1,labelRace2,labelRace3,labelRace4,labelRace5,labelRace6,labelRace7};
+			arrayResultURL = new TextField[]{txtResultURL,txtResultURL1,txtResultURL2,txtResultURL3,txtResultURL4,txtResultURL5,txtResultURL6,txtResultURL7};
 			
 			SetEventButton();
 			
@@ -653,6 +672,7 @@ public class SampleController {
 					for(int i = 0; i < arrayPaddockURL.length; i++) {
 						arrayPaddockURL[i].setText("");
 						arrayRaceURL[i].setText("");
+						arrayResultURL[i].setText("");
 					}
 					Document laboDoc = Jsoup.connect(horseAddress).get();
 					Elements roundel = laboDoc.select(".sortobject td");
@@ -679,8 +699,9 @@ public class SampleController {
 						        			 + dateText.substring(0,4) + "/" + dateText.substring(0,8) + "/" + dateText.substring(2,4) + Util.raceURL.get(dateText.substring(8,10)) 
 						        			 + Util.raceURL.get(roundel.get(cnt*25 + 1).text().split("回")[0]) + dayText + Util.raceURL.get(dateText.substring(10,12))
 						        	 + "&quality=1");
+									arrayResultURL[rowCnt].setText("https://www.keibalab.jp" + stageel.get(i).attr("href"));
 									rowCnt++;
-									System.out.println(dateText);
+									
 							}
 							cnt++;
 						}
