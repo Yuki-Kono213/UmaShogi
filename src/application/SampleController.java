@@ -308,11 +308,11 @@ public class SampleController {
 	};
 	
 
-	TextField[] arrayPaddockURL = new TextField[]{txtPaddockURL,txtPaddockURL1,txtPaddockURL2,txtPaddockURL3,txtPaddockURL4,txtPaddockURL5,txtPaddockURL6,txtPaddockURL7};
-	Button[] arrayPaddockButton = new Button[]{buttonOpenPaddock,buttonOpenPaddock1,buttonOpenPaddock2,buttonOpenPaddock3,buttonOpenPaddock4,buttonOpenPaddock5,buttonOpenPaddock6,buttonOpenPaddock7};
-	TextField[] arrayRaceURL = new TextField[]{txtRaceURL,txtRaceURL1,txtRaceURL2,txtRaceURL3,txtRaceURL4,txtRaceURL5,txtRaceURL6,txtRaceURL7};
-	Button[] arrayRaceButton = new Button[]{buttonOpenRace,buttonOpenRace1,buttonOpenRace2,buttonOpenRace3,buttonOpenRace4,buttonOpenRace5,buttonOpenRace6,buttonOpenRace7};
-	Label[] arrayRaceLabel = new Label[]{labelRace,labelRace1,labelRace2,labelRace3,labelRace4,labelRace5,labelRace6,labelRace7};
+	TextField[] arrayPaddockURL;
+	Button[] arrayPaddockButton;
+	TextField[] arrayRaceURL;
+	Button[] arrayRaceButton;
+	Label[] arrayRaceLabel;
 
 	public void GetURL() {
 		
@@ -456,6 +456,11 @@ public class SampleController {
 				raceID = rdb.GetRaceID(textURL.getText());
 				raceExist = false;
 			}
+			arrayPaddockURL = new TextField[]{txtPaddockURL,txtPaddockURL1,txtPaddockURL2,txtPaddockURL3,txtPaddockURL4,txtPaddockURL5,txtPaddockURL6,txtPaddockURL7};
+			arrayPaddockButton = new Button[]{buttonOpenPaddock,buttonOpenPaddock1,buttonOpenPaddock2,buttonOpenPaddock3,buttonOpenPaddock4,buttonOpenPaddock5,buttonOpenPaddock6,buttonOpenPaddock7};
+			arrayRaceURL = new TextField[]{txtRaceURL,txtRaceURL1,txtRaceURL2,txtRaceURL3,txtRaceURL4,txtRaceURL5,txtRaceURL6,txtRaceURL7};
+			arrayRaceButton = new Button[]{buttonOpenRace,buttonOpenRace1,buttonOpenRace2,buttonOpenRace3,buttonOpenRace4,buttonOpenRace5,buttonOpenRace6,buttonOpenRace7};
+			arrayRaceLabel = new Label[]{labelRace,labelRace1,labelRace2,labelRace3,labelRace4,labelRace5,labelRace6,labelRace7};
 			
 			SetEventButton();
 			
@@ -665,6 +670,7 @@ public class SampleController {
 								else {
 									dayText = Util.raceURL.get(roundel.get(cnt*25 + 1).text().substring(4,5));
 								}
+								arrayRaceLabel[rowCnt].setText(roundel.get(cnt*25 + 12).text());
 								arrayPaddockURL[rowCnt].setText("https://regist.prc.jp/api/windowopen.aspx?target=race/"
 					        			 + dateText.substring(0,4) + "/" + dateText.substring(0,8) + "/" + dateText.substring(2,4) + Util.raceURL.get(dateText.substring(8,10)) 
 					        			 + Util.raceURL.get(roundel.get(cnt*25 + 1).text().split("回")[0]) + dayText + Util.raceURL.get(dateText.substring(10,12))
