@@ -684,7 +684,7 @@ public class SampleController {
 							 if(Util.returnDateCompare(horseDate.replace("/",""), stageel.get(i).attr("href").split("/")[3].substring(0,8))) {
 								String dateText = stageel.get(i).attr("href").split("/")[3];
 								String dayText = "0";
-								if(roundel.get(cnt*25 + 1).text().length() == 6 && Util.isNumber(Util.raceURL.get(roundel.get(cnt*25 + 1).text().substring(4,6)))) {
+								if(roundel.get(cnt*25 + 1).text().length() == 6 && Util.isNumber(roundel.get(cnt*25 + 1).text().substring(4,6))) {
 									dayText = Util.raceURL.get(roundel.get(cnt*25 + 1).text().substring(4,6));
 								}
 								else {
@@ -700,7 +700,11 @@ public class SampleController {
 						        			 + Util.raceURL.get(roundel.get(cnt*25 + 1).text().split("回")[0]) + dayText + Util.raceURL.get(dateText.substring(10,12))
 						        	 + "&quality=1");
 									arrayResultURL[rowCnt].setText("https://www.keibalab.jp" + stageel.get(i).attr("href"));
+									
 									rowCnt++;
+									if(rowCnt == arrayRaceURL.length) {
+										break;
+									}
 									
 							}
 							cnt++;
