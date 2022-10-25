@@ -69,6 +69,25 @@ public class Util {
 		}
 	};
 	
+	private static Map<String,String> tihouStageURL = new HashMap<>(){
+		{
+			put("帯広", "0");
+			put("門別", "0");
+			put("盛岡", "0");
+			put("水沢", "0");
+			put("浦和", "0");
+			put("船橋", "0");
+			put("大井", "0");
+			put("川崎", "0");
+			put("金沢", "0");
+			put("笠松", "0");
+			put("名古屋", "0");
+			put("園田", "0");
+			put("姫路", "0");
+			put("高知", "0");
+			put("佐賀", "0");
+		}
+	};
 	
 	public static Map<String,String> stageKeibaRaboURL = new HashMap<>(){
 		{
@@ -128,7 +147,33 @@ public class Util {
 	};
 	
 
+	public static boolean returnDicExist(String name, int cnt) {
+		try {
+			System.out.println(name);
+			if(stageURL.get(name) != null) {
+				return true;
+			}
+			else {
+				return false;
+			}
+		} catch (Exception nfex) {
+			return false;
+		}
+	}
 
+	public static boolean returnLocalDicExist(String name, int cnt) {
+		try {
+			if(tihouStageURL.get(name) == "0") {
+				return true;
+			}
+			else {
+				return false;
+			}
+		} catch (Exception nfex) {
+			return false;
+		}
+	}
+	
 	public static boolean isNumber(String val) {
 		try {
 			Integer.parseInt(val);
@@ -139,7 +184,7 @@ public class Util {
 	}
 	
 	public static boolean returnDateCompare(String raceDate,  String targetDate) {
-			if(Integer.parseInt(raceDate) >= Integer.parseInt(targetDate)) {
+			if(Integer.parseInt(raceDate) > Integer.parseInt(targetDate)) {
 				return true;
 			}
 			else {
