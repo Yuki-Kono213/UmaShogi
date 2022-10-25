@@ -699,7 +699,7 @@ public class SampleController {
 						        			 + dateText.substring(0,4) + "/" + dateText.substring(0,8) + "/" + dateText.substring(2,4) + Util.raceURL.get(dateText.substring(8,10)) 
 						        			 + Util.raceURL.get(roundel.get(cnt*25 + 1).text().split("回")[0]) + dayText + Util.raceURL.get(dateText.substring(10,12))
 						        	 + "&quality=1");
-									arrayResultURL[rowCnt].setText("https://www.keibalab.jp" + stageel.get(i).attr("href"));
+									arrayResultURL[rowCnt].setText("https://www.keibalab.jp" + stageel.get(i).attr("href") + "umabashira.html");
 									
 									rowCnt++;
 									if(rowCnt == arrayRaceURL.length) {
