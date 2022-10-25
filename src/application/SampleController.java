@@ -535,7 +535,6 @@ public class SampleController {
 							hdb.create();
 							String[] horseText = hdb.returnPastRace(h.name, raceID);
 							String address = "https://www.keibalab.jp" + horseURLElements.get(i).attr("href");
-
 							if(!raceExist || horseText[0].isEmpty() || 
 									LocalDate.parse(labelRaceDate.getText(), DateTimeFormatter.ofPattern("yyyy/[]M/[]d"))
 									.isBefore(LocalDate.parse(horseText[0].split(" ")[0], DateTimeFormatter.ofPattern("yyyy/[]M/[]d")).plusDays(1)) ) {
@@ -626,7 +625,7 @@ public class SampleController {
 								List<String> horseString = new ArrayList<String>(Arrays.asList(h.pastRace.split(" ")));
 								List<String> horseConditionString = new ArrayList<String>(Arrays.asList(h.pastRaceCondition.split("[ ]+")));
 								
-								if(horseString.get(19).equals("B")) {
+								if(horseString.size() > 18 && horseString.get(19).equals("B")) {
 									horseString.remove(19);
 								}
 								SetTable(h, horseString, strArray[h.number] +  h.pastRace , horseConditionString, address);
@@ -638,7 +637,7 @@ public class SampleController {
 								List<String> horseString = new ArrayList<String>(Arrays.asList(horseText[0].split(" ")));
 								List<String> horseConditionString = new ArrayList<String>(Arrays.asList(horseText[1].split("[ ]+")));
 								
-								if(horseString.get(19).equals("B")) {
+								if(horseString.size() > 18 && horseString.get(19).equals("B")) {
 									horseString.remove(19);
 								}
 
@@ -680,8 +679,9 @@ public class SampleController {
 					int cnt = 0;
 					int rowCnt = 0;
 					for(int i =0 ; i < stageel.size(); i++) {
-						if(stageel.get(i).attr("href").contains("/db/race/") && cnt * 25 + 25 < roundel.size() && !Util.returnLocalDicExist(roundel.get(cnt * 25 + 1).text(),cnt)
-								&& Util.returnDicExist(roundel.get(cnt * 25 + 1).text().split("回")[1].substring(0,2),cnt)){
+						if(stageel.get(i).attr("href").contains("/db/race/") && cnt * 25 < roundel.size() && !Util.returnLocalDicExist(roundel.get(cnt * 25 + 1).text(),cnt)
+								&& roundel.get(cnt * 25 + 1).text().split("回")[1].length() > 1
+										&& Util.returnDicExist(roundel.get(cnt * 25 + 1).text().split("回")[1].substring(0,2),cnt)){
 							
 							 if(Util.returnDateCompare(horseDate.replace("/",""), stageel.get(i).attr("href").split("/")[3].substring(0,8))) {
 								String dateText = stageel.get(i).attr("href").split("/")[3];
@@ -711,25 +711,30 @@ public class SampleController {
 							}
 							cnt++;
 						}
-						else if (cnt * 25 + 25 < roundel.size() && Util.returnLocalDicExist(roundel.get(cnt * 25 + 1).text(),cnt)){
-							boolean flag = true;
-							while(flag) {
-								if( i + 1 < stageel.size() && stageel.get(i).attr("href").split("/")[2].contains("race")) {
-
-									cnt++;
-									System.out.println( stageel.get(i).attr("href") + i + " " + cnt  + " "+ roundel.get(cnt*25 + 1).text());
-								
-									if(Util.returnDateCompare(horseDate.replace("/",""), stageel.get(i).attr("href").split("/")[3].substring(0,8))){
+						else if (cnt * 25 < roundel.size() && Util.returnLocalDicExist(roundel.get(cnt * 25 + 1).text(),cnt)){
+							if( i + 1 < stageel.size() && stageel.get(i).attr("href").split("/")[2].contains("race") && Util.returnDateCompare(horseDate.replace("/",""), stageel.get(i).attr("href").split("/")[3].substring(0,8))) {
+								boolean flag = true;
+								while(flag) {
+									if( i + 1 < stageel.size() && stageel.get(i).attr("href").split("/")[2].contains("race")) {
+	
+										cnt++;
+									
+										if(Util.returnDateCompare(horseDate.replace("/",""), stageel.get(i).attr("href").split("/")[3].substring(0,8))){
+											i--;
+											break;
+			 							}
+										
+									}
+									else if(i + 1 == stageel.size())
+									{
 										i--;
 										break;
-		 							}
-									
+									}
+									i++;
 								}
-								else if(i + 1 == stageel.size())
-								{
-									break;
-								}
-								i++;
+							}
+							else {
+								cnt++;
 							}
 						}
 					}
