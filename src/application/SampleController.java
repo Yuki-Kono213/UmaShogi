@@ -597,7 +597,7 @@ public class SampleController {
 										}
 										
 										if(LocalDate.parse(HorseElements.get(i2).text().split(" ")[0],DateTimeFormatter.ofPattern("yyyy/[]M/[]d")).isAfter(LocalDate.parse(labelRaceDate.getText(), DateTimeFormatter.ofPattern("yyyy/[]M/[]d")).minusYears(1)) && HorseElements.get(i2).text().split(" ")[2].equals(labelRaceRange.getText().substring(0,5))
-												&&  (pastMaxGoodTime.equals("一年未走") || (!pastMaxGoodTime.equals("一年未走") && CalcTime(pastMaxGoodTime, HorseElements.get(i2).text().split(" ")[13], HorseElements.get(i2).text().split(" ")[4],pastMaxGoodLast)))) {
+												&&  (pastMaxGoodTime.equals("一年未走") || (!pastMaxGoodTime.equals("一年未走") && CalcTime(pastMaxGoodTime, HorseElements.get(i2).text().split(" ")[13], HorseElements.get(i2).text().split(" ")[4],pastMaxGoodTime)))) {
 											pastMaxGoodTime = HorseElements.get(i2).text().split(" ")[13] + HorseElements.get(i2).text().split(" ")[4] + HorseElements.get(i2).text().split(" ")[1];
 											
 											pastMaxGoodPace = HorseElements.get(i2).text().split(" ")[15] + HorseElements.get(i2).text().split(" ")[16] + HorseElements.get(i2).text().split(" ")[17] ;
@@ -843,10 +843,8 @@ public class SampleController {
 		if((max.contains("0") || max.contains("1") || max.contains("2") || max.contains("3"))) {
 			int maxTime = Integer.parseInt(max.substring(0,1)) * 600 +  Integer.parseInt(max.substring(2,4)) * 10 + Integer.parseInt(max.substring(5,6));
 			int newTime = Integer.parseInt(newRace.substring(0,1)) * 600 +  Integer.parseInt(newRace.substring(2,4)) * 10 + Integer.parseInt(newRace.substring(5,6));
-			
+
 			if((newTime < maxTime && newCondition.contains("良")) || (newCondition.contains("良") && !oldCondition.contains("良"))) {
-				System.out.println("new" + newCondition);
-				System.out.println("old" + oldCondition);
 				return true;
 			}
 		}
