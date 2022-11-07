@@ -271,7 +271,11 @@ public class SampleController {
 	@FXML
 	private Button buttonThisPaddock;
 	
-
+	@FXML
+	private TextField txtPay;
+	
+	@FXML
+	private TextField txtReturn;
 
 
 	public void ClearText() 
@@ -296,7 +300,18 @@ public class SampleController {
 
 	public void SaveRace() 
 	{
+		RaceDB rdb = new RaceDB();
 
+		rdb.UseRaceDataBase( new String[] {"update",rdm.RaceName, rdm.RaceURL, txtPay.getText(), txtReturn.getText()});
+		
+		rdm.payCash = Integer.parseInt(txtPay.getText());
+		rdm.returnCash = Integer.parseInt(txtReturn.getText());
+	}	 
+	public void ViewRace() 
+	{
+		txtPay.setText(String.valueOf(rdm.payCash));
+		txtReturn.setText(String.valueOf(rdm.returnCash));
+		
 
 	}
 	String[] strArray = {
@@ -332,6 +347,7 @@ public class SampleController {
 	Label[] arrayRaceLabel;
 	TextField[] arrayResultURL;
 
+	private RaceDataManager rdm;
 	public void GetURL() {
 		
 
@@ -407,7 +423,6 @@ public class SampleController {
 		try {
 			table.getItems().clear(); 
 			ClearText();
-			System.out.println(textURL.getText(textURL.getText().length() - 1, textURL.getText().length()));
 			// jsoupを使用して当ブログのトップページへアクセス
 			if(textURL.getText(textURL.getText().length() - 1, textURL.getText().length()).equals("/")) 
 			{
@@ -455,25 +470,44 @@ public class SampleController {
 			}
 			
 			RaceDB rdb = new RaceDB();
-			Integer raceID = rdb.GetRaceID(textURL.getText());
+			rdm = new RaceDataManager(); 
 			boolean raceExist = true;
+			Integer[]raceData = rdb.GetRaceID(textURL.getText());
+
+			rdm.RaceURL = textURL.getText();
+			rdm.RaceName = labelRaceName.getText();
+			Integer raceID = raceData[0];
 			if(raceID == -1) {
-				RaceDataManager rdm = new RaceDataManager(); 
 				if(rangeElements.get(0).text().contains("芝")) {
 					rdm.glass = true;
 				}
 				else {
 					rdm.glass = false;
 				}
+				rdm.payCash = 0;
+				rdm.returnCash = 0;
 
-				rdm.RaceURL = textURL.getText();
-				rdm.RaceName = labelRaceName.getText();
+				rdb.UseRaceDataBase( new String[] {"insert",rdm.RaceName, rdm.RaceURL, "0", "0"});
 
-				rdb.UseRaceDataBase( new String[] {"insert",rdm.RaceName, rdm.RaceURL});
-
-				raceID = rdb.GetRaceID(textURL.getText());
 				raceExist = false;
+				raceData = rdb.GetRaceID(textURL.getText());
+
+				raceID = raceData[0];
 			}
+			else 
+			{
+				rdm.payCash = raceData[1];
+				System.out.println(raceData[1]);
+
+				rdm.returnCash = raceData[2];
+
+				System.out.println(raceData[2]);
+			}
+			
+
+			txtPay.setText("0");
+			txtReturn.setText("0");
+			
 			arrayPaddockURL = new TextField[]{txtPaddockURL,txtPaddockURL1,txtPaddockURL2,txtPaddockURL3,txtPaddockURL4,txtPaddockURL5,txtPaddockURL6,txtPaddockURL7};
 			arrayPaddockButton = new Button[]{buttonOpenPaddock,buttonOpenPaddock1,buttonOpenPaddock2,buttonOpenPaddock3,buttonOpenPaddock4,buttonOpenPaddock5,buttonOpenPaddock6,buttonOpenPaddock7};
 			arrayRaceURL = new TextField[]{txtRaceURL,txtRaceURL1,txtRaceURL2,txtRaceURL3,txtRaceURL4,txtRaceURL5,txtRaceURL6,txtRaceURL7};

@@ -6,14 +6,9 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
-import java.util.Date;
-
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 public class RaceDB {
 
@@ -148,73 +143,38 @@ public class RaceDB {
 			if("select".equals(command)) {
 				executeSelect();
 			}else if("insert".equals(command)) {
-				executeInsert(args[1],args[2]);
+				executeInsert(args[1],args[2],args[3],args[4]);
 			}else if("update".equals(command)) {
 
-				executeUpdate(args[1]);
+				executeUpdate(args[1],args[2],args[3],args[4]);
 			}
-		}
-
-		public ObservableList<String> ReturnPaymentList(int id) throws ClassNotFoundException, SQLException 
-		{
-			ObservableList<String> items =FXCollections.observableArrayList();
-			ResultSet resultSet = null;
-			try {
-				create();
-				String SQL;
-				if(id > 0) {
-					SQL = "SELECT * FROM " + TABLE_NAME + " WHERE CLIENT_ID = '"+id+"'";
-				}
-				else 
-				{
-					return null;
-				}
-				resultSet = _statement.executeQuery(SQL);
-				boolean br = resultSet.first();
-				if(br == false) {
-					return items;
-				}
-				do{
-					SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSSSSS");
-					Date date = new Date(resultSet.getLong("PUBLISHED_AT"));
-					String addname = formatter.format(date);
-					items.add(addname);
-				}while(resultSet.next());
-			}
-			catch(Exception ex){
-
-			      System.out.println(ex);
-				
-			}
-			finally {
-				close();
-				resultSet.close();
-			}
-			return items;
 		}
 		
-		public Integer GetRaceID(String url) throws SQLException 
+		public Integer[] GetRaceID(String url) throws SQLException 
 		{
 			race_ID = -1;
+			Integer[] race_Data = {-1,0,0}; 
 			ResultSet resultSetID = null;
 			try {
 				create();
-				String SQLID = "SELECT ID FROM " + TABLE_NAME +" WHERE RACEURL = '"+url+"'";
+				String SQLID = "SELECT * FROM " + TABLE_NAME +" WHERE RACEURL = '"+url+"'";
 				resultSetID = _statement.executeQuery(SQLID);
 				resultSetID.last();
 				System.out.println(resultSetID);
-				race_ID = resultSetID.getInt("ID");
+				race_Data[0] = resultSetID.getInt("ID");
+				race_Data[1] = resultSetID.getInt("PAY");
+				race_Data[2] = resultSetID.getInt("RETURN");
 			}
 			catch(Exception ex)
 			{
 				
 			}finally{
+				close();
 				if(resultSetID != null) {
 					resultSetID.close();
 				}
-				close();
 			}
-			return race_ID;
+			return race_Data;
 		}
 		/*
 		 * SELECT処理を実行します。
@@ -239,11 +199,11 @@ public class RaceDB {
 			}
 		}
 		
-		private void executeUpdate(String name)
+		private void executeUpdate(String name, String url, String payCash, String returnCash)
 				throws SQLException{
 				// SQL文を発行
-				int updateCount = _statement.executeUpdate("Name " + TABLE_NAME 
-						+  "('"+name+"')");
+				int updateCount = _statement.executeUpdate("UPDATE "+ TABLE_NAME + " SET (PAY, RETURN) = " 
+						+  "('"+Integer.parseInt(payCash)+"','"+Integer.parseInt(returnCash)+"') WHERE RACEURL = '"+url+"'");
 				System.out.println("Update: " + updateCount);
 				
 			}
@@ -254,12 +214,12 @@ public class RaceDB {
 		 * @param name
 		 * @param password
 		 */
-		private void executeInsert(String name, String url)
+		private void executeInsert(String name, String url, String payCash, String returnCash)
 			throws SQLException{
 			// SQL文を発行
 			int updateCount = _statement.executeUpdate("INSERT INTO " + TABLE_NAME + 
-					" (NAME, RACEURL) VALUES "
-					+ "('"+name+"','"+url+"')");
+					" (NAME, RACEURL, PAY, RETURN) VALUES "
+					+ "('"+name+"','"+url+"','"+Integer.parseInt(payCash)+"','"+Integer.parseInt(returnCash)+"')");
 			System.out.println("Insert: " + updateCount);
 			
 		}

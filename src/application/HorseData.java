@@ -84,7 +84,6 @@ public class HorseData
 			 this.sameRangeTime = Integer.toString((timeOrigin  / 600)) + ":" + String.format("%02d",timeOrigin  % 600 / 10) + "." + Integer.toString(timeOrigin  % 10);
 			 this.goodRace = horseString.get(horseString.size() - 2);
 			 this.pastRace = horseString.get(horseString.size() - 1);
-			 System.out.println(horseString.get(horseString.size() - 1));
 			 this.glassGoodRaceResult = pastRaceCondition.get(0);
 			 this.glassBitHeavyRaceResult = pastRaceCondition.get(1);
 			 this.glassHeavyRaceResult = pastRaceCondition.get(2);
