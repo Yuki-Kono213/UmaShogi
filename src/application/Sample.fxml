@@ -34,8 +34,8 @@
       <Label layoutX="626.0" layoutY="171.0" text="日付" />
       <Label fx:id="labelRaceRange" layoutX="676.0" layoutY="107.0" prefHeight="26.0" prefWidth="91.0" />
       <Label fx:id="labelRaceDate" layoutX="676.0" layoutY="171.0" prefHeight="26.0" prefWidth="91.0" />
-      <Button layoutX="789.0" layoutY="9.0" mnemonicParsing="false" onAction="#ViewRace" text="表示" />
-      <Button layoutX="740.0" layoutY="9.0" mnemonicParsing="false" onAction="#SaveRace" text="保存" />
+      <Button layoutX="805.0" layoutY="40.0" mnemonicParsing="false" onAction="#ViewRace" text="表示" />
+      <Button layoutX="761.0" layoutY="40.0" mnemonicParsing="false" onAction="#SaveRace" text="保存" />
       <Label layoutX="14.0" layoutY="13.0" text="URL" />
       <Label layoutX="-160.0" layoutY="32.0" text="Label" />
       <TextField fx:id="textURL" layoutX="57.0" layoutY="9.0" prefHeight="26.0" prefWidth="465.0" />
@@ -136,9 +136,11 @@
       <Label fx:id="labelRace5" layoutX="848.0" layoutY="214.0" text="Label" />
       <Label fx:id="labelRace6" layoutX="848.0" layoutY="248.0" text="Label" />
       <Label fx:id="labelRace7" layoutX="848.0" layoutY="289.0" text="Label" />
-      <TextField fx:id="txtPay" layoutX="665.0" layoutY="40.0" prefHeight="26.0" prefWidth="62.0" />
-      <TextField fx:id="txtReturn" layoutX="766.0" layoutY="40.0" prefHeight="26.0" prefWidth="62.0" />
-      <Label layoutX="632.0" layoutY="45.0" text="購入" />
-      <Label layoutX="740.0" layoutY="45.0" text="払戻" />
+      <TextField fx:id="txtPay" layoutX="662.0" layoutY="9.0" prefHeight="26.0" prefWidth="62.0" />
+      <TextField fx:id="txtReturn" layoutX="763.0" layoutY="9.0" prefHeight="26.0" prefWidth="62.0" />
+      <Label layoutX="629.0" layoutY="14.0" text="購入" />
+      <Label layoutX="737.0" layoutY="14.0" text="払戻" />
+      <Label fx:id="lblRecovery" layoutX="639.0" layoutY="44.0" text="当該" />
+      <Label fx:id="lblRecoveryToday" layoutX="693.0" layoutY="44.0" text="全体" />
    </children>
 </AnchorPane>

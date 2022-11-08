@@ -1,6 +1,7 @@
 package application;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -276,7 +277,11 @@ public class SampleController {
 	
 	@FXML
 	private TextField txtReturn;
+	@FXML
+	private Label lblRecovery;
 
+	@FXML
+	private Label lblRecoveryToday;
 
 	public void ClearText() 
 	{
@@ -300,20 +305,49 @@ public class SampleController {
 
 	public void SaveRace() 
 	{
-		RaceDB rdb = new RaceDB();
-
-		rdb.UseRaceDataBase( new String[] {"update",rdm.RaceName, rdm.RaceURL, txtPay.getText(), txtReturn.getText()});
-		
-		rdm.payCash = Integer.parseInt(txtPay.getText());
-		rdm.returnCash = Integer.parseInt(txtReturn.getText());
+		if(!txtPay.getText().equals("0") || !txtReturn.getText().equals("0")) {
+			RaceDB rdb = new RaceDB();
+	
+			rdb.UseRaceDataBase( new String[] {"update",rdm.RaceName, rdm.RaceURL, txtPay.getText(), txtReturn.getText()});
+			
+			rdm.payCash = Integer.parseInt(txtPay.getText());
+			rdm.returnCash = Integer.parseInt(txtReturn.getText());
+		}
 	}	 
 	public void ViewRace() 
 	{
 		txtPay.setText(String.valueOf(rdm.payCash));
 		txtReturn.setText(String.valueOf(rdm.returnCash));
-		
+		lblRecovery.setText(rdm.returnCash * 100 / rdm.payCash + "%");
+		TotalRecoveryCheck() ;
 
 	}
+	
+	private void TotalRecoveryCheck() 
+	{
+		int payCash = 0;
+		int returnCash = 0;
+		
+		for(int i = 1; i < 13; i++) {
+			Integer[] raceData = {0,0,0};
+			RaceDB rdb = new RaceDB();
+			try {
+				raceData = rdb.GetRaceID(textURL.getText().substring(0,42) + Util.raceKeibaLaboURL.get(String.valueOf(i)) + "/umabashira.html");
+				payCash += raceData[1];
+				returnCash += raceData[2];
+			} catch (SQLException e) {
+				// TODO 自動生成された catch ブロック
+				e.printStackTrace();
+			}
+		}
+		lblRecoveryToday.setText("100%");
+		if(payCash != 0) {
+			lblRecoveryToday.setText(returnCash * 100 / payCash + "%");
+		}
+		
+	}
+	
+	
 	String[] strArray = {
 			"⓪",
 			"①",
@@ -497,16 +531,15 @@ public class SampleController {
 			else 
 			{
 				rdm.payCash = raceData[1];
-				System.out.println(raceData[1]);
-
 				rdm.returnCash = raceData[2];
 
-				System.out.println(raceData[2]);
+				lblRecovery.setText(rdm.returnCash * 100 / rdm.payCash + "%");
 			}
 			
 
 			txtPay.setText("0");
 			txtReturn.setText("0");
+			TotalRecoveryCheck();
 			
 			arrayPaddockURL = new TextField[]{txtPaddockURL,txtPaddockURL1,txtPaddockURL2,txtPaddockURL3,txtPaddockURL4,txtPaddockURL5,txtPaddockURL6,txtPaddockURL7};
 			arrayPaddockButton = new Button[]{buttonOpenPaddock,buttonOpenPaddock1,buttonOpenPaddock2,buttonOpenPaddock3,buttonOpenPaddock4,buttonOpenPaddock5,buttonOpenPaddock6,buttonOpenPaddock7};
