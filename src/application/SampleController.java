@@ -307,15 +307,18 @@ public class SampleController {
 	{
 		if(!txtPay.getText().equals("0") || !txtReturn.getText().equals("0")) {
 			RaceDB rdb = new RaceDB();
-	
-			rdb.UseRaceDataBase( new String[] {"update",rdm.RaceName, rdm.RaceURL, txtPay.getText(), txtReturn.getText()});
+			rdb.UseRaceDataBase( new String[] {"update",rdm.RaceName, rdm.RaceURL, txtPay.getText(), txtReturn.getText(),
+					labelRaceRange.getText().substring(0,1), labelRaceRange.getText().substring(1,5), labelRaceStage.getText()
+					, grade, hande, String.valueOf(female), condition});
 			
 			rdm.payCash = Integer.parseInt(txtPay.getText());
 			rdm.returnCash = Integer.parseInt(txtReturn.getText());
+			TotalRecoveryCheck();
 		}
 	}	 
 	public void ViewRace() 
 	{
+
 		txtPay.setText(String.valueOf(rdm.payCash));
 		txtReturn.setText(String.valueOf(rdm.returnCash));
 		lblRecovery.setText(rdm.returnCash * 100 / rdm.payCash + "%");
@@ -325,6 +328,12 @@ public class SampleController {
 	
 	private void TotalRecoveryCheck() 
 	{
+		if(rdm.payCash != 0) {
+			lblRecovery.setText(rdm.returnCash * 100 / rdm.payCash + "%");
+		}
+		else {
+			lblRecovery.setText("100%");
+		}
 		int payCash = 0;
 		int returnCash = 0;
 		
@@ -381,6 +390,10 @@ public class SampleController {
 	Label[] arrayRaceLabel;
 	TextField[] arrayResultURL;
 
+	private String grade;
+	private String hande;
+	private Boolean female;
+	private String condition;
 	private RaceDataManager rdm;
 	public void GetURL() {
 		
@@ -476,10 +489,61 @@ public class SampleController {
 			Elements frameElements  = doc.select(".wakuban td:matchesOwn([1-8])");
 			Elements dateElements  = doc.select(".fL.ml10 .bold");
 			Elements rangeElements  = doc.select(".classCourseSyokin.clearfix li");
-			//Elements conditionElements  = doc.select(".classCourseSyokin.clearfix li");
+			Elements conditionElements  = doc.select(".raceaboutbox.clearfix li");
+			condition = conditionElements.get(1).text();
 			labelRaceName.setText(doc.select(".raceTitle.fL").get(0).text());
+			grade = null;
+			if(labelRaceName.getText().contains("ＧⅠ")) {
+				grade = "ＧⅠ";
+			}else if(labelRaceName.getText().contains("ＧⅡ")) {
+				grade = "ＧⅡ";
+			}else if(labelRaceName.getText().contains("ＧⅢ")) {
+				grade = "ＧⅢ";
+			}else if(labelRaceName.getText().contains("オープン")) {
+				grade = "オープン";
+			}else if(labelRaceName.getText().contains("3勝")) {
+				grade = "3勝";
+			}else if(labelRaceName.getText().contains("2勝")) {
+				grade = "2勝";
+			}else if(labelRaceName.getText().contains("1勝")) {
+				grade = "1勝";
+			}else if(labelRaceName.getText().contains("未勝利")) {
+				grade = "未勝利";
+			}else if(labelRaceName.getText().contains("新馬")) {
+				grade = "新馬";
+			}
 			labelRaceRange.setText(rangeElements.get(1).text().split(" ")[0]);
+			
 			raceRange = Integer.parseInt(rangeElements.get(1).text().split(" ")[0].substring(1,5));
+			if(grade == null) {
+				 if(rangeElements.get(0).text().contains("オープン")) {
+					grade = "オープン";
+				}else if(rangeElements.get(0).text().contains("3勝")) {
+					grade = "3勝";
+				}else if(rangeElements.get(0).text().contains("2勝")) {
+					grade = "2勝";
+				}else if(rangeElements.get(0).text().contains("1勝")) {
+					grade = "1勝";
+				}
+			}
+			
+			if(rangeElements.get(0).text().contains("ハンデ")) {
+				hande = "ハンデ";
+			}
+			else if(rangeElements.get(0).text().contains("別定")){
+				hande = "別定";
+			}
+			else {
+				hande = "定量";
+			}
+			
+			if(rangeElements.get(0).text().contains("牝")) {
+				female = true;
+			}
+			else{
+				female = false;
+			}
+			
 			labelRaceStage.setText(stageElements.get(3).text().split("競馬")[0]);
 			labelRaceDate.setText(dateElements.get(0).text().split("\\(")[0]);
 			String[] dateString = labelRaceDate.getText().split("/");
@@ -533,7 +597,6 @@ public class SampleController {
 				rdm.payCash = raceData[1];
 				rdm.returnCash = raceData[2];
 
-				lblRecovery.setText(rdm.returnCash * 100 / rdm.payCash + "%");
 			}
 			
 

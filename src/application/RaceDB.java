@@ -89,7 +89,6 @@ public class RaceDB {
 		 * Statementオブジェクトを保持します。
 		 */
 		private Statement _statement;
-		private static Integer race_ID;
 		
  		/**
 		 * 構築します。
@@ -146,13 +145,12 @@ public class RaceDB {
 				executeInsert(args[1],args[2],args[3],args[4]);
 			}else if("update".equals(command)) {
 
-				executeUpdate(args[1],args[2],args[3],args[4]);
+				executeUpdate(args[1],args[2],args[3],args[4],args[5],args[6],args[7],args[8],args[9],args[10],args[11]);
 			}
 		}
 		
 		public Integer[] GetRaceID(String url) throws SQLException 
 		{
-			race_ID = -1;
 			Integer[] race_Data = {-1,0,0}; 
 			ResultSet resultSetID = null;
 			try {
@@ -160,7 +158,6 @@ public class RaceDB {
 				String SQLID = "SELECT * FROM " + TABLE_NAME +" WHERE RACEURL = '"+url+"'";
 				resultSetID = _statement.executeQuery(SQLID);
 				resultSetID.last();
-				System.out.println(resultSetID);
 				race_Data[0] = resultSetID.getInt("ID");
 				race_Data[1] = resultSetID.getInt("PAY");
 				race_Data[2] = resultSetID.getInt("RETURN");
@@ -199,12 +196,23 @@ public class RaceDB {
 			}
 		}
 		
-		private void executeUpdate(String name, String url, String payCash, String returnCash)
+		private void executeUpdate(String name, String url, String payCash, String returnCash, String glass, String range, String stage
+				, String grade, String hande, String female, String condition)
 				throws SQLException{
+				boolean glassTrue = true;
+				if(glass.contains("ダ")) {
+					glassTrue = false;
+				}
+				System.out.println(female);
+				boolean femaleTrue = false;
+				if(female.equals("true")) {
+					femaleTrue = true;
+				}
 				// SQL文を発行
-				int updateCount = _statement.executeUpdate("UPDATE "+ TABLE_NAME + " SET (PAY, RETURN) = " 
-						+  "('"+Integer.parseInt(payCash)+"','"+Integer.parseInt(returnCash)+"') WHERE RACEURL = '"+url+"'");
-				System.out.println("Update: " + updateCount);
+				int updateCount = _statement.executeUpdate("UPDATE "+ TABLE_NAME + " SET (PAY, RETURN, GLASS, RANGE, STAGE, GRADE, HANDE, FEMALE, CONDITION) = " 
+						+  "('"+Integer.parseInt(payCash)+"','"+Integer.parseInt(returnCash)+"','"+glassTrue+"'"
+								+ ",'"+Integer.parseInt(range)+"','"+stage+"', '"+grade+"', '"+hande+"','"+femaleTrue+"', '"+condition+"') WHERE RACEURL = '"+url+"'");
+				System.out.println(glassTrue + range + stage);
 				
 			}
 		
