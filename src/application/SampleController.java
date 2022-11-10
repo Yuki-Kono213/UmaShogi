@@ -665,7 +665,7 @@ public class SampleController {
 							hdb.create();
 							String[] horseText = hdb.returnPastRace(h.name, raceID);
 							String address = "https://www.keibalab.jp" + horseURLElements.get(i).attr("href");
-							if(!raceExist || horseText[0].isEmpty() || 
+							if(!raceExist || horseText == null || horseText[0].isEmpty() || 
 									LocalDate.parse(labelRaceDate.getText(), DateTimeFormatter.ofPattern("yyyy/[]M/[]d"))
 									.isBefore(LocalDate.parse(horseText[0].split(" ")[0], DateTimeFormatter.ofPattern("yyyy/[]M/[]d")).plusDays(1)) ) {
 
