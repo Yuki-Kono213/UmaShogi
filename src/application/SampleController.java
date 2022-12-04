@@ -665,7 +665,7 @@ public class SampleController {
 							hdb.create();
 							String[] horseText = hdb.returnPastRace(h.name, raceID);
 							String address = "https://www.keibalab.jp" + horseURLElements.get(i).attr("href");
-							if(!raceExist || horseText == null || horseText[0].isEmpty() || 
+							if(!raceExist || horseText[0] == null || horseText[0].isEmpty() || 
 									LocalDate.parse(labelRaceDate.getText(), DateTimeFormatter.ofPattern("yyyy/[]M/[]d"))
 									.isBefore(LocalDate.parse(horseText[0].split(" ")[0], DateTimeFormatter.ofPattern("yyyy/[]M/[]d")).plusDays(1)) ) {
 
@@ -809,6 +809,7 @@ public class SampleController {
 					int cnt = 0;
 					int rowCnt = 0;
 					for(int i =0 ; i < stageel.size(); i++) {
+						System.out.println(roundel.get(cnt * 25 + 1).text());
 						if(stageel.get(i).attr("href").contains("/db/race/") && cnt * 25 < roundel.size() && !Util.returnLocalDicExist(roundel.get(cnt * 25 + 1).text(),cnt)
 								&& roundel.get(cnt * 25 + 1).text().split("回")[1].length() > 1
 										&& Util.returnDicExist(roundel.get(cnt * 25 + 1).text().split("回")[1].substring(0,2),cnt)){
