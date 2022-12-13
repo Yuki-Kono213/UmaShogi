@@ -681,7 +681,8 @@ public class SampleController {
 								String pastMaxGoodLast = "一年未走";
 
 								for(int i2 = 0; i2 < HorseElements.size(); i2++) {
-									if(HorseElements.get(i2).text().split(" ").length > 22 && LocalDate.parse(HorseElements.get(i2).text().split(" ")[0], 
+									if(HorseElements.get(i2).text().split(" ").length > 22 
+											&& !HorseElements.get(i2).text().contains("失") && LocalDate.parse(HorseElements.get(i2).text().split(" ")[0], 
 											DateTimeFormatter.ofPattern("yyyy/[]M/[]d")).isBefore(LocalDate.parse(labelRaceDate.getText(), DateTimeFormatter.ofPattern("yyyy/[]M/[]d")))) {
 										if(!findPastRace) 
 										{
