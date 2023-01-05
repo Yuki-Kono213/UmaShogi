@@ -633,7 +633,8 @@ public class SampleController {
 						h.name = horseElements.get(i).text();
 						
 
-						if(rateSpanElements.size() != 0 && !rateSpanElements.get(j).text().equals("除外") && 
+						if(rateSpanElements.size() != 0 && !rateSpanElements.get(j).text().equals("除外") 
+								&& !rateSpanElements.get(j).text().equals("取消") && 
 								!rateSpanElements.get(j).text().isEmpty()) {
 							h.rate = Double.parseDouble(rateSpanElements.get(j).select("span").get(0).text());
 						}
