@@ -121,7 +121,7 @@ public class HorseData
 //			base = 0.995;
 //		}
 		
-		int rangeDiff = (raceRange - rangeOrigin) / 20;
+		int rangeDiff = (raceRange - rangeOrigin) / 10;
 		double gradeDiff = 1.0;
 		if(this.raceName.contains("1勝"))
 		{
@@ -174,7 +174,7 @@ public class HorseData
 		}
 
 		score += ((timeOrigin + rangeDiff) * timeHosei) * 10;
-		score += (Double.parseDouble(this.jockeyWeight) * 20);
+		score -= (Double.parseDouble(this.jockeyWeight) * 20);
 
 		if(this.pastMaxSpeed.contains(":") && 
 		Integer.parseInt(this.pastMaxSpeed.substring(0,1)) * 600 +  Integer.parseInt(this.pastMaxSpeed.substring(2,4)) * 10 + Integer.parseInt(this.pastMaxSpeed.substring(5,6)) < timeOrigin + rangeDiff)
@@ -205,10 +205,10 @@ public class HorseData
 		for(int i= 0; i < 5; i++)
 		{
 			if(i <  this.pastRace.length() && !this.pastRace.substring(i,i+1).equals("－")) {
-				pastRaceScore += Util.RankMap.get(this.pastRace.substring(i,i+1)) * (((double)5 - i) / 5 + 1);
+				pastRaceScore += Util.RankMap.get(this.pastRace.substring(i,i+1)) * 2 *  (((double)10 - i) / 2 + 1);
 			}
 			else {
-				pastRaceScore += 5 * (((double)5 - i) / 5 + 1);
+				pastRaceScore += 10 * (((double)10 - i) / 2 + 1);
 			}
 		
 		}
