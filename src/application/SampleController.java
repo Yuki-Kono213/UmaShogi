@@ -368,7 +368,7 @@ public class SampleController {
 	Button[] arrayRaceButton;
 	Label[] arrayRaceLabel;
 	TextField[] arrayResultURL;
-	
+
 	HorseData[] horseDataArray;
 
 	private String grade;
@@ -388,10 +388,9 @@ public class SampleController {
 		dateTable.setCellValueFactory(new PropertyValueFactory<HorseData, String>("date"));
 
 		raceStageTable.setCellValueFactory(new PropertyValueFactory<HorseData, String>("raceStage"));
-		
+
 		raceLevelTable.setCellValueFactory(new PropertyValueFactory<HorseData, String>("raceLevel"));
-		
-		
+
 		rangeTable.setCellValueFactory(new PropertyValueFactory<HorseData, String>("range"));
 
 		weatherTable.setCellValueFactory(new PropertyValueFactory<HorseData, String>("weather"));
@@ -947,38 +946,76 @@ public class SampleController {
 			try {
 
 				int j = 0;
-				for (int i = 0; i < 1; i++) {
+				for (int i = 0; i < horseElements.size() / 2; i++) {
 					int raceLevel = 0;
-						try {
-							for (int i2 = 0; i2 < 1; i2++) {
-								int index = (horseElements.size() / 2 - i - 1) + (horseElements.size() /2 * i2);
-								System.out.println(index);
-								if (horseURLElements.get(index).getElementsByTag("a").attr("href").contains("/")) {
-									Document raceDoc = Jsoup.connect("https://www.keibalab.jp" + horseURLElements.get(index).getElementsByTag("a").attr("href") + "umabashira.html").get();
-									Elements horseDataElements = raceDoc.select("div[class~=BameiWrap] > a");
-									for(int i3 = 0; i3 <  horseDataElements.size() / 2; i3++) {
 
-										System.out.println(horseDataElements.get(i3).text());
-										raceLevel += 1000;
-										Thread.sleep(1000);
+					int horseIndex = horseElements.size() / 2 - i - 1;
+					try {
+						int raceRank = 0;
+						int raceCnt = 0;
+						for (int i2 = 0; i2 < 1; i2++) {
+							int index = (horseElements.size() / 2 - i - 1) + (horseElements.size() / 2 * i2);
+							if (horseURLElements.get(index).getElementsByTag("a").attr("href").contains("/")) {
+								raceLevel += 10000;
+								Document raceDoc = Jsoup.connect("https://www.keibalab.jp"
+										+ horseURLElements.get(index).getElementsByTag("a").attr("href")
+										+ "umabashira.html").get();
+								Elements horseDataElements = raceDoc.select("div[class~=BameiWrap] > a");
+
+								Elements dateElements = raceDoc.select(".fL.ml10 .bold");
+								labelRaceDate.setText(dateElements.get(0).text().split("\\(")[0]);
+								String[] dateStrings = labelRaceDate.getText().split("/");
+								String dateString = (String.format("%d/%02d/%02d", Integer.parseInt(dateStrings[0].replace("/", "")),
+										Integer.parseInt(dateStrings[1].replace("/", "")),
+										Integer.parseInt(dateStrings[2].replace("/", ""))));
+								for (int i3 = 0; i3 < horseDataElements.size() / 2; i3++) {
+									Document horseDoc = Jsoup
+											.connect("https://www.keibalab.jp"
+													+ horseDataElements.get(i3).getElementsByTag("a").attr("href"))
+											.get();
+									Elements horseRaceElements = horseDoc.select(".sortobject tr");
+									for (int i4 = 0; i4 < horseRaceElements.size(); i4++) {
+										System.out.println(horseRaceElements.size());
+										if (horseRaceElements.get(i4).text().split(" ").length > 22
+												&& !horseRaceElements.get(i4).text().contains("失")
+												&& LocalDate
+														.parse(horseRaceElements.get(i4).text().split(" ")[0],
+																DateTimeFormatter.ofPattern("yyyy/[]M/[]d"))
+														.isBefore(LocalDate.parse(dateString,
+																DateTimeFormatter.ofPattern("yyyy/[]M/[]d")))) {
+											raceCnt++;
+											int rank = Integer.parseInt(horseRaceElements.get(i4).text().split(" ")[7]);
+											if (rank == 1) {
+												raceRank += 400;
+											} else if (rank == 2) {
+												raceRank += 200;
+											} else if (rank == 3) {
+												raceRank += 100;
+											}
+
+										}
 									}
+
+									Thread.sleep(1000);
 								}
 //								
-							} 
-						}catch (Exception e) {
-							
+							}
 						}
+						raceLevel += raceRank/raceCnt;
+					} catch (Exception e) {
 
-						horseDataArray[i].setRaceLevel(String.valueOf(raceLevel));
-						System.out.println(horseDataArray[i].getRaceLevel());
+					}
+
+					horseDataArray[horseIndex].setRaceLevel(String.valueOf(raceLevel));
+					System.out.println(horseDataArray[i].getRaceLevel());
 				}
-					
+
 			} catch (Exception e) {
 				// TODO 自動生成された catch ブロック
 				e.printStackTrace();
 			}
 
-		}catch(Exception e){
+		} catch (Exception e) {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
 		}
