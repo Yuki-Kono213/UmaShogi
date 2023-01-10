@@ -83,6 +83,8 @@ public class SampleController {
 	@FXML
 	private TableColumn <HorseData,String> dateTable;
 	@FXML
+	private TableColumn <HorseData,String> raceLevelTable;
+	@FXML
 	private TableColumn <HorseData,String> raceStageTable;
 	@FXML
 	private TableColumn <HorseData,String> rangeTable;
@@ -154,6 +156,9 @@ public class SampleController {
 	private TableColumn <HorseData,String> pastMaxPace;
 	@FXML
 	private TableColumn <HorseData,String> pastMaxSpeedLast;
+
+	@FXML
+	private Button raceLevelbtn;
 	
 	@FXML
 	private Button buttonOpenPaddock;
@@ -898,6 +903,39 @@ public class SampleController {
 		table.getItems().add(new HorseData(strArray[h.number],h.name,RacePointCheck(horseText, h),horseString,pastRaceCondition,raceRange, labelRaceRange.getText(),address));
 		
 	}
+	
+	private void RaceLevelCount() {
+		table.getItems().clear(); 
+		ClearText();
+		// jsoupを使用して当ブログのトップページへアクセス
+		if(textURL.getText(textURL.getText().length() - 1, textURL.getText().length()).equals("/")) 
+		{
+			textURL.setText(textURL.getText() + "umabashira.html");
+		}
+		Document doc;
+		try {
+			doc = Jsoup.connect(textURL.getText()).get();
+
+
+
+			Element rate = doc.select(".seirei.std9").get(1);
+			Elements rateElements = rate.getAllElements();
+			Elements rateSpanElements = rateElements.select("td");
+	
+			Elements horseURLElements  = doc.select("div[class~=BameiWrap.*] > a");
+			Elements stageElements  = doc.select("#topicPath ul li");
+			Elements horseElements  = doc.select("a.tategaki.bamei");
+			Elements beforeElements  = doc.select(".zensou.std11 span,.BeforRaces");
+			Elements frameElements  = doc.select(".wakuban td:matchesOwn([1-8])");
+			Elements dateElements  = doc.select(".fL.ml10 .bold");
+			Elements rangeElements  = doc.select(".classCourseSyokin.clearfix li");
+			Elements conditionElements  = doc.select(".raceaboutbox.clearfix li");
+		} catch (IOException e) {
+			// TODO 自動生成された catch ブロック
+			e.printStackTrace();
+		}
+	}
+	
 	private String RacePointCheck(String s, Horse h) 
 	{
 		String text = "";
@@ -1317,6 +1355,13 @@ public class SampleController {
 					// TODO 自動生成された catch ブロック
 					e.printStackTrace();
 				}
+	        }
+	    });
+		
+		raceLevelbtn.setOnAction( new EventHandler<ActionEvent>() {
+	        public void handle(ActionEvent event) {
+	
+	        	RaceLevelCount();
 	        }
 	    });
 		

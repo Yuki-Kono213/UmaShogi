@@ -47,7 +47,8 @@
             <TableColumn fx:id="numberTable" prefWidth="30.0" text="No" />
             <TableColumn fx:id="nameTable" prefWidth="100.0" text="馬名" />
             <TableColumn fx:id="indexTable" prefWidth="50.0" text="指数" />
-            <TableColumn fx:id="dateTable" text="日付" />
+            <TableColumn fx:id="raceLevelTable" prefWidth="47.20001220703125" text="レベル" />
+            <TableColumn fx:id="dateTable" prefWidth="132.79998779296875" text="日付" />
             <TableColumn fx:id="raceStageTable" prefWidth="100.0" text="レース場" />
 	        <TableColumn fx:id="rangeTable" text="距離" />
 	        <TableColumn fx:id="weatherTable" prefWidth="20.0" text="天" />
@@ -142,5 +143,6 @@
       <Label layoutX="737.0" layoutY="14.0" text="払戻" />
       <Label fx:id="lblRecovery" layoutX="639.0" layoutY="44.0" text="当該" />
       <Label fx:id="lblRecoveryToday" layoutX="693.0" layoutY="44.0" text="全体" />
+      <Button fx:id="raceLevelbtn" layoutX="636.0" layoutY="277.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="75.0" text="レベル計測" />
    </children>
 </AnchorPane>
