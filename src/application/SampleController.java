@@ -788,7 +788,8 @@ public class SampleController {
 							if (horseString.size() > 18 && horseString.get(19).equals("B")) {
 								horseString.remove(19);
 							}
-							SetTable(h, horseString, strArray[h.number] + h.pastRace, horseConditionString, address, i, "10000");
+							SetTable(h, horseString, strArray[h.number] + h.pastRace, horseConditionString, address, i,
+									"10000");
 							Thread.sleep(3000);
 						} else {
 
@@ -940,20 +941,26 @@ public class SampleController {
 			Elements horseURLElements = doc.select("td[class~=hcolor.cyaku.*] > a, td.BeforRaces");
 			Elements horseElements = doc.select("a.tategaki.bamei");
 
+			int[] rank1 = new int[2];
+			int[] rank2 = new int[2];
+			int[] rank3 = new int[2];
+			int[] rankOther = new int[2];
+
+			int[] rankCnt = new int[2];
 			try {
 
 				int j = 0;
 				for (int i = 0; i < horseElements.size() / 2; i++) {
-					int raceLevel = 0;
-
 					int horseIndex = horseElements.size() / 2 - i - 1;
 					try {
-						int raceRank = 0;
-						int raceCnt = 0;
+						rank1 = new int[2];
+						rank2 = new int[2];
+						rank3 = new int[2];
+						rankOther = new int[2];
+						rankCnt = new int[2];
 						for (int i2 = 0; i2 < 2; i2++) {
 							int index = (horseElements.size() / 2 - i - 1) + (horseElements.size() / 2 * i2);
 							if (horseURLElements.get(index).getElementsByTag("a").attr("href").contains("/")) {
-								raceLevel += 10000;
 								Document raceDoc = Jsoup.connect("https://www.keibalab.jp"
 										+ horseURLElements.get(index).getElementsByTag("a").attr("href")
 										+ "umabashira.html").get();
@@ -962,7 +969,8 @@ public class SampleController {
 								Elements dateElements = raceDoc.select(".fL.ml10 .bold");
 								labelRaceDate.setText(dateElements.get(0).text().split("\\(")[0]);
 								String[] dateStrings = labelRaceDate.getText().split("/");
-								String dateString = (String.format("%d/%02d/%02d", Integer.parseInt(dateStrings[0].replace("/", "")),
+								String dateString = (String.format("%d/%02d/%02d",
+										Integer.parseInt(dateStrings[0].replace("/", "")),
 										Integer.parseInt(dateStrings[1].replace("/", "")),
 										Integer.parseInt(dateStrings[2].replace("/", ""))));
 								for (int i3 = 0; i3 < horseDataElements.size() / 2; i3++) {
@@ -979,14 +987,16 @@ public class SampleController {
 																DateTimeFormatter.ofPattern("yyyy/[]M/[]d"))
 														.isBefore(LocalDate.parse(dateString,
 																DateTimeFormatter.ofPattern("yyyy/[]M/[]d")))) {
-											raceCnt++;
 											int rank = Integer.parseInt(horseRaceElements.get(i4).text().split(" ")[7]);
+											rankCnt[i2]++;
 											if (rank == 1) {
-												raceRank += 400;
+												rank1[i2]++;
 											} else if (rank == 2) {
-												raceRank += 200;
+												rank2[i2]++;
 											} else if (rank == 3) {
-												raceRank += 100;
+												rank3[i2]++;
+											} else {
+												rankOther[i2]++;
 											}
 
 										}
@@ -998,19 +1008,33 @@ public class SampleController {
 //								
 							}
 						}
-						raceLevel += raceRank/raceCnt;
 					} catch (Exception e) {
 
 					}
-					if(raceLevel < 20000) {
-						raceLevel *= 2;
+					int[] rankPercentage = new int[8];
+					if (rankCnt[0] != 0) {
+						rankPercentage[0] = rank1[0] * 100 / rankCnt[0];
+						rankPercentage[1] = (rank1[0] + rank2[0]) * 100 / rankCnt[0];
+						rankPercentage[2] = (rank1[0] + rank2[0] + rank3[0]) * 100 / rankCnt[0];
+						rankPercentage[3] = (rankOther[0]) * 100 / rankCnt[0];
 					}
-					horseDataArray[horseIndex].setRaceLevel(String.valueOf(raceLevel));
+					if (rankCnt[1] != 0) {
+						rankPercentage[4] = rank1[1] * 100 / rankCnt[1];
+						rankPercentage[5] = (rank1[1] + rank2[1]) * 100 / rankCnt[1];
+						rankPercentage[6] = (rank1[1] + rank2[1] + rank3[1]) * 100 / rankCnt[1];
+						rankPercentage[7] = (rankOther[1]) * 100 / rankCnt[1];
+					}
+					horseDataArray[horseIndex].setRaceLevel(
+							"①" + String.valueOf(rankPercentage[0]) + "②" + String.valueOf(rankPercentage[1]) + "③"
+									+ String.valueOf(rankPercentage[2]) + "他" + String.valueOf(rankPercentage[3]) + "①"
+									+ String.valueOf(rankPercentage[4]) + "②" + String.valueOf(rankPercentage[5]) + "③"
+									+ String.valueOf(rankPercentage[6]) + "他" + String.valueOf(rankPercentage[7]));
 				}
 				for (int i = 0; i < horseElements.size() / 2; i++) {
 
-					if(horseArray[i] != null) {
-						new HorseDB().UseHorseDataBase(new String[]{"update",horseArray[i].pastRace, horseDataArray[i].getRaceLevel()});
+					if (horseArray[i] != null) {
+						new HorseDB().UseHorseDataBase(
+								new String[] { "update", horseArray[i].pastRace, horseDataArray[i].getRaceLevel() });
 					}
 				}
 			} catch (Exception e) {
@@ -1022,7 +1046,7 @@ public class SampleController {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
 		}
-		
+
 		table.refresh();
 
 	}

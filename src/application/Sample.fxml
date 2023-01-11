@@ -47,9 +47,8 @@
             <TableColumn fx:id="numberTable" prefWidth="30.0" text="No" />
             <TableColumn fx:id="nameTable" prefWidth="100.0" text="馬名" />
             <TableColumn fx:id="indexTable" prefWidth="50.0" text="指数" />
-            <TableColumn fx:id="raceLevelTable" prefWidth="47.20001220703125" text="レベル" />
-            <TableColumn fx:id="dateTable" prefWidth="132.79998779296875" text="日付" />
-            <TableColumn fx:id="raceStageTable" prefWidth="100.0" text="レース場" />
+            <TableColumn fx:id="dateTable" prefWidth="100.0" text="日付" />
+            <TableColumn fx:id="raceStageTable" prefWidth="60.0" text="レース場" />
 	        <TableColumn fx:id="rangeTable" text="距離" />
 	        <TableColumn fx:id="weatherTable" prefWidth="20.0" text="天" />
             <TableColumn fx:id="stageTable" prefWidth="20.0" text="場" />
@@ -68,10 +67,11 @@
             <TableColumn fx:id="sameRangeTimeTable" prefWidth="50.0" text="補正T" />
             <TableColumn fx:id="pastMaxSpeed" prefWidth="100.0" text="最速" />
             <TableColumn fx:id="runRankTable" prefWidth="70.0" text="道中" />
-            <TableColumn fx:id="topHorseTable" prefWidth="100.0" text="1着" />
+            <TableColumn fx:id="topHorseTable" prefWidth="60.0" text="1着" />
             <TableColumn fx:id="analysisTable" prefWidth="75.0" text="分析" />
             <TableColumn fx:id="multipleTable" prefWidth="75.0" text="連複率" />
             <TableColumn fx:id="pastRaceTable" prefWidth="75.0" text="過去5走" />
+            <TableColumn fx:id="raceLevelTable" text="レベル" />
             <TableColumn fx:id="numberTable1" prefWidth="30.0" text="No" />
             <TableColumn fx:id="nameTable1" prefWidth="100.0" text="馬名" />
             <TableColumn fx:id="weightTable" prefWidth="80.0" text="体重" />

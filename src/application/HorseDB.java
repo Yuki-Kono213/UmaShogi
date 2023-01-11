@@ -183,7 +183,7 @@ public class HorseDB {
 				throws SQLException{
 				// SQL文を発行
 				int updateCount = _statement.executeUpdate("UPDATE "+ TABLE_NAME  +" SET RACELEVEL =" 
-						+  "('"+Integer.parseInt(raceLevel)+"')" + "WHERE PASTRACE = " + "'"+pastRace+"'" );
+						+  "('"+raceLevel+"')" + "WHERE PASTRACE = " + "'"+pastRace+"'" );
 				System.out.println("Update: " + updateCount);
 				
 			}
