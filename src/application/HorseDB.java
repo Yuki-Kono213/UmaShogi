@@ -146,7 +146,7 @@ public class HorseDB {
 				executeInsert(args[1],Integer.parseInt(args[2]),Integer.parseInt(args[3]),args[4],Integer.parseInt(args[5]), args[6]);
 			}else if("update".equals(command)) {
 
-				executeUpdate(args[1]);
+				executeUpdate(args[1],args[2]);
 			}
 		}
 		
@@ -159,7 +159,7 @@ public class HorseDB {
 		 */
 		public String[] returnPastRace(String name, Integer raceID)
 			throws SQLException{
-			String[] pastRace = new String[2];
+			String[] pastRace = new String[3];
 			ResultSet resultSet = _statement.executeQuery("SELECT * FROM " + TABLE_NAME +" WHERE NAME = '"+name+"' AND "
 					+ "RACEID = '"+raceID+"'");
 			try{
@@ -170,6 +170,7 @@ public class HorseDB {
 				do{
 					pastRace[0] = resultSet.getString("PASTRACE");
 					pastRace[1] = resultSet.getString("PASTRACECONDITION");
+					pastRace[2] = resultSet.getString("RACELEVEL");
 				}while(resultSet.next());
 			}finally{
 				resultSet.close();
@@ -178,11 +179,11 @@ public class HorseDB {
 			return pastRace;
 		}
 		
-		private void executeUpdate(String name)
+		private void executeUpdate(String pastRace, String raceLevel)
 				throws SQLException{
 				// SQL文を発行
-				int updateCount = _statement.executeUpdate("Name " + TABLE_NAME 
-						+  "('"+name+"')");
+				int updateCount = _statement.executeUpdate("UPDATE "+ TABLE_NAME  +" SET RACELEVEL =" 
+						+  "('"+Integer.parseInt(raceLevel)+"')" + "WHERE PASTRACE = " + "'"+pastRace+"'" );
 				System.out.println("Update: " + updateCount);
 				
 			}

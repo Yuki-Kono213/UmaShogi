@@ -370,6 +370,7 @@ public class SampleController {
 	TextField[] arrayResultURL;
 
 	HorseData[] horseDataArray;
+	Horse[] horseArray;
 
 	private String grade;
 	private String hande;
@@ -612,13 +613,13 @@ public class SampleController {
 			DecimalFormat decimalFormat = new DecimalFormat(pattern);
 			int j = 0;
 			horseDataArray = new HorseData[horseElements.size() / 2];
+			horseArray = new Horse[horseElements.size() / 2];
 			for (int i = 0; i < horseElements.size() / 2; i++) {
 				j = i + 18 - horseElements.size() / 2;
 				try {
 					// if(name != "" && horseList.stream().noneMatch(a -> a.name.equals(name))) {
 					Horse h = new Horse();
 					h.name = horseElements.get(i).text();
-
 					if (rateSpanElements.size() != 0 && !rateSpanElements.get(j).text().equals("除外")
 							&& !rateSpanElements.get(j).text().equals("取消")
 							&& !rateSpanElements.get(j).text().isEmpty()) {
@@ -787,10 +788,11 @@ public class SampleController {
 							if (horseString.size() > 18 && horseString.get(19).equals("B")) {
 								horseString.remove(19);
 							}
-							SetTable(h, horseString, strArray[h.number] + h.pastRace, horseConditionString, address, i);
+							SetTable(h, horseString, strArray[h.number] + h.pastRace, horseConditionString, address, i, "10000");
 							Thread.sleep(3000);
 						} else {
 
+							h.pastRace = horseText[0];
 							List<String> horseString = new ArrayList<String>(Arrays.asList(horseText[0].split(" ")));
 							List<String> horseConditionString = new ArrayList<String>(
 									Arrays.asList(horseText[1].split("[ ]+")));
@@ -799,7 +801,7 @@ public class SampleController {
 								horseString.remove(19);
 							}
 
-							SetTable(h, horseString, horseText[0], horseConditionString, address, i);
+							SetTable(h, horseString, horseText[0], horseConditionString, address, i, horseText[2]);
 						}
 					} catch (Exception e) {
 
@@ -920,11 +922,12 @@ public class SampleController {
 	}
 
 	private void SetTable(Horse h, List<String> horseString, String horseText, List<String> pastRaceCondition,
-			String address, int index) {
+			String address, int index, String raceLevel) {
 		HorseData horseData = new HorseData(strArray[h.number], h.name, RacePointCheck(horseText, h), horseString,
-				pastRaceCondition, raceRange, labelRaceRange.getText(), address, "10000");
+				pastRaceCondition, raceRange, labelRaceRange.getText(), address, raceLevel);
 		table.getItems().add(horseData);
 		horseDataArray[index] = horseData;
+		horseArray[index] = h;
 
 	}
 
@@ -934,14 +937,8 @@ public class SampleController {
 		try {
 			doc = Jsoup.connect(textURL.getText()).get();
 
-			Element rate = doc.select(".seirei.std9").get(1);
-			Elements rateElements = rate.getAllElements();
-			Elements rateSpanElements = rateElements.select("td");
-
 			Elements horseURLElements = doc.select("td[class~=hcolor.cyaku.*] > a, td.BeforRaces");
 			Elements horseElements = doc.select("a.tategaki.bamei");
-			Elements beforeElements = doc.select(".zensou.std11 span,.BeforRaces");
-			Elements frameElements = doc.select(".wakuban td:matchesOwn([1-8])");
 
 			try {
 
@@ -1009,9 +1006,13 @@ public class SampleController {
 						raceLevel *= 2;
 					}
 					horseDataArray[horseIndex].setRaceLevel(String.valueOf(raceLevel));
-					System.out.println(horseDataArray[i].getRaceLevel());
 				}
+				for (int i = 0; i < horseElements.size() / 2; i++) {
 
+					if(horseArray[i] != null) {
+						new HorseDB().UseHorseDataBase(new String[]{"update",horseArray[i].pastRace, horseDataArray[i].getRaceLevel()});
+					}
+				}
 			} catch (Exception e) {
 				// TODO 自動生成された catch ブロック
 				e.printStackTrace();
@@ -1021,6 +1022,7 @@ public class SampleController {
 			// TODO 自動生成された catch ブロック
 			e.printStackTrace();
 		}
+		
 		table.refresh();
 
 	}
