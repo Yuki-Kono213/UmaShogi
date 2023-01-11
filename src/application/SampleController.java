@@ -953,7 +953,7 @@ public class SampleController {
 					try {
 						int raceRank = 0;
 						int raceCnt = 0;
-						for (int i2 = 0; i2 < 1; i2++) {
+						for (int i2 = 0; i2 < 2; i2++) {
 							int index = (horseElements.size() / 2 - i - 1) + (horseElements.size() / 2 * i2);
 							if (horseURLElements.get(index).getElementsByTag("a").attr("href").contains("/")) {
 								raceLevel += 10000;
@@ -975,7 +975,6 @@ public class SampleController {
 											.get();
 									Elements horseRaceElements = horseDoc.select(".sortobject tr");
 									for (int i4 = 0; i4 < horseRaceElements.size(); i4++) {
-										System.out.println(horseRaceElements.size());
 										if (horseRaceElements.get(i4).text().split(" ").length > 22
 												&& !horseRaceElements.get(i4).text().contains("失")
 												&& LocalDate
@@ -997,6 +996,7 @@ public class SampleController {
 									}
 
 									Thread.sleep(1000);
+									System.out.println(horseRaceElements.size());
 								}
 //								
 							}
@@ -1005,7 +1005,9 @@ public class SampleController {
 					} catch (Exception e) {
 
 					}
-
+					if(raceLevel < 20000) {
+						raceLevel *= 2;
+					}
 					horseDataArray[horseIndex].setRaceLevel(String.valueOf(raceLevel));
 					System.out.println(horseDataArray[i].getRaceLevel());
 				}
