@@ -949,7 +949,6 @@ public class SampleController {
 			int[] rankCnt = new int[2];
 			try {
 
-				int j = 0;
 				for (int i = 0; i < horseElements.size() / 2; i++) {
 					int horseIndex = horseElements.size() / 2 - i - 1;
 					try {
@@ -967,8 +966,7 @@ public class SampleController {
 								Elements horseDataElements = raceDoc.select("div[class~=BameiWrap] > a");
 
 								Elements dateElements = raceDoc.select(".fL.ml10 .bold");
-								labelRaceDate.setText(dateElements.get(0).text().split("\\(")[0]);
-								String[] dateStrings = labelRaceDate.getText().split("/");
+								String[] dateStrings = dateElements.get(0).text().split("\\(")[0].split("/");
 								String dateString = (String.format("%d/%02d/%02d",
 										Integer.parseInt(dateStrings[0].replace("/", "")),
 										Integer.parseInt(dateStrings[1].replace("/", "")),
@@ -985,7 +983,12 @@ public class SampleController {
 												&& LocalDate
 														.parse(horseRaceElements.get(i4).text().split(" ")[0],
 																DateTimeFormatter.ofPattern("yyyy/[]M/[]d"))
-														.isBefore(LocalDate.parse(dateString,
+														.isAfter(LocalDate.parse(dateString,
+																DateTimeFormatter.ofPattern("yyyy/[]M/[]d")))
+														&& LocalDate
+														.parse(horseRaceElements.get(i4).text().split(" ")[0],
+																DateTimeFormatter.ofPattern("yyyy/[]M/[]d"))
+														.isBefore(LocalDate.parse(labelRaceDate.getText(),
 																DateTimeFormatter.ofPattern("yyyy/[]M/[]d")))) {
 											int rank = Integer.parseInt(horseRaceElements.get(i4).text().split(" ")[7]);
 											rankCnt[i2]++;
@@ -1003,7 +1006,6 @@ public class SampleController {
 									}
 
 									Thread.sleep(1000);
-									System.out.println(horseRaceElements.size());
 								}
 //								
 							}

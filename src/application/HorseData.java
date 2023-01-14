@@ -181,11 +181,10 @@ public class HorseData
 			glassHosei(this.stage, rangeOrigin, 1);
 		}
 
-		score += ((timeOrigin + rangeDiff) * timeHosei) * 5;
+		score += ((timeOrigin + rangeDiff) * timeHosei) * 10;
 		score -= (Double.parseDouble(this.jockeyWeight) * 20);
 
-		if(this.pastMaxSpeed.contains(":") && 
-		Integer.parseInt(this.pastMaxSpeed.substring(0,1)) * 600 +  Integer.parseInt(this.pastMaxSpeed.substring(2,4)) * 10 + Integer.parseInt(this.pastMaxSpeed.substring(5,6)) < timeOrigin + rangeDiff)
+		if(this.pastMaxSpeed.contains(":"))
 		{
 			if(maxRaceField.contains("ダ")) {
 				dirtHosei(this.pastMaxSpeed, raceRange, 2);
@@ -208,6 +207,7 @@ public class HorseData
 			score += ((timeOrigin + rangeDiff) * timeHosei)  * 20;
 		}
 
+
 		//boolean goodRank = false;
 		int pastRaceScore = 0;
 		for(int i= 0; i < 5; i++)
@@ -220,8 +220,6 @@ public class HorseData
 			}
 		
 		}
-
-		
 
 		score += pastRaceScore;
 
