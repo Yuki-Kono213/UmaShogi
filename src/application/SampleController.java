@@ -835,7 +835,6 @@ public class SampleController {
 				int cnt = 0;
 				int rowCnt = 0;
 				for (int i = 0; i < stageel.size(); i++) {
-					System.out.println(roundel.get(cnt * 25 + 1).text());
 					if (stageel.get(i).attr("href").contains("/db/race/") && cnt * 25 < roundel.size()
 							&& !Util.returnLocalDicExist(roundel.get(cnt * 25 + 1).text(), cnt)
 							&& roundel.get(cnt * 25 + 1).text().split("回")[1].length() > 1 && Util.returnDicExist(
@@ -1026,11 +1025,17 @@ public class SampleController {
 						rankPercentage[6] = (rank1[1] + rank2[1] + rank3[1]) * 100 / rankCnt[1];
 						rankPercentage[7] = (rankOther[1]) * 100 / rankCnt[1];
 					}
-					horseDataArray[horseIndex].setRaceLevel(
-							"①" + String.valueOf(rankPercentage[0]) + "②" + String.valueOf(rankPercentage[1]) + "③"
-									+ String.valueOf(rankPercentage[2]) + "他" + String.valueOf(rankPercentage[3]) + "①"
-									+ String.valueOf(rankPercentage[4]) + "②" + String.valueOf(rankPercentage[5]) + "③"
-									+ String.valueOf(rankPercentage[6]) + "他" + String.valueOf(rankPercentage[7]));
+					if(rankCnt[0] != 0 || rankCnt[1] != 0) {
+						horseDataArray[horseIndex].setRaceLevel(
+								"①" + String.valueOf(rankPercentage[0]) + "②" + String.valueOf(rankPercentage[1]) + "③"
+										+ String.valueOf(rankPercentage[2]) + "他" + String.valueOf(rankPercentage[3]) + "計" +  String.valueOf(rankCnt[0]) + "①"
+										+ String.valueOf(rankPercentage[4]) + "②" + String.valueOf(rankPercentage[5]) + "③"
+										+ String.valueOf(rankPercentage[6]) + "他" + String.valueOf(rankPercentage[7]) + "計" +  String.valueOf(rankCnt[1]) );
+					}
+					else if(horseDataArray[horseIndex] != null)
+					{
+						horseDataArray[horseIndex].setRaceLevel("①0②0③0他0計0①0②0③0他0計0");
+					}
 				}
 				for (int i = 0; i < horseElements.size() / 2; i++) {
 
