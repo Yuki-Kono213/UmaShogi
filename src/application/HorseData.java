@@ -110,31 +110,32 @@ public class HorseData
 
 	public void calcIndex(int raceRange, String maxRaceField) {
 
-		double base = 1.0;
+		int base = 0;
 		score = 0;
 		
 //		if(analysis.contains("やや有利")) {
-//			base = 1.002;
+//			base = 50;
 //		}
 //		else if(analysis.contains("やや不利"))
 //		{
-//			base = 0.998;
+//			base = -50;
 //		}
 //		else if(analysis.contains("有利"))
 //		{
-//			base = 1.005;
+//			base = 100;
 //		}
 //		else if(analysis.contains("不利"))
 //		{
-//			base = 0.995;
+//			base = -100;
 //		}
 		
 		int rangeDiff = 0;
 		if(raceRange > rangeOrigin) {
-			rangeDiff = (int)Math.sqrt((raceRange - rangeOrigin)*20) / 2;
+			rangeDiff = (int)Math.sqrt(((raceRange - rangeOrigin) * 80 )) * 2;
 		}
-		else if(raceRange < rangeOrigin){
-			rangeDiff = (int)Math.sqrt((raceRange - rangeOrigin)*20) / 3;
+		else
+		{
+			rangeDiff = -(int)Math.sqrt(((rangeOrigin - raceRange) * 80)) * 3;
 			
 		}
 		double gradeDiff = 1.0;
@@ -152,7 +153,7 @@ public class HorseData
 		}
 		else if(this.raceName.contains("OP") || this.raceName.contains("Ｌ") )
 		{
-			gradeDiff = 1.20;
+			gradeDiff = 1.2;
 		}
 		else if(this.raceName.contains("ＧⅢ") || this.raceName.contains("重賞"))
 		{
@@ -170,12 +171,12 @@ public class HorseData
 		if(this.analysis.contains("勝利")) {
 
 			score -= 200 * gradeDiff;
-			//score -= Double.parseDouble(this.behind) * 2 * ((double)raceRange * 100 /  rangeOrigin) * gradeDiff;
+			score -= Double.parseDouble(this.behind) * 2 * ((double)raceRange * 100 /  rangeOrigin) * gradeDiff;
 			
 		}
 		else 
 		{
-			score -= 200 * gradeDiff;
+			score -= 300 * gradeDiff;
 			score += Double.parseDouble(this.behind) * 20000 / ((double)rangeOrigin * 100 /  raceRange) / gradeDiff;
 		}
 
@@ -188,30 +189,30 @@ public class HorseData
 			glassHosei(this.stage, rangeOrigin, 1);
 		}
 
-		score += ((timeOrigin + rangeDiff) * timeHosei) * 10;
+		score += ((timeOrigin) * timeHosei) * 10 + rangeDiff;
 		score -= (Double.parseDouble(this.jockeyWeight) * 20);
 
 		if(this.pastMaxSpeed.contains(":"))
 		{
 			if(maxRaceField.contains("ダ")) {
-				dirtHosei(this.pastMaxSpeed, raceRange, 2);
+				dirtHosei(this.pastMaxSpeed, raceRange, 1);
 			}
 			else 
 			{
-				glassHosei(this.pastMaxSpeed, raceRange, 2);
+				glassHosei(this.pastMaxSpeed, raceRange, 1);
 			}
 			
 			score += (Integer.parseInt(this.pastMaxSpeed.substring(0,1)) * 600 +  Integer.parseInt(this.pastMaxSpeed.substring(2,4)) * 10 + Integer.parseInt(this.pastMaxSpeed.substring(5,6))) * timeHosei * 10;
 		}
 		else {
 			if(range.contains("ダ")) {
-				dirtHosei(this.stage, rangeOrigin, 2);
+				dirtHosei(this.stage, rangeOrigin, 1);
 			}
 			else 
 			{
-				glassHosei(this.stage,rangeOrigin, 2);
+				glassHosei(this.stage,rangeOrigin, 1);
 			}
-			score += ((timeOrigin + rangeDiff) * timeHosei)  * 10;
+			score += ((timeOrigin) * timeHosei)  * 10 + 400;
 		}
 
 
@@ -232,7 +233,7 @@ public class HorseData
 
 		//score += (Integer.parseInt(this.result) - Integer.parseInt(this.expect)) * 20; 
 
-		score *= base;
+		score += base;
 
 		score -= (int)(Double.parseDouble(this.goodRace));
 		score = 100000 - score;
