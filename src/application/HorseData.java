@@ -129,7 +129,14 @@ public class HorseData
 //			base = 0.995;
 //		}
 		
-		int rangeDiff = (raceRange - rangeOrigin) / 13;
+		int rangeDiff = 0;
+		if(raceRange > rangeOrigin) {
+			rangeDiff = (int)Math.sqrt((raceRange - rangeOrigin)*20) / 2;
+		}
+		else if(raceRange < rangeOrigin){
+			rangeDiff = (int)Math.sqrt((raceRange - rangeOrigin)*20) / 3;
+			
+		}
 		double gradeDiff = 1.0;
 		if(this.raceName.contains("1勝"))
 		{
@@ -194,7 +201,7 @@ public class HorseData
 				glassHosei(this.pastMaxSpeed, raceRange, 2);
 			}
 			
-			score += (Integer.parseInt(this.pastMaxSpeed.substring(0,1)) * 600 +  Integer.parseInt(this.pastMaxSpeed.substring(2,4)) * 10 + Integer.parseInt(this.pastMaxSpeed.substring(5,6))) * timeHosei * 20;
+			score += (Integer.parseInt(this.pastMaxSpeed.substring(0,1)) * 600 +  Integer.parseInt(this.pastMaxSpeed.substring(2,4)) * 10 + Integer.parseInt(this.pastMaxSpeed.substring(5,6))) * timeHosei * 10;
 		}
 		else {
 			if(range.contains("ダ")) {
@@ -204,7 +211,7 @@ public class HorseData
 			{
 				glassHosei(this.stage,rangeOrigin, 2);
 			}
-			score += ((timeOrigin + rangeDiff) * timeHosei)  * 20;
+			score += ((timeOrigin + rangeDiff) * timeHosei)  * 10;
 		}
 
 
@@ -213,10 +220,10 @@ public class HorseData
 		for(int i= 0; i < 5; i++)
 		{
 			if(i <  this.pastRace.length() && !this.pastRace.substring(i,i+1).equals("－")) {
-				pastRaceScore += (Util.RankMap.get(this.pastRace.substring(i,i+1)) + 18) * 3 *  (((double)8 - i) / 4 + 1);
+				pastRaceScore += (Util.RankMap.get(this.pastRace.substring(i,i+1)) + 18) * 2 *  (((double)10 - i) / 4 + 1);
 			}
 			else {
-				pastRaceScore += 23 * 3 * (((double)8 - i) / 4 + 1);
+				pastRaceScore += 23 * 2 * (((double)10 - i) / 4 + 1);
 			}
 		
 		}
@@ -226,15 +233,15 @@ public class HorseData
 		//score += (Integer.parseInt(this.result) - Integer.parseInt(this.expect)) * 20; 
 
 		score *= base;
-		 
+
+		score -= (int)(Double.parseDouble(this.goodRace));
 		score = 100000 - score;
-			
 		this.index = String.valueOf(score);
 	}
 	
 	private void dirtHosei(String stage, int raceRange, int coefficient) {
 
-		timeHosei = 0.94;
+		timeHosei = 0.92;
 		if(stage.contains("稍"))
 		{
 			score += 30 * ((double)raceRange / 600 ) * coefficient;
