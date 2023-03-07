@@ -473,6 +473,8 @@ public class SampleController {
 			Elements dateElements = doc.select(".fL.ml10 .bold");
 			Elements rangeElements = doc.select(".classCourseSyokin.clearfix li");
 			Elements conditionElements = doc.select(".raceaboutbox.clearfix li");
+			Elements heavyElements = doc.select(".kinryou.std9 td");
+			System.out.print(heavyElements.get(0).text());
 			condition = conditionElements.get(1).text();
 			labelRaceName.setText(doc.select(".raceTitle.fL").get(0).text());
 			grade = null;
@@ -619,10 +621,14 @@ public class SampleController {
 				try {
 					// if(name != "" && horseList.stream().noneMatch(a -> a.name.equals(name))) {
 					Horse h = new Horse();
+					double jockeyWeight = 0.0;
 					h.name = horseElements.get(i).text();
 					if (rateSpanElements.size() != 0 && !rateSpanElements.get(j).text().equals("除外")
 							&& !rateSpanElements.get(j).text().equals("取消")
 							&& !rateSpanElements.get(j).text().isEmpty()) {
+
+						 jockeyWeight = Double.parseDouble(
+								 heavyElements.get(j).text().replace("▲", "").replace("△", "").replace("★", "").replace("☆", ""));
 						h.rate = Double.parseDouble(rateSpanElements.get(j).select("span").get(0).text());
 					}
 					try {
@@ -789,7 +795,7 @@ public class SampleController {
 								horseString.remove(19);
 							}
 							SetTable(h, horseString, strArray[h.number] + h.pastRace, horseConditionString, address, i,
-									"10000");
+									"10000",jockeyWeight);
 							Thread.sleep(3000);
 						} else {
 
@@ -802,7 +808,7 @@ public class SampleController {
 								horseString.remove(19);
 							}
 
-							SetTable(h, horseString, horseText[0], horseConditionString, address, i, horseText[2]);
+							SetTable(h, horseString, horseText[0], horseConditionString, address, i, horseText[2],jockeyWeight);
 						}
 					} catch (Exception e) {
 
@@ -922,9 +928,9 @@ public class SampleController {
 	}
 
 	private void SetTable(Horse h, List<String> horseString, String horseText, List<String> pastRaceCondition,
-			String address, int index, String raceLevel) {
+			String address, int index, String raceLevel, Double jockeyWeight) {
 		HorseData horseData = new HorseData(strArray[h.number], h.name, RacePointCheck(horseText, h), horseString,
-				pastRaceCondition, raceRange, labelRaceRange.getText(), address, raceLevel);
+				pastRaceCondition, raceRange, labelRaceRange.getText(), address, raceLevel,jockeyWeight);
 		table.getItems().add(horseData);
 		horseDataArray[index] = horseData;
 		horseArray[index] = h;
