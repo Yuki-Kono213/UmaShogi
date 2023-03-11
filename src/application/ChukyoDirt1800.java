@@ -1,0 +1,15 @@
+package application;
+
+public class ChukyoDirt1800 extends Racecource {
+	static {
+		straightDistance = "長い";
+		straightSlope = "急坂";
+		rotationSide = "左回り";
+		rotationSize = "小回り";
+		cornerShape = "O字";
+		grassStart = "";
+		range = 1800;
+		raceGround = "ダート";
+	}
+	
+}
