@@ -1,0 +1,14 @@
+package application;
+
+public class RaceCourse {
+	public String straightSlope;
+	public String straightDistance;
+	public String rotationSide;
+	public String rotationSize;
+	public String cornerShape;
+	public String grassStart;
+	public int range;
+	public String raceGround;
+	
+
+}

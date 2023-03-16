@@ -1,7 +1,7 @@
 package application;
 
-public class NiigataGrass1600 extends Racecource {
-	static {
+public class NiigataGrass1600 extends RaceCourse {
+	{
 		straightDistance = "";
 		straightSlope = "平坦";
 		rotationSide = "左回り";

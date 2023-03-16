@@ -1,7 +1,7 @@
 package application;
 
-public class SapporoDirt1000 extends Racecource {
-	static {
+public class SapporoDirt1000 extends RaceCourse {
+	{
 		straightDistance = "短い";
 		straightSlope = "平坦";
 		rotationSide = "右回り";

@@ -143,7 +143,8 @@ public class HorseDB {
 			if("select".equals(command)) {
 				
 			}else if("insert".equals(command)) {
-				executeInsert(args[1],Integer.parseInt(args[2]),Integer.parseInt(args[3]),args[4],Integer.parseInt(args[5]), args[6]);
+				executeInsert(args[1],Integer.parseInt(args[2]),Integer.parseInt(args[3]),args[4],Integer.parseInt(args[5]), args[6]
+						, args[7], args[8], args[9], args[10], args[11], args[12], args[13]);
 			}else if("update".equals(command)) {
 
 				executeUpdate(args[1],args[2]);
@@ -159,7 +160,7 @@ public class HorseDB {
 		 */
 		public String[] returnPastRace(String name, Integer raceID)
 			throws SQLException{
-			String[] pastRace = new String[3];
+			String[] pastRace = new String[10];
 			ResultSet resultSet = _statement.executeQuery("SELECT * FROM " + TABLE_NAME +" WHERE NAME = '"+name+"' AND "
 					+ "RACEID = '"+raceID+"'");
 			try{
@@ -171,6 +172,14 @@ public class HorseDB {
 					pastRace[0] = resultSet.getString("PASTRACE");
 					pastRace[1] = resultSet.getString("PASTRACECONDITION");
 					pastRace[2] = resultSet.getString("RACELEVEL");
+					pastRace[3] = resultSet.getString("CORNERSHAPE");
+					pastRace[4] = resultSet.getString("GRASSSTART");
+					pastRace[5] = resultSet.getString("RACEGROUND");
+					pastRace[6] = resultSet.getString("ROTATIONSIDE");
+					pastRace[7] = resultSet.getString("ROTATIONSIZE");
+					pastRace[8] = resultSet.getString("STRAIGHTDISTANCE");
+					pastRace[9] = resultSet.getString("STRAIGHTSLOPE");
+					
 				}while(resultSet.next());
 			}finally{
 				resultSet.close();
@@ -194,12 +203,14 @@ public class HorseDB {
 		 * @param name
 		 * @param password
 		 */
-		private void executeInsert(String name, Integer raceID, Integer position, String pastRace, Integer frame, String pastRaceCondition)
+		private void executeInsert(String name, Integer raceID, Integer position, String pastRace, Integer frame, String pastRaceCondition,
+				String cornerShape, String grassStart, String raceGround, String rotationSide, String rotationSize, String straightDistance, String straightSlope)
 			throws SQLException{
 			// SQL文を発行
 			int updateCount = _statement.executeUpdate("INSERT INTO " + TABLE_NAME + 
-					" (NAME,RACEID,POSITION,PASTRACE,FRAME, PASTRACECONDITION) VALUES "
-					+ "('"+name+"' , '"+raceID+"', '"+position+"', '"+pastRace+"', '"+frame+"', '"+pastRaceCondition+"')");
+					" (NAME,RACEID,POSITION,PASTRACE,FRAME, PASTRACECONDITION,CORNERSHAPE, GRASSSTART,RACEGROUND, ROTATIONSIDE, ROTATIONSIZE, STRAIGHTDISTANCE, STRAIGHTSLOPE) VALUES "
+					+ "('"+name+"' , '"+raceID+"', '"+position+"', '"+pastRace+"', '"+frame+"', '"+pastRaceCondition+"', '"+cornerShape+"', '"+grassStart+"'"
+							+ ", '"+raceGround+"', '"+rotationSide+"', '"+rotationSize+"', '"+straightDistance+"', '"+straightSlope+"'" + ")");
 			System.out.println("Insert: " + updateCount);
 			
 		}

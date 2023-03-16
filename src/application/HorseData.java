@@ -51,13 +51,21 @@ public class HorseData
 	private String pastMaxSpeedLast;
 	private String index;
 
+	private String cornerShape;
+	private String grassStart;
+	private String raceGround;
+	private String rotationSide;
+	private String rotationSize;
+	private String straightDistance;
+	private String straightSlope;
+	
 	int timeOrigin;
 	int rangeOrigin;
 	private int score;
 	double timeHosei;
 	
 	  public HorseData(String no, String name, String analysis, List<String> horseString, List<String>pastRaceCondition, int raceRange, String maxRaceField, String address,
-			  String raceLevel, Double thisWeight) {
+			  String raceLevel, Double thisWeight, String cornerShape, String grassStart,String  raceGround, String rotationSide, String rotationSize, String straightDistance, String straightSlope) {
 
 		  	this.raceLevel = raceLevel;
 			 this.no = no;
@@ -104,6 +112,13 @@ public class HorseData
 			 this.pastMaxSpeedLast = pastRaceCondition.get(10);
 			 this.address = address;
 			 this.thisRaceJockeyWeight = thisWeight;
+			 this.cornerShape = cornerShape;
+			 this.grassStart = grassStart;
+			 this.raceGround = raceGround;
+			this.rotationSide = rotationSide;
+			this.rotationSize = rotationSize;
+			this.straightDistance = straightDistance;
+			this.straightSlope = straightSlope;
 			 calcIndex(raceRange, maxRaceField);
 	  }
 	  public HorseData(String raceLevel) {
@@ -367,5 +382,20 @@ public class HorseData
 	  public void setPastMaxSpeedLast(String pastMaxSpeedLast){ this.pastMaxSpeedLast = pastMaxSpeedLast; }
 	  public String getIndex(){ return index; }
 	  public void setIndex(String index){ this.index = index; }
+
+	  public String getCornerShape(){ return cornerShape; }
+	  public void setCornerShape(String cornerShape){ this.cornerShape = cornerShape; }
+	  public String getGrassStart(){ return grassStart; }
+	  public void setGrassStart(String grassStart){ this.grassStart = grassStart; }
+	  public String getRaceGround(){ return raceGround; }
+	  public void setRaceGround(String raceGround){ this.raceGround = raceGround; }
+	  public String getRotationSide(){ return rotationSide; }
+	  public void setRotationSide(String rotationSide){ this.rotationSide = rotationSide; }
+	  public String getRotationSize(){ return rotationSize; }
+	  public void setRotationSize(String rotationSize){ this.rotationSize = rotationSize; }
+	  public String getStraightDistance(){ return straightDistance; }
+	  public void setsSraightDistance(String straightDistance){ this.straightDistance = straightDistance; }
+	  public String getStraightSlope(){ return straightSlope; }
+	  public void setStraightSlope(String straightSlope){ this.straightSlope = straightSlope ; }
 
 }

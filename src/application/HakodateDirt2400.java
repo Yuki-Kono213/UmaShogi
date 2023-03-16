@@ -1,7 +1,7 @@
 package application;
 
-public class HakodateDirt2400 extends Racecource {
-	static {
+public class HakodateDirt2400 extends RaceCourse {
+	{
 		straightDistance = "短い";
 		straightSlope = "平坦";
 		rotationSide = "右回り";

@@ -1,7 +1,7 @@
 package application;
 
-public class FukushimaDirt1150 extends Racecource {
-	static {
+public class FukushimaDirt1150 extends RaceCourse {
+	{
 		straightDistance = "短い";
 		straightSlope = "平坦";
 		rotationSide = "右回り";

@@ -10,6 +10,8 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
+import javax.print.attribute.standard.PrinterStateReason;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -157,6 +159,20 @@ public class SampleController {
 	private TableColumn<HorseData, String> pastMaxPace;
 	@FXML
 	private TableColumn<HorseData, String> pastMaxSpeedLast;
+	@FXML
+	private TableColumn<HorseData, String> straightSlope;
+	@FXML
+	private TableColumn<HorseData, String> straightDistance;
+	@FXML
+	private TableColumn<HorseData, String> cornerShape;
+	@FXML
+	private TableColumn<HorseData, String> rotationSide;
+	@FXML
+	private TableColumn<HorseData, String> rotationSize;
+	@FXML
+	private TableColumn<HorseData, String> grassStart;
+	@FXML
+	private TableColumn<HorseData, String> raceGround;
 
 	@FXML
 	private Button raceLevelbtn;
@@ -285,6 +301,8 @@ public class SampleController {
 
 	@FXML
 	private Label lblRecoveryToday;
+	
+	private PastRaceResult prr= new PastRaceResult();
 
 	public void ClearText() {
 		frame1.clear();
@@ -451,6 +469,14 @@ public class SampleController {
 		pastMaxSpeed.setCellValueFactory(new PropertyValueFactory<HorseData, String>("pastMaxSpeed"));
 		pastMaxPace.setCellValueFactory(new PropertyValueFactory<HorseData, String>("pastMaxPace"));
 		pastMaxSpeedLast.setCellValueFactory(new PropertyValueFactory<HorseData, String>("pastMaxSpeedLast"));
+		
+		straightDistance.setCellValueFactory(new PropertyValueFactory<HorseData, String>("straightDistance"));
+		straightSlope.setCellValueFactory(new PropertyValueFactory<HorseData, String>("straightSlope"));
+		cornerShape.setCellValueFactory(new PropertyValueFactory<HorseData, String>("cornerShape"));
+		rotationSide.setCellValueFactory(new PropertyValueFactory<HorseData, String>("rotationSide"));
+		rotationSize.setCellValueFactory(new PropertyValueFactory<HorseData, String>("rotationSize"));
+		grassStart.setCellValueFactory(new PropertyValueFactory<HorseData, String>("grassStart"));
+		raceGround.setCellValueFactory(new PropertyValueFactory<HorseData, String>("raceGround"));
 
 		try {
 			table.getItems().clear();
@@ -557,7 +583,7 @@ public class SampleController {
 			rdm.RaceURL = textURL.getText();
 			rdm.RaceName = labelRaceName.getText();
 			Integer raceID = raceData[0];
-			if (raceID == -1) {
+			if (raceID == -1 || raceData[3] == 0) {
 				if (rangeElements.get(0).text().contains("芝")) {
 					rdm.glass = true;
 				} else {
@@ -566,7 +592,7 @@ public class SampleController {
 				rdm.payCash = 0;
 				rdm.returnCash = 0;
 
-				rdb.UseRaceDataBase(new String[] { "insert", rdm.RaceName, rdm.RaceURL, "0", "0" });
+				rdb.UseRaceDataBase(new String[] { "insert", rdm.RaceName, rdm.RaceURL, "0", "0", "false" });
 
 				raceExist = false;
 				raceData = rdb.GetRaceID(textURL.getText());
@@ -616,7 +642,9 @@ public class SampleController {
 			int j = 0;
 			horseDataArray = new HorseData[horseElements.size() / 2];
 			horseArray = new Horse[horseElements.size() / 2];
+			RaceCourse rc = RaceCourseUtil.ReturnRaceCourse(labelRaceStage.getText(), labelRaceRange.getText(),doc.select(".raceTitle.fL").get(0).text());
 			for (int i = 0; i < horseElements.size() / 2; i++) {
+				prr = new PastRaceResult();
 				j = i + 18 - horseElements.size() / 2;
 				try {
 					// if(name != "" && horseList.stream().noneMatch(a -> a.name.equals(name))) {
@@ -628,7 +656,7 @@ public class SampleController {
 							&& !rateSpanElements.get(j).text().isEmpty()) {
 
 						 jockeyWeight = Double.parseDouble(
-								 heavyElements.get(j).text().replace("▲", "").replace("△", "").replace("★", "").replace("☆", ""));
+								 heavyElements.get(j).text().replace("▲", "").replace("△", "").replace("★", "").replace("☆", "").replace("◇", ""));
 						h.rate = Double.parseDouble(rateSpanElements.get(j).select("span").get(0).text());
 					}
 					try {
@@ -741,7 +769,151 @@ public class SampleController {
 										pastRaceCondition[7] += strArray[Integer
 												.parseInt(HorseElements.get(i2).text().split(" ")[7])];
 									}
+									RaceCourse rcPast = RaceCourseUtil.ReturnRaceCourse(HorseElements.get(i2).text().split(" ")[1], HorseElements.get(i2).text().split(" ")[2], HorseElements.get(i2).text().split(" ")[5]); 
+									int grade = Integer.parseInt(HorseElements.get(i2).text().split(" ")[7]);
+									if(rc.cornerShape.equals(rcPast.cornerShape)) 
+									{
+										if(grade == 1) {
+											prr.cornerShape[0]++;
+										}
+										else if(grade == 2)
+										{
+											prr.cornerShape[1]++;
+										}	
+										else if(grade == 3)
+										{
+											prr.cornerShape[2]++;
+										}
+										else
+										{
+											prr.cornerShape[3]++;
+										}									
+										
+									}
+									
+									if(rc.grassStart.equals(rcPast.grassStart)) 
+									{
+										if(grade == 1) {
+											prr.grassStart[0]++;
+										}
+										else if(grade == 2)
+										{
+											prr.grassStart[1]++;
+										}	
+										else if(grade == 3)
+										{
+											prr.grassStart[2]++;
+										}
+										else
+										{
+											prr.grassStart[3]++;
+										}									
+										
+									}
+									
+									if(rc.raceGround.equals(rcPast.raceGround)) 
+									{
+										if(grade == 1) {
+											prr.raceGround[0]++;
+										}
+										else if(grade == 2)
+										{
+											prr.raceGround[1]++;
+										}	
+										else if(grade == 3)
+										{
+											prr.raceGround[2]++;
+										}
+										else
+										{
+											prr.raceGround[3]++;
+										}									
+										
+									}
+									
+									
+									if(rc.rotationSide.equals(rcPast.rotationSide)) 
+									{
+										if(grade == 1) {
+											prr.rotationSide[0]++;
+										}
+										else if(grade == 2)
+										{
+											prr.rotationSide[1]++;
+										}	
+										else if(grade == 3)
+										{
+											prr.rotationSide[2]++;
+										}
+										else
+										{
+											prr.rotationSide[3]++;
+										}									
+										
+									}
+									
 
+									if(rc.rotationSize.equals(rcPast.rotationSize)) 
+									{
+										if(grade == 1) {
+											prr.rotationSize[0]++;
+										}
+										else if(grade == 2)
+										{
+											prr.rotationSize[1]++;
+										}	
+										else if(grade == 3)
+										{
+											prr.rotationSize[2]++;
+										}
+										else
+										{
+											prr.rotationSize[3]++;
+										}									
+										
+									}
+									
+
+									if(rc.straightDistance.equals(rcPast.straightDistance)) 
+									{
+										if(grade == 1) {
+											prr.straightDistance[0]++;
+										}
+										else if(grade == 2)
+										{
+											prr.straightDistance[1]++;
+										}	
+										else if(grade == 3)
+										{
+											prr.straightDistance[2]++;
+										}
+										else
+										{
+											prr.straightDistance[3]++;
+										}									
+										
+									}
+
+
+									if(rc.straightSlope.equals(rcPast.straightSlope)) 
+									{
+										if(grade == 1) {
+											prr.straightSlope[0]++;
+										}
+										else if(grade == 2)
+										{
+											prr.straightSlope[1]++;
+										}	
+										else if(grade == 3)
+										{
+											prr.straightSlope[2]++;
+										}
+										else
+										{
+											prr.straightSlope[3]++;
+										}									
+										
+									}
 									if (LocalDate.parse(HorseElements.get(i2).text().split(" ")[0],
 											DateTimeFormatter.ofPattern("yyyy/[]M/[]d")).isAfter(
 													LocalDate
@@ -783,9 +955,7 @@ public class SampleController {
 									+ " " + pastRaceCondition[5] + " " + pastRaceCondition[6] + " "
 									+ pastRaceCondition[7] + " " + pastMaxGoodTime + " " + pastMaxGoodPace + " "
 									+ pastMaxGoodLast;
-							new HorseDB().UseHorseDataBase(
-									new String[] { "insert", h.name, raceID.toString(), Integer.toString(h.position),
-											h.pastRace, Integer.toString(h.frame), h.pastRaceCondition });
+							
 
 							List<String> horseString = new ArrayList<String>(Arrays.asList(h.pastRace.split(" ")));
 							List<String> horseConditionString = new ArrayList<String>(
@@ -794,8 +964,21 @@ public class SampleController {
 							if (horseString.size() > 18 && horseString.get(19).equals("B")) {
 								horseString.remove(19);
 							}
+							
+							String cornerShape = prr.cornerShape[0] + "-" + prr.cornerShape[1] + "-" + prr.cornerShape[2] + "-" + prr.cornerShape[3];
+							String grassStart = prr.grassStart[0] + "-" + prr.grassStart[1] + "-" + prr.grassStart[2] + "-" + prr.grassStart[3];
+							String raceGround = prr.raceGround[0] + "-" + prr.raceGround[1] + "-" + prr.raceGround[2] + "-" + prr.raceGround[3];
+							String rotationSide = prr.rotationSide[0] + "-" + prr.rotationSide[1] + "-" + prr.rotationSide[2] + "-" + prr.rotationSide[3];
+							String rotationSize = prr.rotationSize[0] + "-" + prr.rotationSize[1] + "-" + prr.rotationSize[2] + "-" + prr.rotationSize[3];
+							String straightDistance = prr.straightDistance[0] + "-" + prr.straightDistance[1] + "-" + prr.straightDistance[2] + "-" + prr.straightDistance[3];
+							String straightSlope = prr.straightSlope[0] + "-" + prr.straightSlope[1] + "-" + prr.straightSlope[2] + "-" + prr.straightSlope[3];
+							
+							new HorseDB().UseHorseDataBase(
+									new String[] { "insert", h.name, raceID.toString(), Integer.toString(h.position),
+											h.pastRace, Integer.toString(h.frame), h.pastRaceCondition,cornerShape, grassStart, raceGround, rotationSide, rotationSize, straightDistance, straightSlope});
+							
 							SetTable(h, horseString, strArray[h.number] + h.pastRace, horseConditionString, address, i,
-									"10000",jockeyWeight);
+									"10000",jockeyWeight, cornerShape, grassStart, raceGround, rotationSide, rotationSize, straightDistance, straightSlope);
 							Thread.sleep(3000);
 						} else {
 
@@ -808,7 +991,8 @@ public class SampleController {
 								horseString.remove(19);
 							}
 
-							SetTable(h, horseString, horseText[0], horseConditionString, address, i, horseText[2],jockeyWeight);
+							SetTable(h, horseString, horseText[0], horseConditionString, address, i, horseText[2],jockeyWeight, 
+									horseText[3], horseText[4], horseText[5], horseText[6], horseText[7], horseText[8], horseText[9]);
 						}
 					} catch (Exception e) {
 
@@ -928,9 +1112,10 @@ public class SampleController {
 	}
 
 	private void SetTable(Horse h, List<String> horseString, String horseText, List<String> pastRaceCondition,
-			String address, int index, String raceLevel, Double jockeyWeight) {
+			String address, int index, String raceLevel, Double jockeyWeight , String cornerShape, String grassStart,String  raceGround, String rotationSide, String rotationSize, String straightDistance, String straightSlope) {
 		HorseData horseData = new HorseData(strArray[h.number], h.name, RacePointCheck(horseText, h), horseString,
-				pastRaceCondition, raceRange, labelRaceRange.getText(), address, raceLevel,jockeyWeight);
+				pastRaceCondition, raceRange, labelRaceRange.getText(), address, raceLevel,jockeyWeight
+				,cornerShape, grassStart,raceGround, rotationSide, rotationSize, straightDistance, straightSlope);
 		table.getItems().add(horseData);
 		horseDataArray[index] = horseData;
 		horseArray[index] = h;

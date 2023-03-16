@@ -151,7 +151,7 @@ public class RaceDB {
 		
 		public Integer[] GetRaceID(String url) throws SQLException 
 		{
-			Integer[] race_Data = {-1,0,0}; 
+			Integer[] race_Data = {-1,0,0,0}; 
 			ResultSet resultSetID = null;
 			try {
 				create();
@@ -161,6 +161,11 @@ public class RaceDB {
 				race_Data[0] = resultSetID.getInt("ID");
 				race_Data[1] = resultSetID.getInt("PAY");
 				race_Data[2] = resultSetID.getInt("RETURN");
+				Boolean b = resultSetID.getBoolean("COURSECALC");
+				if(b)
+				{
+					race_Data[3] = 1;
+				}
 			}
 			catch(Exception ex)
 			{
@@ -226,8 +231,8 @@ public class RaceDB {
 			throws SQLException{
 			// SQL文を発行
 			int updateCount = _statement.executeUpdate("INSERT INTO " + TABLE_NAME + 
-					" (NAME, RACEURL, PAY, RETURN) VALUES "
-					+ "('"+name+"','"+url+"','"+Integer.parseInt(payCash)+"','"+Integer.parseInt(returnCash)+"')");
+					" (NAME, RACEURL, PAY, RETURN, COURSECALC  ) VALUES "
+					+ "('"+name+"','"+url+"','"+Integer.parseInt(payCash)+"','"+Integer.parseInt(returnCash)+"','"+Boolean.parseBoolean("true")+"')");
 			System.out.println("Insert: " + updateCount);
 			
 		}
