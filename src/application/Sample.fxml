@@ -85,7 +85,8 @@
             <TableColumn fx:id="dirtBadRaceResult" prefWidth="100.0" text="ダ不5走" />
             <TableColumn fx:id="pastMaxPace" prefWidth="100.0" text="最速ペース" />
             <TableColumn fx:id="pastMaxSpeedLast" prefWidth="100.0" text="最速上り" />
-            <TableColumn fx:id="nameTable1" prefWidth="100.0" text="馬名" />
+            <TableColumn fx:id="nameTable2" prefWidth="100.0" text="馬名" />
+            <TableColumn fx:id="indexTable1" prefWidth="50.0" text="指数" />
             <TableColumn fx:id="straightSlope" prefWidth="100.0" text="直線傾斜" />
             <TableColumn fx:id="straightDistance" prefWidth="100.0" text="直線長さ" />
             <TableColumn fx:id="cornerShape" prefWidth="100.0" text="回転形状" />

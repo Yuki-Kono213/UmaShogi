@@ -1,6 +1,10 @@
 package application;
 import java.util.List;
 
+import javax.imageio.ImageTranscoder;
+
+import javafx.scene.layout.BorderWidths;
+
 public class HorseData 
 {
 
@@ -63,6 +67,7 @@ public class HorseData
 	int rangeOrigin;
 	private int score;
 	double timeHosei;
+	double gradeDiff;
 	
 	  public HorseData(String no, String name, String analysis, List<String> horseString, List<String>pastRaceCondition, int raceRange, String maxRaceField, String address,
 			  String raceLevel, Double thisWeight, String cornerShape, String grassStart,String  raceGround, String rotationSide, String rotationSize, String straightDistance, String straightSlope) {
@@ -150,14 +155,14 @@ public class HorseData
 		
 		int rangeDiff = 0;
 		if(raceRange > rangeOrigin) {
-			rangeDiff = (raceRange - rangeOrigin) / 4;
+			rangeDiff = (raceRange - rangeOrigin);
 		}
 		else
 		{
-			rangeDiff = -(int)(Math.sqrt(((rangeOrigin - raceRange))) * 5);
+			rangeDiff = -(int)(Math.sqrt(((rangeOrigin - raceRange))) * 20);
 			
 		}
-		double gradeDiff = 1.0;
+		gradeDiff = 1.0;
 		if(this.raceName.contains("1勝"))
 		{
 			gradeDiff = 1.05;
@@ -191,7 +196,6 @@ public class HorseData
 
 			score -= 200 * gradeDiff;
 			score -= Double.parseDouble(this.behind) * 2 * ((double)raceRange * 100 /  rangeOrigin) * gradeDiff * 1600 / raceRange ;
-			
 		}
 		else 
 		{
@@ -246,21 +250,28 @@ public class HorseData
 		for(int i= 0; i < 5; i++)
 		{
 			if(i <  this.pastRace.length() && !this.pastRace.substring(i,i+1).equals("－")) {
-				pastRaceScore += (Util.RankMap.get(this.pastRace.substring(i,i+1)) + 8) * 3 *  (((double)20 - i) / 4);
+				pastRaceScore += (Util.RankMap.get(this.pastRace.substring(i,i+1)) + 10) * 3 *  (((double)10 - i) / 3);
 			}
 			else {
-				pastRaceScore += 13 * 3 * (((double)20 - i) / 4 );
+				pastRaceScore += 15 * 3 * (((double)10 - i) / 3 );
 			}
 			
 		}
-
 		score += pastRaceScore;
+		CalcCourseAptitude(this.cornerShape.split("-"));
+		CalcCourseAptitude(this.grassStart.split("-"));
+		//CalcCourseAptitude(this.raceGround.split("-"));
+		CalcCourseAptitude(this.rotationSide.split("-"));
+		CalcCourseAptitude(this.rotationSize.split("-"));
+		CalcCourseAptitude(this.straightDistance.split("-"));
+		CalcCourseAptitude(this.straightSlope.split("-"));
+
 
 		//score += (Integer.parseInt(this.result) - Integer.parseInt(this.expect)) * 20; 
 
 		score += base;
 
-		score -= (int)(Double.parseDouble(this.goodRace)) * 3;
+		score -= (int)(Double.parseDouble(this.goodRace)) * 4;
 		score = 100000 - score;
 		this.index = String.valueOf(score);
 	}
@@ -278,7 +289,7 @@ public class HorseData
 		}
 		else if(stage.contains("不"))
 		{
-			score += 30 * ((double)raceRange / 600 ) * coefficient;
+			//score += 30 * ((double)raceRange / 600 ) * coefficient;
 		}
 	}
 	
@@ -299,6 +310,29 @@ public class HorseData
 		}
 	}
 		
+	private void CalcCourseAptitude(String[] courseHorse) 
+	{
+		int[]calcHorse = new int[]{Integer.parseInt(courseHorse[0]), Integer.parseInt(courseHorse[1]),Integer.parseInt(courseHorse[2]), Integer.parseInt(courseHorse[3])};
+		for(int i = 0 ; i < calcHorse.length; i++) {
+			if(calcHorse[i] > 10) {
+				calcHorse[i] = 10;
+			}
+		}
+		int cnt = 0;
+		cnt += calcHorse[0] * 60;
+		cnt += calcHorse[1] * 30;
+		cnt += calcHorse[2] * 15;
+		cnt -= calcHorse[3] * 10;
+		if(gradeDiff < 1.10) {
+			cnt /= 2;
+		}
+		
+		if((calcHorse[0] + calcHorse[1] + calcHorse[2] + calcHorse[3]) != 0) {
+				//cnt = (calcHorse[0] + calcHorse[1] + calcHorse[2] + calcHorse[3]);
+		}
+		System.out.println(this.name + cnt);
+		score -= cnt;
+	}
 	  /* getter,setterがないとTableViewに反映されない */
 	  public String getAddress(){ return address; }
 	  public void setAddress(String address){ this.address = address; } 

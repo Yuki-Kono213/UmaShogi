@@ -330,6 +330,75 @@ public class RaceCourseUtil
 				}
 			}
 		}
+		else if(stage.contains("京都")) 
+		{
+			if(range.contains("芝")) 
+			{
+				if(range.contains("1200")) 
+				{
+					return new KyotoGrass1200();
+				}
+				else if(range.contains("1400")&& raceName.contains("未勝利") ) {
+					return new KyotoGrass1400In();
+					
+				}
+				else if(range.contains("1400")) {
+					return new KyotoGrass1400Out();
+					
+				}
+				else if(range.contains("1600")&& raceName.contains("未勝利") ) {
+					return new KyotoGrass1600In();
+					
+				}
+				else if(range.contains("1600")) {
+					return new KyotoGrass1600Out();
+					
+				}
+				else if(range.contains("1800")) {
+					return new KyotoGrass1800();
+					
+				}
+				else if(range.contains("2000")) {
+					return new KyotoGrass2000();
+					
+				}
+				else if(range.contains("2200")) {
+					return new KyotoGrass2200();
+					
+				}
+				else if(range.contains("2400")) {
+					return new KyotoGrass2400();
+					
+				}
+				else if(range.contains("3000")) {
+					return new KyotoGrass3000();
+					
+				}
+				else if(range.contains("3200")) {
+					return new KyotoGrass3200();
+					
+				}
+			}
+			else if(range.contains("ダ")) 
+			{
+				if(range.contains("1200")) 
+				{
+					return new KyotoDirt1200();
+				}
+				else if(range.contains("1400")) {
+					return new KyotoDirt1400();
+					
+				}
+				else if(range.contains("1800")) {
+					return new KyotoDirt1800();
+					
+				}
+				else if(range.contains("1900")) {
+					return new KyotoDirt1900();
+					
+				}
+			}
+		}
 		else if(stage.contains("阪神")) 
 		{
 			if(range.contains("芝")) 
@@ -352,6 +421,10 @@ public class RaceCourseUtil
 				}
 				else if(range.contains("2000")) {
 					return new HanshinGrass2000();
+					
+				}
+				else if(range.contains("2200")) {
+					return new HanshinGrass2200();
 					
 				}
 				else if(range.contains("2400")) {

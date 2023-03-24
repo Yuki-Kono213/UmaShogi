@@ -175,6 +175,10 @@ public class SampleController {
 	private TableColumn<HorseData, String> raceGround;
 
 	@FXML
+	private TableColumn<HorseData, String> nameTable2;
+	@FXML
+	private TableColumn<HorseData, String> indexTable1;
+	@FXML
 	private Button raceLevelbtn;
 
 	@FXML
@@ -301,8 +305,8 @@ public class SampleController {
 
 	@FXML
 	private Label lblRecoveryToday;
-	
-	private PastRaceResult prr= new PastRaceResult();
+
+	private PastRaceResult prr = new PastRaceResult();
 
 	public void ClearText() {
 		frame1.clear();
@@ -339,10 +343,12 @@ public class SampleController {
 
 	public void ViewRace() {
 
-		txtPay.setText(String.valueOf(rdm.payCash));
-		txtReturn.setText(String.valueOf(rdm.returnCash));
-		lblRecovery.setText(rdm.returnCash * 100 / rdm.payCash + "%");
-		TotalRecoveryCheck();
+		if(rdm.payCash != 0) {
+			txtPay.setText(String.valueOf(rdm.payCash));
+			txtReturn.setText(String.valueOf(rdm.returnCash));
+			lblRecovery.setText(rdm.returnCash * 100 / rdm.payCash + "%");
+			TotalRecoveryCheck();
+		}
 
 	}
 
@@ -455,6 +461,8 @@ public class SampleController {
 
 		numberTable1.setCellValueFactory(new PropertyValueFactory<HorseData, String>("no"));
 		nameTable1.setCellValueFactory(new PropertyValueFactory<HorseData, String>("name"));
+		nameTable2.setCellValueFactory(new PropertyValueFactory<HorseData, String>("name"));
+		indexTable1.setCellValueFactory(new PropertyValueFactory<HorseData, String>("index"));
 
 		glassGoodRaceResult.setCellValueFactory(new PropertyValueFactory<HorseData, String>("glassGoodRaceResult"));
 		glassBitHeavyRaceResult
@@ -469,7 +477,7 @@ public class SampleController {
 		pastMaxSpeed.setCellValueFactory(new PropertyValueFactory<HorseData, String>("pastMaxSpeed"));
 		pastMaxPace.setCellValueFactory(new PropertyValueFactory<HorseData, String>("pastMaxPace"));
 		pastMaxSpeedLast.setCellValueFactory(new PropertyValueFactory<HorseData, String>("pastMaxSpeedLast"));
-		
+
 		straightDistance.setCellValueFactory(new PropertyValueFactory<HorseData, String>("straightDistance"));
 		straightSlope.setCellValueFactory(new PropertyValueFactory<HorseData, String>("straightSlope"));
 		cornerShape.setCellValueFactory(new PropertyValueFactory<HorseData, String>("cornerShape"));
@@ -583,14 +591,15 @@ public class SampleController {
 			rdm.RaceURL = textURL.getText();
 			rdm.RaceName = labelRaceName.getText();
 			Integer raceID = raceData[0];
+			System.out.println(raceData[3]);
 			if (raceID == -1 || raceData[3] == 0) {
 				if (rangeElements.get(0).text().contains("芝")) {
 					rdm.glass = true;
 				} else {
 					rdm.glass = false;
 				}
-				rdm.payCash = 0;
-				rdm.returnCash = 0;
+				rdm.payCash =  raceData[1];
+				rdm.returnCash =  raceData[2];
 
 				rdb.UseRaceDataBase(new String[] { "insert", rdm.RaceName, rdm.RaceURL, "0", "0", "false" });
 
@@ -642,7 +651,16 @@ public class SampleController {
 			int j = 0;
 			horseDataArray = new HorseData[horseElements.size() / 2];
 			horseArray = new Horse[horseElements.size() / 2];
-			RaceCourse rc = RaceCourseUtil.ReturnRaceCourse(labelRaceStage.getText(), labelRaceRange.getText(),doc.select(".raceTitle.fL").get(0).text());
+			RaceCourse rc = RaceCourseUtil.ReturnRaceCourse(labelRaceStage.getText(), labelRaceRange.getText(),
+					doc.select(".raceTitle.fL").get(0).text());
+			straightSlope.setText("直線傾斜" + rc.straightSlope);
+			straightDistance.setText("直線長さ" + rc.straightDistance);
+			cornerShape.setText("回転形状" + rc.cornerShape);
+			rotationSide.setText("回転方向" + rc.rotationSide);
+			rotationSize.setText("回転大小" + rc.rotationSize);
+			grassStart.setText("芝開始" + rc.grassStart);
+			raceGround.setText("芝ダート" + rc.raceGround);
+			
 			for (int i = 0; i < horseElements.size() / 2; i++) {
 				prr = new PastRaceResult();
 				j = i + 18 - horseElements.size() / 2;
@@ -655,8 +673,8 @@ public class SampleController {
 							&& !rateSpanElements.get(j).text().equals("取消")
 							&& !rateSpanElements.get(j).text().isEmpty()) {
 
-						 jockeyWeight = Double.parseDouble(
-								 heavyElements.get(j).text().replace("▲", "").replace("△", "").replace("★", "").replace("☆", "").replace("◇", ""));
+						jockeyWeight = Double.parseDouble(heavyElements.get(j).text().replace("▲", "").replace("△", "")
+								.replace("★", "").replace("☆", "").replace("◇", ""));
 						h.rate = Double.parseDouble(rateSpanElements.get(j).select("span").get(0).text());
 					}
 					try {
@@ -684,7 +702,7 @@ public class SampleController {
 						hdb.create();
 						String[] horseText = hdb.returnPastRace(h.name, raceID);
 						String address = "https://www.keibalab.jp" + horseURLElements.get(i).attr("href");
-						if (!raceExist || horseText[0] == null || horseText[0].isEmpty() || LocalDate
+						if (!raceExist ||horseText[0].isEmpty() || LocalDate
 								.parse(labelRaceDate.getText(), DateTimeFormatter.ofPattern("yyyy/[]M/[]d"))
 								.isBefore(LocalDate
 										.parse(horseText[0].split(" ")[0], DateTimeFormatter.ofPattern("yyyy/[]M/[]d"))
@@ -769,150 +787,102 @@ public class SampleController {
 										pastRaceCondition[7] += strArray[Integer
 												.parseInt(HorseElements.get(i2).text().split(" ")[7])];
 									}
-									RaceCourse rcPast = RaceCourseUtil.ReturnRaceCourse(HorseElements.get(i2).text().split(" ")[1], HorseElements.get(i2).text().split(" ")[2], HorseElements.get(i2).text().split(" ")[5]); 
+									RaceCourse rcPast = RaceCourseUtil.ReturnRaceCourse(
+											HorseElements.get(i2).text().split(" ")[1],
+											HorseElements.get(i2).text().split(" ")[2],
+											HorseElements.get(i2).text().split(" ")[5]);
 									int grade = Integer.parseInt(HorseElements.get(i2).text().split(" ")[7]);
-									if(rc.cornerShape.equals(rcPast.cornerShape)) 
-									{
-										if(grade == 1) {
-											prr.cornerShape[0]++;
-										}
-										else if(grade == 2)
-										{
-											prr.cornerShape[1]++;
-										}	
-										else if(grade == 3)
-										{
-											prr.cornerShape[2]++;
-										}
-										else
-										{
-											prr.cornerShape[3]++;
-										}									
-										
-									}
-									
-									if(rc.grassStart.equals(rcPast.grassStart)) 
-									{
-										if(grade == 1) {
-											prr.grassStart[0]++;
-										}
-										else if(grade == 2)
-										{
-											prr.grassStart[1]++;
-										}	
-										else if(grade == 3)
-										{
-											prr.grassStart[2]++;
-										}
-										else
-										{
-											prr.grassStart[3]++;
-										}									
-										
-									}
-									
-									if(rc.raceGround.equals(rcPast.raceGround)) 
-									{
-										if(grade == 1) {
-											prr.raceGround[0]++;
-										}
-										else if(grade == 2)
-										{
-											prr.raceGround[1]++;
-										}	
-										else if(grade == 3)
-										{
-											prr.raceGround[2]++;
-										}
-										else
-										{
-											prr.raceGround[3]++;
-										}									
-										
-									}
-									
-									
-									if(rc.rotationSide.equals(rcPast.rotationSide)) 
-									{
-										if(grade == 1) {
-											prr.rotationSide[0]++;
-										}
-										else if(grade == 2)
-										{
-											prr.rotationSide[1]++;
-										}	
-										else if(grade == 3)
-										{
-											prr.rotationSide[2]++;
-										}
-										else
-										{
-											prr.rotationSide[3]++;
-										}									
-										
-									}
-									
+									if (rc.cornerShape != null && rcPast.cornerShape != null) {
+										if (rc.cornerShape.equals(rcPast.cornerShape)) {
+											if (grade == 1) {
+												prr.cornerShape[0]++;
+											} else if (grade == 2) {
+												prr.cornerShape[1]++;
+											} else if (grade == 3) {
+												prr.cornerShape[2]++;
+											} else {
+												prr.cornerShape[3]++;
+											}
 
-									if(rc.rotationSize.equals(rcPast.rotationSize)) 
-									{
-										if(grade == 1) {
-											prr.rotationSize[0]++;
 										}
-										else if(grade == 2)
-										{
-											prr.rotationSize[1]++;
-										}	
-										else if(grade == 3)
-										{
-											prr.rotationSize[2]++;
-										}
-										else
-										{
-											prr.rotationSize[3]++;
-										}									
-										
-									}
-									
 
-									if(rc.straightDistance.equals(rcPast.straightDistance)) 
-									{
-										if(grade == 1) {
-											prr.straightDistance[0]++;
-										}
-										else if(grade == 2)
-										{
-											prr.straightDistance[1]++;
-										}	
-										else if(grade == 3)
-										{
-											prr.straightDistance[2]++;
-										}
-										else
-										{
-											prr.straightDistance[3]++;
-										}									
-										
-									}
+										if (rc.grassStart.equals(rcPast.grassStart)) {
+											if (grade == 1) {
+												prr.grassStart[0]++;
+											} else if (grade == 2) {
+												prr.grassStart[1]++;
+											} else if (grade == 3) {
+												prr.grassStart[2]++;
+											} else {
+												prr.grassStart[3]++;
+											}
 
+										}
 
-									if(rc.straightSlope.equals(rcPast.straightSlope)) 
-									{
-										if(grade == 1) {
-											prr.straightSlope[0]++;
+										if (rc.raceGround.equals(rcPast.raceGround)) {
+											if (grade == 1) {
+												prr.raceGround[0]++;
+											} else if (grade == 2) {
+												prr.raceGround[1]++;
+											} else if (grade == 3) {
+												prr.raceGround[2]++;
+											} else {
+												prr.raceGround[3]++;
+											}
+
 										}
-										else if(grade == 2)
-										{
-											prr.straightSlope[1]++;
-										}	
-										else if(grade == 3)
-										{
-											prr.straightSlope[2]++;
+
+										if (rc.rotationSide.equals(rcPast.rotationSide)) {
+											if (grade == 1) {
+												prr.rotationSide[0]++;
+											} else if (grade == 2) {
+												prr.rotationSide[1]++;
+											} else if (grade == 3) {
+												prr.rotationSide[2]++;
+											} else {
+												prr.rotationSide[3]++;
+											}
+
 										}
-										else
-										{
-											prr.straightSlope[3]++;
-										}									
-										
+
+										if (rc.rotationSize.equals(rcPast.rotationSize)) {
+											if (grade == 1) {
+												prr.rotationSize[0]++;
+											} else if (grade == 2) {
+												prr.rotationSize[1]++;
+											} else if (grade == 3) {
+												prr.rotationSize[2]++;
+											} else {
+												prr.rotationSize[3]++;
+											}
+
+										}
+
+										if (rc.straightDistance.equals(rcPast.straightDistance)) {
+											if (grade == 1) {
+												prr.straightDistance[0]++;
+											} else if (grade == 2) {
+												prr.straightDistance[1]++;
+											} else if (grade == 3) {
+												prr.straightDistance[2]++;
+											} else {
+												prr.straightDistance[3]++;
+											}
+
+										}
+
+										if (rc.straightSlope.equals(rcPast.straightSlope)) {
+											if (grade == 1) {
+												prr.straightSlope[0]++;
+											} else if (grade == 2) {
+												prr.straightSlope[1]++;
+											} else if (grade == 3) {
+												prr.straightSlope[2]++;
+											} else {
+												prr.straightSlope[3]++;
+											}
+
+										}
 									}
 									if (LocalDate.parse(HorseElements.get(i2).text().split(" ")[0],
 											DateTimeFormatter.ofPattern("yyyy/[]M/[]d")).isAfter(
@@ -955,7 +925,6 @@ public class SampleController {
 									+ " " + pastRaceCondition[5] + " " + pastRaceCondition[6] + " "
 									+ pastRaceCondition[7] + " " + pastMaxGoodTime + " " + pastMaxGoodPace + " "
 									+ pastMaxGoodLast;
-							
 
 							List<String> horseString = new ArrayList<String>(Arrays.asList(h.pastRace.split(" ")));
 							List<String> horseConditionString = new ArrayList<String>(
@@ -964,21 +933,30 @@ public class SampleController {
 							if (horseString.size() > 18 && horseString.get(19).equals("B")) {
 								horseString.remove(19);
 							}
-							
-							String cornerShape = prr.cornerShape[0] + "-" + prr.cornerShape[1] + "-" + prr.cornerShape[2] + "-" + prr.cornerShape[3];
-							String grassStart = prr.grassStart[0] + "-" + prr.grassStart[1] + "-" + prr.grassStart[2] + "-" + prr.grassStart[3];
-							String raceGround = prr.raceGround[0] + "-" + prr.raceGround[1] + "-" + prr.raceGround[2] + "-" + prr.raceGround[3];
-							String rotationSide = prr.rotationSide[0] + "-" + prr.rotationSide[1] + "-" + prr.rotationSide[2] + "-" + prr.rotationSide[3];
-							String rotationSize = prr.rotationSize[0] + "-" + prr.rotationSize[1] + "-" + prr.rotationSize[2] + "-" + prr.rotationSize[3];
-							String straightDistance = prr.straightDistance[0] + "-" + prr.straightDistance[1] + "-" + prr.straightDistance[2] + "-" + prr.straightDistance[3];
-							String straightSlope = prr.straightSlope[0] + "-" + prr.straightSlope[1] + "-" + prr.straightSlope[2] + "-" + prr.straightSlope[3];
-							
-							new HorseDB().UseHorseDataBase(
-									new String[] { "insert", h.name, raceID.toString(), Integer.toString(h.position),
-											h.pastRace, Integer.toString(h.frame), h.pastRaceCondition,cornerShape, grassStart, raceGround, rotationSide, rotationSize, straightDistance, straightSlope});
-							
+
+							String cornerShape = prr.cornerShape[0] + "-" + prr.cornerShape[1] + "-"
+									+ prr.cornerShape[2] + "-" + prr.cornerShape[3];
+							String grassStart = prr.grassStart[0] + "-" + prr.grassStart[1] + "-" + prr.grassStart[2]
+									+ "-" + prr.grassStart[3];
+							String raceGround = prr.raceGround[0] + "-" + prr.raceGround[1] + "-" + prr.raceGround[2]
+									+ "-" + prr.raceGround[3];
+							String rotationSide = prr.rotationSide[0] + "-" + prr.rotationSide[1] + "-"
+									+ prr.rotationSide[2] + "-" + prr.rotationSide[3];
+							String rotationSize = prr.rotationSize[0] + "-" + prr.rotationSize[1] + "-"
+									+ prr.rotationSize[2] + "-" + prr.rotationSize[3];
+							String straightDistance = prr.straightDistance[0] + "-" + prr.straightDistance[1] + "-"
+									+ prr.straightDistance[2] + "-" + prr.straightDistance[3];
+							String straightSlope = prr.straightSlope[0] + "-" + prr.straightSlope[1] + "-"
+									+ prr.straightSlope[2] + "-" + prr.straightSlope[3];
+
+							new HorseDB().UseHorseDataBase(new String[] { "insert", h.name, raceID.toString(),
+									Integer.toString(h.position), h.pastRace, Integer.toString(h.frame),
+									h.pastRaceCondition, cornerShape, grassStart, raceGround, rotationSide,
+									rotationSize, straightDistance, straightSlope });
+
 							SetTable(h, horseString, strArray[h.number] + h.pastRace, horseConditionString, address, i,
-									"10000",jockeyWeight, cornerShape, grassStart, raceGround, rotationSide, rotationSize, straightDistance, straightSlope);
+									"10000", jockeyWeight, cornerShape, grassStart, raceGround, rotationSide,
+									rotationSize, straightDistance, straightSlope);
 							Thread.sleep(3000);
 						} else {
 
@@ -991,8 +969,9 @@ public class SampleController {
 								horseString.remove(19);
 							}
 
-							SetTable(h, horseString, horseText[0], horseConditionString, address, i, horseText[2],jockeyWeight, 
-									horseText[3], horseText[4], horseText[5], horseText[6], horseText[7], horseText[8], horseText[9]);
+							SetTable(h, horseString, horseText[0], horseConditionString, address, i, horseText[2],
+									jockeyWeight, horseText[3], horseText[4], horseText[5], horseText[6], horseText[7],
+									horseText[8], horseText[9]);
 						}
 					} catch (Exception e) {
 
@@ -1098,6 +1077,7 @@ public class SampleController {
 		});
 		Comparator<HorseData> comparator = Comparator.<HorseData, String>comparing(model -> model.getNo());
 		FXCollections.sort(table.getItems(), comparator);
+
 	}
 
 	public static String toHalfWidth(String s) {
@@ -1112,10 +1092,12 @@ public class SampleController {
 	}
 
 	private void SetTable(Horse h, List<String> horseString, String horseText, List<String> pastRaceCondition,
-			String address, int index, String raceLevel, Double jockeyWeight , String cornerShape, String grassStart,String  raceGround, String rotationSide, String rotationSize, String straightDistance, String straightSlope) {
+			String address, int index, String raceLevel, Double jockeyWeight, String cornerShape, String grassStart,
+			String raceGround, String rotationSide, String rotationSize, String straightDistance,
+			String straightSlope) {
 		HorseData horseData = new HorseData(strArray[h.number], h.name, RacePointCheck(horseText, h), horseString,
-				pastRaceCondition, raceRange, labelRaceRange.getText(), address, raceLevel,jockeyWeight
-				,cornerShape, grassStart,raceGround, rotationSide, rotationSize, straightDistance, straightSlope);
+				pastRaceCondition, raceRange, labelRaceRange.getText(), address, raceLevel, jockeyWeight, cornerShape,
+				grassStart, raceGround, rotationSide, rotationSize, straightDistance, straightSlope);
 		table.getItems().add(horseData);
 		horseDataArray[index] = horseData;
 		horseArray[index] = h;
@@ -1175,7 +1157,7 @@ public class SampleController {
 																DateTimeFormatter.ofPattern("yyyy/[]M/[]d"))
 														.isAfter(LocalDate.parse(dateString,
 																DateTimeFormatter.ofPattern("yyyy/[]M/[]d")))
-														&& LocalDate
+												&& LocalDate
 														.parse(horseRaceElements.get(i4).text().split(" ")[0],
 																DateTimeFormatter.ofPattern("yyyy/[]M/[]d"))
 														.isBefore(LocalDate.parse(labelRaceDate.getText(),
@@ -1216,15 +1198,14 @@ public class SampleController {
 						rankPercentage[6] = (rank1[1] + rank2[1] + rank3[1]) * 100 / rankCnt[1];
 						rankPercentage[7] = (rankOther[1]) * 100 / rankCnt[1];
 					}
-					if(rankCnt[0] != 0 || rankCnt[1] != 0) {
-						horseDataArray[horseIndex].setRaceLevel(
-								"①" + String.valueOf(rankPercentage[0]) + "②" + String.valueOf(rankPercentage[1]) + "③"
-										+ String.valueOf(rankPercentage[2]) + "他" + String.valueOf(rankPercentage[3]) + "計" +  String.valueOf(rankCnt[0]) + "①"
-										+ String.valueOf(rankPercentage[4]) + "②" + String.valueOf(rankPercentage[5]) + "③"
-										+ String.valueOf(rankPercentage[6]) + "他" + String.valueOf(rankPercentage[7]) + "計" +  String.valueOf(rankCnt[1]) );
-					}
-					else if(horseDataArray[horseIndex] != null)
-					{
+					if (rankCnt[0] != 0 || rankCnt[1] != 0) {
+						horseDataArray[horseIndex].setRaceLevel("①" + String.valueOf(rankPercentage[0]) + "②"
+								+ String.valueOf(rankPercentage[1]) + "③" + String.valueOf(rankPercentage[2]) + "他"
+								+ String.valueOf(rankPercentage[3]) + "計" + String.valueOf(rankCnt[0]) + "①"
+								+ String.valueOf(rankPercentage[4]) + "②" + String.valueOf(rankPercentage[5]) + "③"
+								+ String.valueOf(rankPercentage[6]) + "他" + String.valueOf(rankPercentage[7]) + "計"
+								+ String.valueOf(rankCnt[1]));
+					} else if (horseDataArray[horseIndex] != null) {
 						horseDataArray[horseIndex].setRaceLevel("①0②0③0他0計0①0②0③0他0計0");
 					}
 				}
