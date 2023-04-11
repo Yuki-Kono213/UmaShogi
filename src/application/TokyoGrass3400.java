@@ -10,6 +10,9 @@ public class TokyoGrass3400 extends RaceCourse {
 		grassStart = "";
 		range = 3400;
 		raceGround = "芝";
+		excludeLast3furlong = 173.8;
+		first3furlong = 37.2;
+		last3furlong = 35.0;
 	}
 	
 }

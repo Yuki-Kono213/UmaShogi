@@ -10,6 +10,9 @@ public class SapporoGrass2000 extends RaceCourse {
 		grassStart = "";
 		range = 2000;
 		raceGround = "芝";
+		excludeLast3furlong = 86.0;
+		first3furlong = 36.2;
+		last3furlong = 36.2;
 	}
 	
 }

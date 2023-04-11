@@ -94,6 +94,10 @@
             <TableColumn fx:id="rotationSize" prefWidth="100.0" text="回転大小" />
             <TableColumn fx:id="grassStart" prefWidth="100.0" text="芝開始" />
             <TableColumn fx:id="raceGround" prefWidth="100.0" text="芝ダート" />
+	        <TableColumn fx:id="rangeTable2" text="距離" />
+            <TableColumn fx:id="first3furlong" prefWidth="60.0" text="前半3F" />
+            <TableColumn fx:id="middle" prefWidth="60.0" text="中盤" />
+            <TableColumn fx:id="last3furlong" prefWidth="60.0" text="ラスト3F" />
         </columns>
       </TableView>
       <Button fx:id="buttonOpenPaddock" layoutX="1048.0" layoutY="13.0" mnemonicParsing="false" text="パドック" />

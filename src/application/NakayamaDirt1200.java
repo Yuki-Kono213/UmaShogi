@@ -10,6 +10,8 @@ public class NakayamaDirt1200 extends RaceCourse {
 		grassStart = "芝スタート";
 		range = 1200;
 		raceGround = "ダート";
+		first3furlong = 34.3;
+		last3furlong = 37.8;
 	}
 	
 }

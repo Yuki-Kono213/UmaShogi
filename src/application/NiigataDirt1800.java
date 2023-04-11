@@ -10,6 +10,9 @@ public class NiigataDirt1800 extends RaceCourse {
 		grassStart = "";
 		range = 1800;
 		raceGround = "ダート";
+		excludeLast3furlong = 75.4;
+		first3furlong = 36.8;
+		last3furlong = 38.6;
 	}
 	
 }

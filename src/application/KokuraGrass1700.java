@@ -10,6 +10,9 @@ public class KokuraGrass1700 extends RaceCourse {
 		grassStart = "";
 		range = 1700;
 		raceGround = "芝";
+		excludeLast3furlong = 66.0;
+		first3furlong = 36.5;
+		last3furlong = 35.4;
 	}
 	
 }

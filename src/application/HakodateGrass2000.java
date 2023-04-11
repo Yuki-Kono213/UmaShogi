@@ -10,6 +10,9 @@ public class HakodateGrass2000 extends RaceCourse {
 		grassStart = "";
 		range = 2000;
 		raceGround = "芝";
+		excludeLast3furlong = 85.5;
+		first3furlong = 36.0;
+		last3furlong = 36.0;
 	}
 	
 }

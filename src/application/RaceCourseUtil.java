@@ -244,7 +244,11 @@ public class RaceCourseUtil
 		{
 			if(range.contains("芝")) 
 			{
-				if(range.contains("1400")) {
+				if(range.contains("1200")) {
+					return new NiigataGrass1200();
+					
+				}
+				else if(range.contains("1400")) {
 					return new NiigataGrass1400();
 					
 				}
@@ -307,6 +311,10 @@ public class RaceCourseUtil
 				}
 				else if(range.contains("2000")) {
 					return new ChukyoGrass2000();
+					
+				}
+				else if(range.contains("2200")) {
+					return new ChukyoGrass2200();
 					
 				}
 			}

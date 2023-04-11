@@ -10,6 +10,9 @@ public class HanshinGrass1400 extends RaceCourse {
 		grassStart = "";
 		range = 1400;
 		raceGround = "芝";
+		excludeLast3furlong = 46.7;
+		first3furlong = 34.5;
+		last3furlong = 35.3;
 	}
 	
 }

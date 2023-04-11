@@ -10,6 +10,8 @@ public class HakodateDirt1000 extends RaceCourse {
 		grassStart = "";
 		range = 1000;
 		raceGround = "ダート";
+		first3furlong = 34.6;
+		last3furlong = 36.3;
 	}
 	
 }

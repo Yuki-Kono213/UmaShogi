@@ -10,6 +10,8 @@ public class NiigataGrass1000 extends RaceCourse {
 		grassStart = "";
 		range = 1000;
 		raceGround = "芝";
+		first3furlong = 32.9;
+		last3furlong = 33.1;
 	}
 	
 }

@@ -63,11 +63,16 @@ public class HorseData
 	private String straightDistance;
 	private String straightSlope;
 	
-	int timeOrigin;
-	int rangeOrigin;
+	private int timeOrigin;
+	private int rangeOrigin;
 	private int score;
-	double timeHosei;
-	double gradeDiff;
+	private double timeHosei;
+	private double gradeDiff;
+	private RaceCourse courseThisRace;
+	private RaceCourse courseBeforeRace;
+	private double excludeLast3furlong;
+	private double first3furlong;
+	private double last3furlong;
 	
 	  public HorseData(String no, String name, String analysis, List<String> horseString, List<String>pastRaceCondition, int raceRange, String maxRaceField, String address,
 			  String raceLevel, Double thisWeight, String cornerShape, String grassStart,String  raceGround, String rotationSide, String rotationSize, String straightDistance, String straightSlope) {
@@ -120,10 +125,26 @@ public class HorseData
 			 this.cornerShape = cornerShape;
 			 this.grassStart = grassStart;
 			 this.raceGround = raceGround;
-			this.rotationSide = rotationSide;
-			this.rotationSize = rotationSize;
-			this.straightDistance = straightDistance;
-			this.straightSlope = straightSlope;
+			 this.rotationSide = rotationSide;
+			 this.rotationSize = rotationSize;
+			 this.straightDistance = straightDistance;
+			 this.straightSlope = straightSlope;
+			 if(this.runRank.replace("　", "").length() > 0) {
+				 this.first3furlong =  Double.parseDouble(horseString.get(15)) + Double.parseDouble((Util.RankMap.get(this.runRank.replace("　", "").substring(0,1))).toString()) / 10 - 0.1;
+			 }
+			 else {
+				 //this.first3furlong = Double.parseDouble(horseString.get(15));
+			 }
+			 if(Integer.parseInt(this.range.substring(1,5)) % 200 != 0 && Integer.parseInt(this.range.substring(1,5)) % 100 == 0) {
+				 this.first3furlong = this.first3furlong / 5 * 6;
+			 }else if(Integer.parseInt(this.range.substring(1,5)) % 200 != 0 && Integer.parseInt(this.range.substring(1,5)) % 50 == 0) {
+				 this.first3furlong = this.first3furlong / 55 * 60;
+			 }
+			 this.last3furlong =  Double.parseDouble(this.last);
+			 double time = Double.parseDouble(this.time.split(":")[0]) * 60 + Double.parseDouble(this.time.split(":")[1]);
+			 this.excludeLast3furlong =  time - Double.parseDouble(this.last);
+			 CourseCondition(this.stage, this.range);
+			 this.courseBeforeRace = RaceCourseUtil.ReturnRaceCourse(this.raceStage,this.range,this.raceName);
 			 calcIndex(raceRange, maxRaceField);
 	  }
 	  public HorseData(String raceLevel) {
@@ -131,6 +152,50 @@ public class HorseData
 			 this.raceLevel = raceLevel;
 	  }
 	  
+	  public void CourseCondition(String stage, String range) {
+		  
+		  if(range.contains("芝")) {
+				
+			  if(stage.contains("稍"))
+			  	{
+					this.first3furlong -= 0.3;
+					this.last3furlong -= 0.3;
+					this.excludeLast3furlong -= 0.3 * (Integer.parseInt(range.replace("芝", "")) - 600) / 600;
+			  	}
+				else if(stage.contains("重"))
+				{
+					this.first3furlong -= 0.6;
+					this.last3furlong -= 0.6;
+					this.excludeLast3furlong -= 0.6 * (Integer.parseInt(range.replace("芝", "")) - 600) / 600;
+				}
+				else if(stage.contains("不"))
+				{
+					this.first3furlong -= 0.9;
+					this.last3furlong -= 0.9;
+					this.excludeLast3furlong -= 0.9 * (Integer.parseInt(range.replace("芝", "")) - 600) / 600;
+				}
+		  }if(range.contains("ダ")) {
+				
+			  if(stage.contains("稍"))
+			  	{
+					this.first3furlong += 0.3;
+					this.last3furlong += 0.3;
+					this.excludeLast3furlong += 0.3 * (Integer.parseInt(range.replace("ダ", "")) - 600) / 600;
+			  	}
+				else if(stage.contains("重"))
+				{
+					this.first3furlong += 0.6;
+					this.last3furlong += 0.6;
+					this.excludeLast3furlong += 0.6 * (Integer.parseInt(range.replace("ダ", "")) - 600) / 600;
+				}
+				else if(stage.contains("不"))
+				{
+					this.first3furlong += 0.9;
+					this.last3furlong += 0.9;
+					this.excludeLast3furlong += 0.9 * (Integer.parseInt(range.replace("ダ", "")) - 600) / 600;
+				}
+		  }
+	  }
 
 	public void calcIndex(int raceRange, String maxRaceField) {
 
@@ -241,16 +306,17 @@ public class HorseData
 			{
 				glassHosei(this.stage,rangeOrigin, 1);
 			}
-			score += ((timeOrigin) * timeHosei)  * 10 * 1600 / raceRange + 200;
+			score += ((timeOrigin) * timeHosei)  * 10 * 1600 / raceRange  + rangeDiff * timeHosei;
 		}
 
 
 		//boolean goodRank = false;
 		int pastRaceScore = 0;
+		String pastRaceString = removeNumeric(this.pastRace);
 		for(int i= 0; i < 5; i++)
 		{
-			if(i <  this.pastRace.length() && !this.pastRace.substring(i,i+1).equals("－")) {
-				pastRaceScore += (Util.RankMap.get(this.pastRace.substring(i,i+1)) + 10) * 3 *  (((double)10 - i) / 3);
+			if(i <  pastRaceString.length() && !pastRaceString.substring(i,i+1).equals("－")) {
+				pastRaceScore += (Util.RankMap.get(pastRaceString.substring(i,i+1)) + 10) * 3 *  (((double)10 - i) / 3);
 			}
 			else {
 				pastRaceScore += 15 * 3 * (((double)10 - i) / 3 );
@@ -258,6 +324,11 @@ public class HorseData
 			
 		}
 		score += pastRaceScore;
+		int grade = 1;
+		if(gradeDiff < 1.10) {
+			grade = 2;
+		}
+		score += (Integer.parseInt(this.pastRace.substring(5,9)) - Integer.parseInt(this.pastRace.substring(0,4))) / grade;
 		CalcCourseAptitude(this.cornerShape.split("-"));
 		CalcCourseAptitude(this.grassStart.split("-"));
 		//CalcCourseAptitude(this.raceGround.split("-"));
@@ -271,11 +342,13 @@ public class HorseData
 
 		score += base;
 
-		score -= (int)(Double.parseDouble(this.goodRace)) * 4;
+		score -= (int)(Double.parseDouble(this.goodRace)) * 5;
 		score = 100000 - score;
 		this.index = String.valueOf(score);
 	}
-	
+	public static String removeNumeric(String str) {
+        return str.replaceAll("[\\d]", "");
+    }
 	private void dirtHosei(String stage, int raceRange, int coefficient) {
 
 		timeHosei = 0.94;
@@ -289,7 +362,7 @@ public class HorseData
 		}
 		else if(stage.contains("不"))
 		{
-			//score += 30 * ((double)raceRange / 600 ) * coefficient;
+			score += 90 * ((double)raceRange / 600 ) * coefficient;
 		}
 	}
 	
@@ -302,11 +375,11 @@ public class HorseData
 		}
 		else if(stage.contains("重"))
 		{
-			score -= 50* ((double)raceRange / 600 ) * coefficient;
+			score -= 60* ((double)raceRange / 600 ) * coefficient;
 		}
 		else if(stage.contains("不"))
 		{
-			score -= 100 * ((double)raceRange / 600 ) * coefficient;
+			score -= 90 * ((double)raceRange / 600 ) * coefficient;
 		}
 	}
 		
@@ -314,22 +387,23 @@ public class HorseData
 	{
 		int[]calcHorse = new int[]{Integer.parseInt(courseHorse[0]), Integer.parseInt(courseHorse[1]),Integer.parseInt(courseHorse[2]), Integer.parseInt(courseHorse[3])};
 		for(int i = 0 ; i < calcHorse.length; i++) {
-			if(calcHorse[i] > 10) {
-				calcHorse[i] = 10;
+			if(calcHorse[i] > 20) {
+				//calcHorse[i] = 20;
 			}
 		}
 		int cnt = 0;
 		cnt += calcHorse[0] * 60;
-		cnt += calcHorse[1] * 30;
-		cnt += calcHorse[2] * 15;
-		cnt -= calcHorse[3] * 10;
+		cnt += calcHorse[1] * 40;
+		cnt += calcHorse[2] * 30;
+		cnt -= calcHorse[3] * 30;
 		if(gradeDiff < 1.10) {
 			cnt /= 2;
 		}
 		
-		if((calcHorse[0] + calcHorse[1] + calcHorse[2] + calcHorse[3]) != 0) {
-				//cnt = (calcHorse[0] + calcHorse[1] + calcHorse[2] + calcHorse[3]);
-		}
+		//if((calcHorse[0] + calcHorse[1] + calcHorse[2] + calcHorse[3]) != 0) {
+		//}
+		cnt *= 10;
+		cnt /= (calcHorse[0] + calcHorse[1] + calcHorse[2] + calcHorse[3] + 2);
 		System.out.println(this.name + cnt);
 		score -= cnt;
 	}
@@ -431,5 +505,11 @@ public class HorseData
 	  public void setsSraightDistance(String straightDistance){ this.straightDistance = straightDistance; }
 	  public String getStraightSlope(){ return straightSlope; }
 	  public void setStraightSlope(String straightSlope){ this.straightSlope = straightSlope ; }
-
+	  public String getFirst3furlong(){ return String.valueOf(Math.round((( this.first3furlong - courseBeforeRace.first3furlong) * 1000.0)) /1000.0); }
+	  public void setFirst3furlong(String first3furlong){ this.first3furlong = Double.parseDouble(first3furlong) ; }
+	  public String getLast3furlong(){ return String.valueOf(Math.round(((this.last3furlong - courseBeforeRace.last3furlong) * 1000.0)) /1000.0); }
+	  public void setLast3furlong(String last3furlong){ this.last3furlong = Double.parseDouble(last3furlong) ; }
+	  public String getExcludeLast3furlong(){if(courseBeforeRace.range > 1300) { return  String.valueOf(Math.round(((this.excludeLast3furlong - courseBeforeRace.excludeLast3furlong) * 1000.0)) /1000.0); }
+	  return "";}
+	  public void setExcludeLast3furlong(String excludeLast3furlong){ this.excludeLast3furlong = Double.parseDouble(excludeLast3furlong); }
 }

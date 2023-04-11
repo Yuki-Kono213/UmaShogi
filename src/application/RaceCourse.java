@@ -10,5 +10,9 @@ public class RaceCourse {
 	public int range;
 	public String raceGround;
 	
+	public double first3furlong;
+	public double excludeLast3furlong;
+	public double last3furlong;
+	
 
 }

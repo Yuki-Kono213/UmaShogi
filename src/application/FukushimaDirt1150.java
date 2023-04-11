@@ -10,6 +10,8 @@ public class FukushimaDirt1150 extends RaceCourse {
 		grassStart = "芝スタート";
 		range = 1150;
 		raceGround = "ダート";
+		first3furlong = 34.7;
+		last3furlong = 36.3;
 	}
 	
 }

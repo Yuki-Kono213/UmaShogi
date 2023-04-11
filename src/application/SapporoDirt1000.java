@@ -10,6 +10,8 @@ public class SapporoDirt1000 extends RaceCourse {
 		grassStart = "";
 		range = 1000;
 		raceGround = "ダート";
+		first3furlong = 34.8;
+		last3furlong = 35.8;
 	}
 	
 }

@@ -10,6 +10,9 @@ public class FukushimaDirt2400 extends RaceCourse {
 		grassStart = "";
 		range = 2400;
 		raceGround = "ダート";
+		excludeLast3furlong = 116.9;
+		first3furlong = 37.9;
+		last3furlong = 39.5;
 	}
 	
 }

@@ -1,6 +1,7 @@
 package application;
 
 import java.io.IOException;
+import java.security.PublicKey;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
@@ -11,6 +12,7 @@ import java.util.Comparator;
 import java.util.List;
 
 import javax.print.attribute.standard.PrinterStateReason;
+import javax.print.event.PrintJobAttributeEvent;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -91,6 +93,8 @@ public class SampleController {
 	private TableColumn<HorseData, String> raceStageTable;
 	@FXML
 	private TableColumn<HorseData, String> rangeTable;
+	@FXML
+	private TableColumn<HorseData, String> rangeTable2;
 	@FXML
 	private TableColumn<HorseData, String> weatherTable;
 	@FXML
@@ -173,6 +177,12 @@ public class SampleController {
 	private TableColumn<HorseData, String> grassStart;
 	@FXML
 	private TableColumn<HorseData, String> raceGround;
+	@FXML
+	private TableColumn<HorseData, String> first3furlong;
+	@FXML
+	private TableColumn<HorseData, String> middle;
+	@FXML
+	private TableColumn<HorseData, String> last3furlong;
 
 	@FXML
 	private TableColumn<HorseData, String> nameTable2;
@@ -485,6 +495,10 @@ public class SampleController {
 		rotationSize.setCellValueFactory(new PropertyValueFactory<HorseData, String>("rotationSize"));
 		grassStart.setCellValueFactory(new PropertyValueFactory<HorseData, String>("grassStart"));
 		raceGround.setCellValueFactory(new PropertyValueFactory<HorseData, String>("raceGround"));
+		first3furlong.setCellValueFactory(new PropertyValueFactory<HorseData, String>("first3furlong"));
+		middle.setCellValueFactory(new PropertyValueFactory<HorseData, String>("excludeLast3furlong"));
+		last3furlong.setCellValueFactory(new PropertyValueFactory<HorseData, String>("last3furlong"));
+		rangeTable2.setCellValueFactory(new PropertyValueFactory<HorseData, String>("range"));
 
 		try {
 			table.getItems().clear();
@@ -682,6 +696,17 @@ public class SampleController {
 							String[] pos = beforeElements.get(i + i2 * horseElements.size() / 2).text().split("");
 							if (!pos[pos.length - 1].equals("－")) {
 								h.position = Util.RankMap.get(pos[pos.length - 1]);
+								if(h.position == 1) {
+									for(int j2 = 0; j2 < pos.length; j2++) {
+										System.out.println(pos[j2]);
+										if( Util.RankMap.get(pos[j2]) != 1 && !pos[j2].equals("－")) {
+											break;
+										}
+										if(j2 == pos.length - 1) {
+											h.position = -1;
+										}
+									}
+								}
 								break;
 							}
 						}
@@ -718,8 +743,11 @@ public class SampleController {
 							String pastMaxGoodTime = "一年未走";
 							String pastMaxGoodPace = "一年未走";
 							String pastMaxGoodLast = "一年未走";
-
+							ArrayList<RaceCourse> rcList = new ArrayList<RaceCourse>();
+							ArrayList<PastRaceResult> prList = new ArrayList<PastRaceResult>();
+							String nowTekisei;
 							for (int i2 = 0; i2 < HorseElements.size(); i2++) {
+								
 								if (HorseElements.get(i2).text().split(" ").length > 22
 										&& !HorseElements.get(i2).text().contains("失")
 										&& LocalDate
@@ -792,97 +820,11 @@ public class SampleController {
 											HorseElements.get(i2).text().split(" ")[2],
 											HorseElements.get(i2).text().split(" ")[5]);
 									int grade = Integer.parseInt(HorseElements.get(i2).text().split(" ")[7]);
-									if (rc.cornerShape != null && rcPast.cornerShape != null) {
-										if (rc.cornerShape.equals(rcPast.cornerShape)) {
-											if (grade == 1) {
-												prr.cornerShape[0]++;
-											} else if (grade == 2) {
-												prr.cornerShape[1]++;
-											} else if (grade == 3) {
-												prr.cornerShape[2]++;
-											} else {
-												prr.cornerShape[3]++;
-											}
-
-										}
-
-										if (rc.grassStart.equals(rcPast.grassStart)) {
-											if (grade == 1) {
-												prr.grassStart[0]++;
-											} else if (grade == 2) {
-												prr.grassStart[1]++;
-											} else if (grade == 3) {
-												prr.grassStart[2]++;
-											} else {
-												prr.grassStart[3]++;
-											}
-
-										}
-
-										if (rc.raceGround.equals(rcPast.raceGround)) {
-											if (grade == 1) {
-												prr.raceGround[0]++;
-											} else if (grade == 2) {
-												prr.raceGround[1]++;
-											} else if (grade == 3) {
-												prr.raceGround[2]++;
-											} else {
-												prr.raceGround[3]++;
-											}
-
-										}
-
-										if (rc.rotationSide.equals(rcPast.rotationSide)) {
-											if (grade == 1) {
-												prr.rotationSide[0]++;
-											} else if (grade == 2) {
-												prr.rotationSide[1]++;
-											} else if (grade == 3) {
-												prr.rotationSide[2]++;
-											} else {
-												prr.rotationSide[3]++;
-											}
-
-										}
-
-										if (rc.rotationSize.equals(rcPast.rotationSize)) {
-											if (grade == 1) {
-												prr.rotationSize[0]++;
-											} else if (grade == 2) {
-												prr.rotationSize[1]++;
-											} else if (grade == 3) {
-												prr.rotationSize[2]++;
-											} else {
-												prr.rotationSize[3]++;
-											}
-
-										}
-
-										if (rc.straightDistance.equals(rcPast.straightDistance)) {
-											if (grade == 1) {
-												prr.straightDistance[0]++;
-											} else if (grade == 2) {
-												prr.straightDistance[1]++;
-											} else if (grade == 3) {
-												prr.straightDistance[2]++;
-											} else {
-												prr.straightDistance[3]++;
-											}
-
-										}
-
-										if (rc.straightSlope.equals(rcPast.straightSlope)) {
-											if (grade == 1) {
-												prr.straightSlope[0]++;
-											} else if (grade == 2) {
-												prr.straightSlope[1]++;
-											} else if (grade == 3) {
-												prr.straightSlope[2]++;
-											} else {
-												prr.straightSlope[3]++;
-											}
-
-										}
+									prr = RCTekiseiCheck(rc, rcPast, prr, grade);
+									
+									for(int i3 = 0; i3 < prList.size(); i3++) {
+										PastRaceResult pastRaceResult = RCTekiseiCheck(rcList.get(i3), rcPast, prList.get(i3), grade);
+										prList.set(i3, pastRaceResult);
 									}
 									if (LocalDate.parse(HorseElements.get(i2).text().split(" ")[0],
 											DateTimeFormatter.ofPattern("yyyy/[]M/[]d")).isAfter(
@@ -907,16 +849,34 @@ public class SampleController {
 										pastMaxGoodLast = HorseElements.get(i2).text().split(" ")[18];
 									}
 
+									if(prList.size() < 5) {
+										rcList.add(rcPast);
+										prList.add(new PastRaceResult());
+									}
 									pastRaceCount++;
 								}
 							}
+							int cnt = 0;
+							int strCnt = 0;
+							StringBuilder str = new StringBuilder(String.valueOf(pastRace));
+							//(prr.grassStart[0] + prr.grassStart[1] + prr.grassStart[2]+ prr.grassStart[3] + 1);
+							nowTekisei = String.valueOf(CalcRaceTekisei(prr));
+							str.insert(strCnt, nowTekisei);
+							strCnt += String.valueOf(nowTekisei).length();
 
 							for (int k = 0; k < 8; k++) {
 								if (pastRaceCondition[k].isEmpty()) {
 									pastRaceCondition[k] = "出走なし";
 								}
 							}
-
+							for (PastRaceResult prr : prList) {
+								String tekisei = String.valueOf(CalcRaceTekisei(prr));
+								str.insert(strCnt + 1, tekisei);
+								strCnt += String.valueOf(tekisei).length() + 1;
+								cnt++;
+							}
+							
+							pastRace = String.valueOf(str);
 							h.pastRace += " "
 									+ decimalFormat.format((double) pastGoodRaceCount * 100.0 / (double) pastRaceCount)
 									+ " " + pastRace;
@@ -933,7 +893,6 @@ public class SampleController {
 							if (horseString.size() > 18 && horseString.get(19).equals("B")) {
 								horseString.remove(19);
 							}
-
 							String cornerShape = prr.cornerShape[0] + "-" + prr.cornerShape[1] + "-"
 									+ prr.cornerShape[2] + "-" + prr.cornerShape[3];
 							String grassStart = prr.grassStart[0] + "-" + prr.grassStart[1] + "-" + prr.grassStart[2]
@@ -1079,7 +1038,123 @@ public class SampleController {
 		FXCollections.sort(table.getItems(), comparator);
 
 	}
+	private int CalcRaceTekisei(PastRaceResult prr) {
+		int point = 0;
+		point += (prr.cornerShape[0] * 40 + prr.cornerShape[1] * 20 + prr.cornerShape[2] * 10 - prr.cornerShape[3] * 5 + 1000);
+		//(prr.cornerShape[0] + prr.cornerShape[1] + prr.cornerShape[2]+ prr.cornerShape[3] + 1);
 
+		point += (prr.rotationSide[0] * 40 + prr.rotationSide[1] * 20 + prr.rotationSide[2] * 10 - prr.rotationSide[3] * 5 + 1000);
+				//(prr.rotationSide[0] + prr.rotationSide[1] + prr.rotationSide[2]+ prr.rotationSide[3] + 1);
+		
+		point += (prr.rotationSize[0] * 40 + prr.rotationSize[1] * 20 + prr.rotationSize[2] * 10 - prr.rotationSize[3] * 5  + 1000);
+				//(prr.rotationSize[0] + prr.rotationSize[1] + prr.rotationSize[2]+ prr.rotationSize[3] + 1);
+		
+		point += (prr.straightDistance[0] * 40 + prr.straightDistance[1] * 20 + prr.straightDistance[2] * 10 - prr.straightDistance[3] * 5 + 1000);
+				//(prr.straightDistance[0] + prr.straightDistance[1] + prr.straightDistance[2]+ prr.straightDistance[3] + 1);
+		
+		point += (prr.straightSlope[0] * 40 + prr.straightSlope[1] * 20 + prr.straightSlope[2] * 10 - prr.straightSlope[3] * 5 + 1000);
+				//(prr.straightSlope[0] + prr.straightSlope[1] + prr.straightSlope[2]+ prr.straightSlope[3] + 1);
+		
+		point += (prr.grassStart[0] * 40 + prr.grassStart[1] * 20 + prr.grassStart[2] * 10 - prr.grassStart[3] * 5 + 1000);
+				//(prr.grassStart[0] + prr.grassStart[1] + prr.grassStart[2]+ prr.grassStart[3] + 1);
+		return point;
+	}
+	private PastRaceResult RCTekiseiCheck(RaceCourse rc, RaceCourse rcPast, PastRaceResult prr, int grade) {
+		
+		if (rc.cornerShape != null && rcPast.cornerShape != null) {
+			if (rc.cornerShape.equals(rcPast.cornerShape)) {
+				if (grade == 1) {
+					prr.cornerShape[0]++;
+				} else if (grade == 2) {
+					prr.cornerShape[1]++;
+				} else if (grade == 3) {
+					prr.cornerShape[2]++;
+				} else {
+					prr.cornerShape[3]++;
+				}
+
+			}
+
+			if (rc.grassStart.equals(rcPast.grassStart)) {
+				if (grade == 1) {
+					prr.grassStart[0]++;
+				} else if (grade == 2) {
+					prr.grassStart[1]++;
+				} else if (grade == 3) {
+					prr.grassStart[2]++;
+				} else {
+					prr.grassStart[3]++;
+				}
+
+			}
+
+			if (rc.raceGround.equals(rcPast.raceGround)) {
+				if (grade == 1) {
+					prr.raceGround[0]++;
+				} else if (grade == 2) {
+					prr.raceGround[1]++;
+				} else if (grade == 3) {
+					prr.raceGround[2]++;
+				} else {
+					prr.raceGround[3]++;
+				}
+
+			}
+
+			if (rc.rotationSide.equals(rcPast.rotationSide)) {
+				if (grade == 1) {
+					prr.rotationSide[0]++;
+				} else if (grade == 2) {
+					prr.rotationSide[1]++;
+				} else if (grade == 3) {
+					prr.rotationSide[2]++;
+				} else {
+					prr.rotationSide[3]++;
+				}
+
+			}
+
+			if (rc.rotationSize.equals(rcPast.rotationSize)) {
+				if (grade == 1) {
+					prr.rotationSize[0]++;
+				} else if (grade == 2) {
+					prr.rotationSize[1]++;
+				} else if (grade == 3) {
+					prr.rotationSize[2]++;
+				} else {
+					prr.rotationSize[3]++;
+				}
+
+			}
+
+			if (rc.straightDistance.equals(rcPast.straightDistance)) {
+				if (grade == 1) {
+					prr.straightDistance[0]++;
+				} else if (grade == 2) {
+					prr.straightDistance[1]++;
+				} else if (grade == 3) {
+					prr.straightDistance[2]++;
+				} else {
+					prr.straightDistance[3]++;
+				}
+
+			}
+
+			if (rc.straightSlope.equals(rcPast.straightSlope)) {
+				if (grade == 1) {
+					prr.straightSlope[0]++;
+				} else if (grade == 2) {
+					prr.straightSlope[1]++;
+				} else if (grade == 3) {
+					prr.straightSlope[2]++;
+				} else {
+					prr.straightSlope[3]++;
+				}
+
+			}
+		}
+		return prr;
+	}
 	public static String toHalfWidth(String s) {
 		StringBuilder sb = new StringBuilder(s);
 		for (int i = 0; i < s.length(); i++) {
@@ -1292,7 +1367,8 @@ public class SampleController {
 
 	private void SetTextField(Horse h) {
 		if (h.frame == 1 || h.frame == 2) {
-			if (h.position == 1) {
+			System.out.println(h.name + h.position);
+			if (h.position == -1) {
 				frame1.insertText(0, "逃" + h.number + h.name + h.rate + "\r\n");
 
 			} else if (h.position < 5) {
@@ -1313,7 +1389,7 @@ public class SampleController {
 			}
 
 		} else if (h.frame == 3 || h.frame == 4) {
-			if (h.position == 1) {
+			if (h.position == -1) {
 				frame2.insertText(0, "逃" + h.number + h.name + h.rate + "\r\n");
 
 			} else if (h.position < 5) {
@@ -1332,7 +1408,7 @@ public class SampleController {
 			}
 
 		} else if (h.frame == 5 || h.frame == 6) {
-			if (h.position == 1) {
+			if (h.position == -1) {
 				frame3.insertText(0, "逃" + h.number + h.name + h.rate + "\r\n");
 
 			} else if (h.position < 5) {
@@ -1351,7 +1427,7 @@ public class SampleController {
 			}
 
 		} else if (h.frame == 7 || h.frame == 8) {
-			if (h.position == 1) {
+			if (h.position == -1) {
 				frame4.insertText(0, "逃" + h.number + h.name + h.rate + "\r\n");
 
 			} else if (h.position < 5) {

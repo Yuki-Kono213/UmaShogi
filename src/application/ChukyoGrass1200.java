@@ -10,6 +10,8 @@ public class ChukyoGrass1200 extends RaceCourse {
 		grassStart = "";
 		range = 1200;
 		raceGround = "芝";
+		first3furlong = 34.3;
+		last3furlong = 34.6;
 	}
 	
 }

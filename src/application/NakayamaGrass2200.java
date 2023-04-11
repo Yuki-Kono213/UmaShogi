@@ -10,6 +10,9 @@ public class NakayamaGrass2200 extends RaceCourse {
 		grassStart = "";
 		range = 2200;
 		raceGround = "芝";
+		excludeLast3furlong = 99.9;
+		first3furlong = 37.1;
+		last3furlong = 35.5;
 	}
 	
 }

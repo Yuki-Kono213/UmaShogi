@@ -10,6 +10,8 @@ public class KyotoDirt1200 extends RaceCourse {
 		grassStart = "";
 		range = 1200;
 		raceGround = "ダート";
+		first3furlong = 35.3;
+		last3furlong = 37.0;
 	}
 	
 }

@@ -8,8 +8,11 @@ public class HanshinGrass2400 extends RaceCourse {
 		rotationSize = "小回り";
 		cornerShape = "O字";
 		grassStart = "";
-		range = 3000;
+		range = 2400;
 		raceGround = "芝";
+		excludeLast3furlong = 111.7;
+		first3furlong = 37.6;
+		last3furlong = 35.2;
 	}
 	
 }

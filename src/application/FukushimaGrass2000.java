@@ -10,6 +10,9 @@ public class FukushimaGrass2000 extends RaceCourse {
 		grassStart = "";
 		range = 2000;
 		raceGround = "芝";
+		excludeLast3furlong = 85.1;
+		first3furlong = 35.5;
+		last3furlong = 36.1;
 	}
 	
 }
