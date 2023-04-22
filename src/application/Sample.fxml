@@ -38,8 +38,10 @@
       <Button layoutX="761.0" layoutY="40.0" mnemonicParsing="false" onAction="#SaveRace" text="保存" />
       <Label layoutX="14.0" layoutY="13.0" text="URL" />
       <Label layoutX="-160.0" layoutY="32.0" text="Label" />
-      <TextField fx:id="textURL" layoutX="57.0" layoutY="9.0" prefHeight="26.0" prefWidth="465.0" />
-      <Button layoutX="530.0" layoutY="9.0" mnemonicParsing="false" onAction="#GetURL" text="URL取得" />
+      <TextField fx:id="textURL" layoutX="57.0" layoutY="9.0" prefHeight="26.0" prefWidth="370.0" />
+      <Button layoutX="430.0" layoutY="9.0" mnemonicParsing="false" onAction="#GetURL" text="URL取得" />
+      <Button layoutX="500.0" layoutY="9.0" mnemonicParsing="false" onAction="#ReGetURL" text="再取得" />
+      <Button layoutX="570.0" layoutY="9.0" mnemonicParsing="false" onAction="#GetRaceMoney" text="指数" />
       <Label layoutX="626.0" layoutY="144.0" text="場名" />
       <Label fx:id="labelRaceStage" layoutX="676.0" layoutY="140.0" prefHeight="26.0" prefWidth="91.0" />
       <TableView fx:id="table" layoutX="7.0" layoutY="353.0" prefHeight="200.0" prefWidth="1480.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="340.0">
@@ -94,6 +96,8 @@
             <TableColumn fx:id="rotationSize" prefWidth="100.0" text="回転大小" />
             <TableColumn fx:id="grassStart" prefWidth="100.0" text="芝開始" />
             <TableColumn fx:id="raceGround" prefWidth="100.0" text="芝ダート" />
+            <TableColumn fx:id="beforeJockeyTrait" prefWidth="60.0" text="前騎手" />
+            <TableColumn fx:id="nowJockeyTrait" prefWidth="60.0" text="当騎手" />
 	        <TableColumn fx:id="rangeTable2" text="距離" />
             <TableColumn fx:id="first3furlong" prefWidth="60.0" text="前半3F" />
             <TableColumn fx:id="middle" prefWidth="60.0" text="中盤" />
@@ -155,7 +159,13 @@
       <Label layoutX="629.0" layoutY="14.0" text="購入" />
       <Label layoutX="737.0" layoutY="14.0" text="払戻" />
       <Label fx:id="lblRecovery" layoutX="639.0" layoutY="44.0" text="当該" />
-      <Label fx:id="lblRecoveryToday" layoutX="693.0" layoutY="44.0" text="全体" />
+      <Label fx:id="lblRecoveryToday" layoutX="693.0" layoutY="44.0" text="全体" /><Button fx:id="raceLevelbtn" layoutX="636.0" layoutY="277.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="75.0" text="レベル計測" />
+      
+      <Button fx:id="raceAllGetbtn" onAction="#GetAllURL" layoutX="716.0" layoutY="277.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="75.0" text="一括取得" />
       <Button fx:id="raceLevelbtn" layoutX="636.0" layoutY="277.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="75.0" text="レベル計測" />
-   </children>
+      <Label fx:id="lblWinWideThree" layoutX="636.0" layoutY="310.0" text="W3" />
+      <Label fx:id="lblWinWideFour" layoutX="686.0" layoutY="310.0" text="W4" />
+      <Label fx:id="lblWinWideFive" layoutX="736.0" layoutY="310.0" text="W5" />
+      <Label fx:id="lblWinWideSix" layoutX="786.0" layoutY="310.0" text="W6" />
+      </children>
 </AnchorPane>

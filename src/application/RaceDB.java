@@ -146,6 +146,12 @@ public class RaceDB {
 			}else if("update".equals(command)) {
 
 				executeUpdate(args[1],args[2],args[3],args[4],args[5],args[6],args[7],args[8],args[9],args[10],args[11]);
+			}else if("updateRace".equals(command)) {
+
+				executeUpdateRace(args[1],args[2],args[3],args[4],args[5],args[6],args[7],args[8],args[9],args[10]);
+			}else if("updateMoney".equals(command)) {
+				System.out.println(args[1]);
+				executeUpdateMoney(args[1],args[2],args[3],args[4], args[5]);
 			}
 		}
 		
@@ -220,7 +226,38 @@ public class RaceDB {
 				System.out.println(glassTrue + range + stage);
 				
 			}
+		private void executeUpdateRace(String name, String url, String glass, String range, String stage
+				, String grade, String hande, String female, String condition, String newHorse)
+				throws SQLException{
+				boolean glassTrue = true;
+				if(glass.contains("ダ")) {
+					glassTrue = false;
+				}
+				System.out.println(female);
+				boolean femaleTrue = false;
+				if(female.equals("true")) {
+					femaleTrue = true;
+				}
+				boolean newHorseTrue = false;
+				if(newHorse.equals("true")) {
+					newHorseTrue = true;
+				}
+				// SQL文を発行
+				int updateCount = _statement.executeUpdate("UPDATE "+ TABLE_NAME + " SET (GLASS, RANGE, STAGE, GRADE, HANDE, FEMALE, CONDITION, NEWHORSE) = " 
+						+  "('"+glassTrue+"'"
+								+ ",'"+Integer.parseInt(range)+"','"+stage+"', '"+grade+"', '"+hande+"','"+femaleTrue+"', '"+condition+"','"+newHorseTrue+"') WHERE RACEURL = '"+url+"'");
+				System.out.println(glassTrue + range + stage);
+				
+			}
 		
+		private void executeUpdateMoney(String url, String wide3, String wide4, String wide5, String wide6) 
+				throws SQLException{
+				// SQL文を発行
+				int updateCount = _statement.executeUpdate("UPDATE "+ TABLE_NAME + " SET (WIDE3,WIDE4,WIDE5,WIDE6) = " 
+						+  "('"+Integer.parseInt(wide3)+"','"+Integer.parseInt(wide4)+"','"+Integer.parseInt(wide5)+"','"+Integer.parseInt(wide6)+"') WHERE RACEURL = '"+url+"'");
+				}
+				
+			
 		/**
 		 * INSERT処理を実行します。
 		 * @param id
