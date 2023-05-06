@@ -379,7 +379,7 @@ public class HorseData
     }
 	private void dirtHosei(String stage, int raceRange, int coefficient) {
 
-		timeHosei = 0.95;
+		timeHosei = 0.945;
 		if(stage.contains("稍"))
 		{
 			score += 30 * ((double)raceRange / 600 ) * coefficient / 10;
@@ -519,10 +519,10 @@ public class HorseData
 	  public String getIndex(){ return index; }
 	  public void setIndex(String index){ this.index = index; }
 
-	  public String getBeforeJockeyTrait(){ return Jockey.jockeyStart.getOrDefault(this.beforeJockeyTrait, "") + Jockey.jockeySikake.getOrDefault(this.beforeJockeyTrait, "") + 
+	  public String getBeforeJockeyTrait(){ return Jockey.jockeyStart.getOrDefault(this.beforeJockeyTrait, "")+ Jockey.firstMove.getOrDefault(this.beforeJockeyTrait, "") + Jockey.jockeySikake.getOrDefault(this.beforeJockeyTrait, "") + 
 			  Jockey.jockeySinro.getOrDefault(this.beforeJockeyTrait, "") ; }
 	  public void setBeforeJockeyTrait(String beforeRaceJockey){ this.beforeJockeyTrait = beforeRaceJockey; }
-	  public String getNowJockeyTrait(){ return Jockey.jockeyStart.getOrDefault(this.nowJockeyTrait, "") + Jockey.jockeySikake.getOrDefault(this.nowJockeyTrait, "") + 
+	  public String getNowJockeyTrait(){ return Jockey.jockeyStart.getOrDefault(this.nowJockeyTrait, "") + Jockey.firstMove.getOrDefault(this.nowJockeyTrait, "")+ Jockey.jockeySikake.getOrDefault(this.nowJockeyTrait, "") + 
 			  Jockey.jockeySinro.getOrDefault(this.nowJockeyTrait, "") ; }
 	  public void setNowJockeyTrait(String nowRaceJockey){ this.nowJockeyTrait = nowRaceJockey; }
 	  

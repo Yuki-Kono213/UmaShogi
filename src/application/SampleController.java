@@ -595,9 +595,7 @@ public class SampleController {
 			table.getItems().clear();
 			ClearText();
 			// jsoupを使用して当ブログのトップページへアクセス
-			if (textURL.getText(textURL.getText().length() - 1, textURL.getText().length()).equals("/")) {
-				textURL.setText(textURL.getText() + "umabashira.html");
-			}
+			textURL.setText(textURL.getText().substring(0, 44) + "/umabashira.html");
 			Document doc = Jsoup.connect(textURL.getText()).get();
 
 			Element rate = doc.select(".seirei.std9").get(1);

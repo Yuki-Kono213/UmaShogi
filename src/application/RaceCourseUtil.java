@@ -354,7 +354,7 @@ public class RaceCourseUtil
 					return new KyotoGrass1400Out();
 					
 				}
-				else if(range.contains("1600")&& raceName.contains("未勝利") ) {
+				else if(range.contains("1600")&& (raceName.contains("2歳") && (raceName.contains("未勝利") || raceName.contains("新馬")))) {
 					return new KyotoGrass1600In();
 					
 				}
@@ -502,7 +502,7 @@ public class RaceCourseUtil
 					return new KokuraDirt1700();
 					
 				}
-				else if(range.contains("1800")) {
+				else if(range.contains("2400")) {
 					return new KokuraDirt2400();
 					
 				}
