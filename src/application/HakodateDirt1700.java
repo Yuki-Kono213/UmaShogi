@@ -13,6 +13,10 @@ public class HakodateDirt1700 extends RaceCourse {
 		excludeLast3furlong = 68.0;
 		first3furlong = 36.6;
 		last3furlong = 38.5;
+		textString = "好走脚質：逃げ・先行\r\n好走枠　：4～6枠\r\n"
+				+ "4コーナーの下り坂と直線の短さで粘り込みやすい状況。"
+				+ "逃げ・先行馬にとっては競馬のしやすいコースで、基本は前残り想定で予想したい。"
+				+ "差し馬はよほどハイペース時のみ通用する。";
 	}
 	
 }

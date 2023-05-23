@@ -12,6 +12,10 @@ public class HanshinGrass1200 extends RaceCourse {
 		raceGround = "芝";
 		first3furlong = 34.2;
 		last3furlong = 34.8;
+		textString = "好走脚質：逃げ・先行\r\n好走枠　：1～5枠\r\n"
+				+ "3～4コーナーがかなり緩やかな造りになっているため、"
+				+ "外枠は遠心力が強く外々を回らされる。"
+				+ "そのため外目の枠が不利で、内枠中心に組み立てたい。";
 	}
 	
 }

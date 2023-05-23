@@ -244,7 +244,11 @@ public class RaceCourseUtil
 		{
 			if(range.contains("芝")) 
 			{
-				if(range.contains("1200")) {
+				if(range.contains("1000")) {
+					return new NiigataGrass1000();
+					
+				}
+				else if(range.contains("1200")) {
 					return new NiigataGrass1200();
 					
 				}
@@ -260,7 +264,7 @@ public class RaceCourseUtil
 					return new NiigataGrass1800();
 					
 				}
-				else if(range.contains("2000") && !raceName.contains("2歳") && !raceName.contains("3歳未勝利")) {
+				else if(range.contains("2000") && raceName.contains("2歳") || raceName.contains("3歳未勝利")) {
 					return new NiigataGrass2000In();
 					
 				}

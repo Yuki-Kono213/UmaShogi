@@ -14,6 +14,7 @@ import java.util.List;
 import javax.print.attribute.standard.PrinterStateReason;
 import javax.print.event.PrintJobAttributeEvent;
 
+import org.h2.mvstore.type.StringDataType;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -39,6 +40,8 @@ public class SampleController {
 	private TextField textURL;
 	@FXML
 	private Label labelRaceName;
+	@FXML
+	private Label lblPastReturn;
 	@FXML
 	private TextArea frame4;
 	@FXML
@@ -142,13 +145,13 @@ public class SampleController {
 	@FXML
 	private TableColumn<HorseData, String> nameTable1;
 	@FXML
-	private TableColumn<HorseData, String> glassGoodRaceResult;
+	private TableColumn<HorseData, String> grassGoodRaceResult;
 	@FXML
-	private TableColumn<HorseData, String> glassBitHeavyRaceResult;
+	private TableColumn<HorseData, String> grassBitHeavyRaceResult;
 	@FXML
-	private TableColumn<HorseData, String> glassHeavyRaceResult;
+	private TableColumn<HorseData, String> grassHeavyRaceResult;
 	@FXML
-	private TableColumn<HorseData, String> glassBadRaceResult;
+	private TableColumn<HorseData, String> grassBadRaceResult;
 	@FXML
 	private TableColumn<HorseData, String> dirtGoodRaceResult;
 	@FXML
@@ -159,6 +162,8 @@ public class SampleController {
 	private TableColumn<HorseData, String> dirtBadRaceResult;
 	@FXML
 	private TableColumn<HorseData, String> pastMaxSpeed;
+	@FXML
+	private TableColumn<HorseData, String> pastMaxSpeed2;
 	@FXML
 	private TableColumn<HorseData, String> pastMaxPace;
 	@FXML
@@ -178,11 +183,11 @@ public class SampleController {
 	@FXML
 	private TableColumn<HorseData, String> raceGround;
 	@FXML
-	private TableColumn<HorseData, String> first3furlong;
+	private TableColumn<HorseData, Double> first3furlong;
 	@FXML
-	private TableColumn<HorseData, String> middle;
+	private TableColumn<HorseData, Double> middle;
 	@FXML
-	private TableColumn<HorseData, String> last3furlong;
+	private TableColumn<HorseData, Double> last3furlong;
 	@FXML
 	private TableColumn<HorseData, String> beforeJockeyTrait;
 	@FXML
@@ -298,6 +303,8 @@ public class SampleController {
 	private Label labelRace6;
 	@FXML
 	private Label labelRace7;
+	@FXML
+	private TextArea txtExplainRace;
 
 	@FXML
 	private TextField txtThisRaceURL;
@@ -360,6 +367,14 @@ public class SampleController {
 
 			rdm.payCash = Integer.parseInt(txtPay.getText());
 			rdm.returnCash = Integer.parseInt(txtReturn.getText());
+			try {
+				lblPastReturn.setText(new RaceDB().executeReturnMoney(
+						labelRaceRange.getText(), labelRaceStage.getText() 
+								)+ "%");
+			} catch (SQLException e) {
+				// TODO 自動生成された catch ブロック
+				e.printStackTrace();
+			}
 			TotalRecoveryCheck();
 		}
 	}
@@ -451,7 +466,6 @@ public class SampleController {
 				}
 			}
 			
-			System.out.print(wide.get(3).text());
 			hDataArrayList.sort((o1, o2) -> Integer.parseInt(o2.getIndex()) - Integer.parseInt(o1.getIndex()));
 			String[]horse3 = new String[] {hDataArrayList.get(0).getNo(), hDataArrayList.get(1).getNo(), hDataArrayList.get(2).getNo()};
 		
@@ -500,7 +514,9 @@ public class SampleController {
 		}
 	
 	}
+	String pastRaceTenkai;
 	public void GetURL() {
+		
 
 		numberTable.setCellValueFactory(new PropertyValueFactory<HorseData, String>("no"));
 
@@ -565,17 +581,18 @@ public class SampleController {
 		beforeJockeyTrait.setCellValueFactory(new PropertyValueFactory<HorseData, String>("beforeJockeyTrait"));
 		nowJockeyTrait.setCellValueFactory(new PropertyValueFactory<HorseData, String>("nowJockeyTrait"));
 
-		glassGoodRaceResult.setCellValueFactory(new PropertyValueFactory<HorseData, String>("glassGoodRaceResult"));
-		glassBitHeavyRaceResult
-				.setCellValueFactory(new PropertyValueFactory<HorseData, String>("glassBitHeavyRaceResult"));
-		glassHeavyRaceResult.setCellValueFactory(new PropertyValueFactory<HorseData, String>("glassHeavyRaceResult"));
-		glassBadRaceResult.setCellValueFactory(new PropertyValueFactory<HorseData, String>("glassBadRaceResult"));
+		grassGoodRaceResult.setCellValueFactory(new PropertyValueFactory<HorseData, String>("grassGoodRaceResult"));
+		grassBitHeavyRaceResult
+				.setCellValueFactory(new PropertyValueFactory<HorseData, String>("grassBitHeavyRaceResult"));
+		grassHeavyRaceResult.setCellValueFactory(new PropertyValueFactory<HorseData, String>("grassHeavyRaceResult"));
+		grassBadRaceResult.setCellValueFactory(new PropertyValueFactory<HorseData, String>("grassBadRaceResult"));
 		dirtGoodRaceResult.setCellValueFactory(new PropertyValueFactory<HorseData, String>("dirtGoodRaceResult"));
 		dirtBitHeavyRaceResult
 				.setCellValueFactory(new PropertyValueFactory<HorseData, String>("dirtBitHeavyRaceResult"));
 		dirtHeavyRaceResult.setCellValueFactory(new PropertyValueFactory<HorseData, String>("dirtHeavyRaceResult"));
 		dirtBadRaceResult.setCellValueFactory(new PropertyValueFactory<HorseData, String>("dirtBadRaceResult"));
 		pastMaxSpeed.setCellValueFactory(new PropertyValueFactory<HorseData, String>("pastMaxSpeed"));
+		pastMaxSpeed2.setCellValueFactory(new PropertyValueFactory<HorseData, String>("pastMaxSpeed"));
 		pastMaxPace.setCellValueFactory(new PropertyValueFactory<HorseData, String>("pastMaxPace"));
 		pastMaxSpeedLast.setCellValueFactory(new PropertyValueFactory<HorseData, String>("pastMaxSpeedLast"));
 
@@ -586,9 +603,9 @@ public class SampleController {
 		rotationSize.setCellValueFactory(new PropertyValueFactory<HorseData, String>("rotationSize"));
 		grassStart.setCellValueFactory(new PropertyValueFactory<HorseData, String>("grassStart"));
 		raceGround.setCellValueFactory(new PropertyValueFactory<HorseData, String>("raceGround"));
-		first3furlong.setCellValueFactory(new PropertyValueFactory<HorseData, String>("first3furlong"));
-		middle.setCellValueFactory(new PropertyValueFactory<HorseData, String>("excludeLast3furlong"));
-		last3furlong.setCellValueFactory(new PropertyValueFactory<HorseData, String>("last3furlong"));
+		first3furlong.setCellValueFactory(new PropertyValueFactory<HorseData, Double>("first3furlong"));
+		middle.setCellValueFactory(new PropertyValueFactory<HorseData, Double>("excludeLast3furlong"));
+		last3furlong.setCellValueFactory(new PropertyValueFactory<HorseData, Double>("last3furlong"));
 		rangeTable2.setCellValueFactory(new PropertyValueFactory<HorseData, String>("range"));
 
 		try {
@@ -612,7 +629,6 @@ public class SampleController {
 			Elements rangeElements = doc.select(".classCourseSyokin.clearfix li");
 			Elements conditionElements = doc.select(".raceaboutbox.clearfix li");
 			Elements heavyElements = doc.select(".kinryou.std9 td");
-			System.out.print(heavyElements.get(0).text());
 			condition = conditionElements.get(1).text();
 			labelRaceName.setText(doc.select(".raceTitle.fL").get(0).text());
 			grade = null;
@@ -696,12 +712,11 @@ public class SampleController {
 			rdm.RaceURL = textURL.getText();
 			rdm.RaceName = labelRaceName.getText();
 			Integer raceID = raceData[0];
-			System.out.println(raceData[3]);
 			if (raceID == -1 || raceData[3] == 0 || reGet) {
 				if (rangeElements.get(0).text().contains("芝")) {
-					rdm.glass = true;
+					rdm.grass = true;
 				} else {
-					rdm.glass = false;
+					rdm.grass = false;
 				}
 				rdm.payCash =  raceData[1];
 				rdm.returnCash =  raceData[2];
@@ -764,7 +779,12 @@ public class SampleController {
 			rotationSize.setText("回転大小" + rc.rotationSize);
 			grassStart.setText("芝開始" + rc.grassStart);
 			raceGround.setText("芝ダート" + rc.raceGround);
-			
+			lblPastReturn.setText(new RaceDB().executeReturnMoney(
+					labelRaceRange.getText(), labelRaceStage.getText() 
+							)+ "%");
+			txtExplainRace.clear();
+			txtExplainRace.setWrapText(true);
+			txtExplainRace.setText(rc.textString);
 			for (int i = 0; i < horseElements.size() / 2; i++) {
 				prr = new PastRaceResult();
 				j = i + 18 - horseElements.size() / 2;
@@ -789,7 +809,6 @@ public class SampleController {
 								h.position = Util.RankMap.get(pos[pos.length - 1]);
 								if(h.position == 1) {
 									for(int j2 = 0; j2 < pos.length; j2++) {
-										System.out.println(pos[j2]);
 										if( Util.RankMap.get(pos[j2]) != 1 && !pos[j2].equals("－")) {
 											break;
 										}
@@ -828,6 +847,7 @@ public class SampleController {
 							Document horseData = Jsoup.connect(address).get();
 							String pastRace = "";
 							Elements HorseElements = horseData.select(".sortobject tr");
+							Elements HorsePastRaceAdressElements = horseData.select(".sortobject tr td a");
 							boolean findPastRace = false;
 							int pastRaceCount = 0;
 							int pastGoodRaceCount = 0;
@@ -838,7 +858,6 @@ public class SampleController {
 							ArrayList<RaceCourse> rcList = new ArrayList<RaceCourse>();
 							ArrayList<PastRaceResult> prList = new ArrayList<PastRaceResult>();
 							String nowTekisei;
-
 							for (int i2 = 0; i2 < HorseElements.size(); i2++) {
 
 								if (HorseElements.get(i2).text().split(" ").length > 22
@@ -848,6 +867,7 @@ public class SampleController {
 														DateTimeFormatter.ofPattern("yyyy/[]M/[]d"))
 												.isBefore(LocalDate.parse(labelRaceDate.getText(),
 														DateTimeFormatter.ofPattern("yyyy/[]M/[]d")))) {
+									
 									RaceCourse rcPast = RaceCourseUtil.ReturnRaceCourse(
 											HorseElements.get(i2).text().split(" ")[1],
 											HorseElements.get(i2).text().split(" ")[2],
@@ -872,7 +892,61 @@ public class SampleController {
 									}
 									if (!findPastRace) {
 										h.pastRace = HorseElements.get(i2).text();
-										findPastRace = true;
+										findPastRace = true;	
+										Thread.sleep(1000);
+										int cnt = 0;
+										
+										while(cnt < HorsePastRaceAdressElements.size()) {
+											if(HorsePastRaceAdressElements.get(cnt).attr("href").split("/")[3].length() > 8
+													&& HorsePastRaceAdressElements.get(cnt).attr("href").split("/")[2].contains("race")) {
+												String dateFormatString = HorsePastRaceAdressElements.get(cnt).attr("href").split("/")[3].substring(0,8);
+												StringBuilder sb = new StringBuilder(dateFormatString);
+												sb.insert(4, "/");
+												sb.insert(7, "/");
+												System.out.println(sb);
+												if(LocalDate
+														.parse(sb.toString(),
+																DateTimeFormatter.ofPattern("yyyy/[]M/[]d"))
+														.isBefore(LocalDate.parse(labelRaceDate.getText(),
+																DateTimeFormatter.ofPattern("yyyy/[]M/[]d")))) {
+													Document raceResult = Jsoup.connect(("https://www.keibalab.jp" + HorsePastRaceAdressElements.get(cnt).attr("href"))).get();
+													Elements HorsePastRaceTendElements = raceResult.select(".DbTable .tR");
+													int tend = 0;
+													for(int c = 0; c < 3; c++) {
+														System.out.println(HorsePastRaceTendElements.get(2 + c * 4).text());
+														if(HorsePastRaceTendElements.get(2 + c * 4).text().length() > 0) {
+															if(Util.RankMap.get(HorsePastRaceTendElements.get(2 + c * 4).text().substring(HorsePastRaceTendElements.get(2 + c * 4).text().length() - 1)) < 5) {
+																tend += 1;
+															}
+															else if(Util.RankMap.get(HorsePastRaceTendElements.get(2 + c * 4).text().substring(HorsePastRaceTendElements.get(2 + c * 4).text().length() - 1)) > 8){
+																tend -= 1;
+															}
+														}
+													}
+													
+													if(tend == 3) {
+														 pastRaceTenkai = "かなり先行";
+													}else if(tend == 2) {
+														 pastRaceTenkai = "先行";
+													} else if(tend == 1) {
+														 pastRaceTenkai = "やや先行";
+													}
+													
+													if(tend == -3) {
+														 pastRaceTenkai = "かなり差し";
+													}else if(tend == -2) {
+														 pastRaceTenkai = "差し";
+													} else if(tend == -1) {
+														 pastRaceTenkai = "やや差し";
+													}
+													break;
+													
+												}
+											}
+											
+											cnt++;
+										}
+									
 									}
 									if ((((Integer.parseInt(HorseElements.get(i2).text().split(" ")[10]) > 7
 											&& Integer.parseInt(HorseElements.get(i2).text().split(" ")[7]) < 4)
@@ -1015,15 +1089,15 @@ public class SampleController {
 									+ prr.straightDistance[2] + "-" + prr.straightDistance[3];
 							String straightSlope = prr.straightSlope[0] + "-" + prr.straightSlope[1] + "-"
 									+ prr.straightSlope[2] + "-" + prr.straightSlope[3];
-
+							String analysisString =  RacePointCheck(h.pastRace, h);
 							new HorseDB().UseHorseDataBase(new String[] { "insert", h.name, raceID.toString(),
 									Integer.toString(h.position), h.pastRace, Integer.toString(h.frame),
 									h.pastRaceCondition, cornerShape, grassStart, raceGround, rotationSide,
-									rotationSize, straightDistance, straightSlope });
+									rotationSize, straightDistance, straightSlope, analysisString });
 
 							SetTable(h, horseString, strArray[h.number] + h.pastRace, horseConditionString, address, i,
 									"10000", jockeyWeight, cornerShape, grassStart, raceGround, rotationSide,
-									rotationSize, straightDistance, straightSlope, jockey);
+									rotationSize, straightDistance, straightSlope, jockey, analysisString);
 							Thread.sleep(3000);
 						} else {
 
@@ -1038,7 +1112,7 @@ public class SampleController {
 
 							SetTable(h, horseString, horseText[0], horseConditionString, address, i, horseText[2],
 									jockeyWeight, horseText[3], horseText[4], horseText[5], horseText[6], horseText[7],
-									horseText[8], horseText[9], jockey);
+									horseText[8], horseText[9], jockey, horseText[10]);
 						}
 					} catch (Exception e) {
 
@@ -1279,12 +1353,13 @@ public class SampleController {
 		}
 		return sb.toString();
 	}
-
+	
+	
 	private void SetTable(Horse h, List<String> horseString, String horseText, List<String> pastRaceCondition,
 			String address, int index, String raceLevel, Double jockeyWeight, String cornerShape, String grassStart,
 			String raceGround, String rotationSide, String rotationSize, String straightDistance,
-			String straightSlope, String jockey) {
-		HorseData horseData = new HorseData(strArray[h.number], h.name, RacePointCheck(horseText, h), horseString,
+			String straightSlope, String jockey, String analysis) {
+		HorseData horseData = new HorseData(strArray[h.number], h.name, analysis, horseString,
 				pastRaceCondition, raceRange, labelRaceRange.getText(), address, raceLevel, jockeyWeight, cornerShape,
 				grassStart, raceGround, rotationSide, rotationSize, straightDistance, straightSlope, jockey);
 		table.getItems().add(horseData);
@@ -1293,7 +1368,7 @@ public class SampleController {
 
 	}
 
-	private void RaceLevelCount() {
+	public void RaceLevelCount() {
 
 		Document doc;
 		try {
@@ -1461,6 +1536,10 @@ public class SampleController {
 		} else {
 			text += "惨敗";
 		}
+		if(pastRaceTenkai != null) {
+			text += pastRaceTenkai;
+		}
+		pastRaceTenkai = null;
 		return text;
 	}
 
@@ -1481,7 +1560,6 @@ public class SampleController {
 
 	private void SetTextField(Horse h) {
 		if (h.frame == 1 || h.frame == 2) {
-			System.out.println(h.name + h.position);
 			if (h.position == -1) {
 				frame1.insertText(0, "逃" + h.number + h.name + h.rate + "\r\n");
 
@@ -1785,12 +1863,6 @@ public class SampleController {
 			}
 		});
 
-		raceLevelbtn.setOnAction(new EventHandler<ActionEvent>() {
-			public void handle(ActionEvent event) {
-
-				RaceLevelCount();
-			}
-		});
 
 	}
 

@@ -207,12 +207,12 @@ public class RaceDB {
 			}
 		}
 		
-		private void executeUpdate(String name, String url, String payCash, String returnCash, String glass, String range, String stage
+		private void executeUpdate(String name, String url, String payCash, String returnCash, String grass, String range, String stage
 				, String grade, String hande, String female, String condition)
 				throws SQLException{
-				boolean glassTrue = true;
-				if(glass.contains("ダ")) {
-					glassTrue = false;
+				boolean grassTrue = true;
+				if(grass.contains("ダ")) {
+					grassTrue = false;
 				}
 				System.out.println(female);
 				boolean femaleTrue = false;
@@ -220,18 +220,18 @@ public class RaceDB {
 					femaleTrue = true;
 				}
 				// SQL文を発行
-				int updateCount = _statement.executeUpdate("UPDATE "+ TABLE_NAME + " SET (PAY, RETURN, GLASS, RANGE, STAGE, GRADE, HANDE, FEMALE, CONDITION) = " 
-						+  "('"+Integer.parseInt(payCash)+"','"+Integer.parseInt(returnCash)+"','"+glassTrue+"'"
+				int updateCount = _statement.executeUpdate("UPDATE "+ TABLE_NAME + " SET (PAY, RETURN, GRASS, RANGE, STAGE, GRADE, HANDE, FEMALE, CONDITION) = " 
+						+  "('"+Integer.parseInt(payCash)+"','"+Integer.parseInt(returnCash)+"','"+grassTrue+"'"
 								+ ",'"+Integer.parseInt(range)+"','"+stage+"', '"+grade+"', '"+hande+"','"+femaleTrue+"', '"+condition+"') WHERE RACEURL = '"+url+"'");
-				System.out.println(glassTrue + range + stage);
+				System.out.println(grassTrue + range + stage);
 				
 			}
-		private void executeUpdateRace(String name, String url, String glass, String range, String stage
+		private void executeUpdateRace(String name, String url, String grass, String range, String stage
 				, String grade, String hande, String female, String condition, String newHorse)
 				throws SQLException{
-				boolean glassTrue = true;
-				if(glass.contains("ダ")) {
-					glassTrue = false;
+				boolean grassTrue = true;
+				if(grass.contains("ダ")) {
+					grassTrue = false;
 				}
 				System.out.println(female);
 				boolean femaleTrue = false;
@@ -243,10 +243,10 @@ public class RaceDB {
 					newHorseTrue = true;
 				}
 				// SQL文を発行
-				int updateCount = _statement.executeUpdate("UPDATE "+ TABLE_NAME + " SET (GLASS, RANGE, STAGE, GRADE, HANDE, FEMALE, CONDITION, NEWHORSE) = " 
-						+  "('"+glassTrue+"'"
+				int updateCount = _statement.executeUpdate("UPDATE "+ TABLE_NAME + " SET (GRASS, RANGE, STAGE, GRADE, HANDE, FEMALE, CONDITION, NEWHORSE) = " 
+						+  "('"+grassTrue+"'"
 								+ ",'"+Integer.parseInt(range)+"','"+stage+"', '"+grade+"', '"+hande+"','"+femaleTrue+"', '"+condition+"','"+newHorseTrue+"') WHERE RACEURL = '"+url+"'");
-				System.out.println(glassTrue + range + stage);
+				System.out.println(grassTrue + range + stage);
 				
 			}
 		
@@ -272,6 +272,30 @@ public class RaceDB {
 					+ "('"+name+"','"+url+"','"+Integer.parseInt(payCash)+"','"+Integer.parseInt(returnCash)+"','"+Boolean.parseBoolean("true")+"')");
 			System.out.println("Insert: " + updateCount);
 			
+		}
+		public String executeReturnMoney(String range, String stage)
+			throws SQLException{
+			ResultSet resultSet = null;
+			try {
+				String grass = "true";
+				if(range.contains("ダ")) {
+					grass = "false";
+				}
+				range = range.replace("芝", "").replace("ダ", "").replace("m", "");
+				create();
+				// SQL文を発行
+				resultSet = _statement.executeQuery("SELECT SUM(RETURN) *100 / SUM (PAY) FROM RACE WHERE RANGE = " 
+				+ range + " AND STAGE = '"+stage+"' AND GRASS = "+grass+""); 
+				resultSet.first();
+				System.out.println(resultSet);
+			} catch (ClassNotFoundException | SQLException e) {
+				// TODO 自動生成された catch ブロック
+				e.printStackTrace();
+			}
+			String str = resultSet.getString(1);
+			resultSet.close();
+			System.out.println(str);
+			return str;
 		}
 		
 	

@@ -12,6 +12,10 @@ public class SapporoGrass1200 extends RaceCourse {
 		raceGround = "芝";
 		first3furlong = 34.1;
 		last3furlong = 35.3;
+		textString = "好走脚質：逃げ・先行\r\n好走枠　：1～5枠\r\n"
+				+ "直線が短くコーナー半径が緩やかな札幌競馬場。"
+				+ "遠心力が働く外枠が不利であることと、"
+				+ "直線が短いので後方待機組が届かないのが大きな特徴である。";
 	}
 	
 }

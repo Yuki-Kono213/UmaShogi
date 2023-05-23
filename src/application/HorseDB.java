@@ -144,7 +144,7 @@ public class HorseDB {
 				
 			}else if("insert".equals(command)) {
 				executeInsert(args[1],Integer.parseInt(args[2]),Integer.parseInt(args[3]),args[4],Integer.parseInt(args[5]), args[6]
-						, args[7], args[8], args[9], args[10], args[11], args[12], args[13]);
+						, args[7], args[8], args[9], args[10], args[11], args[12], args[13], args[14]);
 			}else if("update".equals(command)) {
 
 				executeUpdate(args[1],args[2]);
@@ -160,7 +160,7 @@ public class HorseDB {
 		 */
 		public String[] returnPastRace(String name, Integer raceID)
 			throws SQLException{
-			String[] pastRace = new String[10];
+			String[] pastRace = new String[11];
 			ResultSet resultSet = _statement.executeQuery("SELECT * FROM " + TABLE_NAME +" WHERE NAME = '"+name+"' AND "
 					+ "RACEID = '"+raceID+"'");
 			try{
@@ -179,6 +179,7 @@ public class HorseDB {
 					pastRace[7] = resultSet.getString("ROTATIONSIZE");
 					pastRace[8] = resultSet.getString("STRAIGHTDISTANCE");
 					pastRace[9] = resultSet.getString("STRAIGHTSLOPE");
+					pastRace[10] = resultSet.getString("ANALYSIS");
 					
 				}while(resultSet.next());
 			}finally{
@@ -204,13 +205,14 @@ public class HorseDB {
 		 * @param password
 		 */
 		private void executeInsert(String name, Integer raceID, Integer position, String pastRace, Integer frame, String pastRaceCondition,
-				String cornerShape, String grassStart, String raceGround, String rotationSide, String rotationSize, String straightDistance, String straightSlope)
+				String cornerShape, String grassStart, String raceGround, String rotationSide, String rotationSize, String straightDistance, String straightSlope,
+				String analysis )
 			throws SQLException{
 			// SQL文を発行
 			int updateCount = _statement.executeUpdate("INSERT INTO " + TABLE_NAME + 
-					" (NAME,RACEID,POSITION,PASTRACE,FRAME, PASTRACECONDITION,CORNERSHAPE, GRASSSTART,RACEGROUND, ROTATIONSIDE, ROTATIONSIZE, STRAIGHTDISTANCE, STRAIGHTSLOPE) VALUES "
+					" (NAME,RACEID,POSITION,PASTRACE,FRAME, PASTRACECONDITION,CORNERSHAPE, GRASSSTART,RACEGROUND, ROTATIONSIDE, ROTATIONSIZE, STRAIGHTDISTANCE, STRAIGHTSLOPE, ANALYSIS ) VALUES "
 					+ "('"+name+"' , '"+raceID+"', '"+position+"', '"+pastRace+"', '"+frame+"', '"+pastRaceCondition+"', '"+cornerShape+"', '"+grassStart+"'"
-							+ ", '"+raceGround+"', '"+rotationSide+"', '"+rotationSize+"', '"+straightDistance+"', '"+straightSlope+"'" + ")");
+							+ ", '"+raceGround+"', '"+rotationSide+"', '"+rotationSize+"', '"+straightDistance+"', '"+straightSlope+"', '" +analysis+"'" + ")");
 			System.out.println("Insert: " + updateCount);
 			
 		}

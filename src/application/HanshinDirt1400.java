@@ -13,6 +13,10 @@ public class HanshinDirt1400 extends RaceCourse {
 		excludeLast3furlong = 47.4;
 		first3furlong = 34.8;
 		last3furlong = 37.7;
+		textString = "好走脚質：先行・差し\r\n好走枠　：5～8枠\r\n"
+				+ "芝スタートの阪神競馬場ダート1400mは、やはり外目の枠が優勢。"
+				+ "ただし序盤の芝でペースが上がり、"
+				+ "直線の急坂で失速して差し馬が届く展開が多い。";
 	}
 	
 }

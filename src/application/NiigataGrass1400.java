@@ -13,6 +13,10 @@ public class NiigataGrass1400 extends RaceCourse {
 		excludeLast3furlong = 46.7;
 		first3furlong = 34.4;
 		last3furlong = 35.5;
+		textString = "好走脚質：先行・差し\r\n好走枠　：1～2枠\r\n"
+				+ "短距離戦ではあるが、逃げ馬は他のコースと比べても好走率が低い。"
+				+ "狙いは先行馬で、特に内から抜け出すことのできる馬に注目。"
+				+ "内回り戦は総じて追い込み馬は厳しい。";
 	}
 	
 }

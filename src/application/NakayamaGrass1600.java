@@ -13,6 +13,10 @@ public class NakayamaGrass1600 extends RaceCourse {
 		excludeLast3furlong = 59.6;
 		first3furlong = 35.3;
 		last3furlong = 35.3;
+		textString = "好走脚質：逃げ・先行\r\n好走枠　：1～5枠\r\n"
+				+ "スタート後にすぐコーナーに差しかかる当コースは、"
+				+ "8枠が物理的に不利な条件。外目の枠は軽視して考えたい。"
+				+ "脚質は差しも届くが、基本は逃げ・先行から。";
 	}
 	
 }

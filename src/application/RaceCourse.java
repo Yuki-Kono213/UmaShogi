@@ -14,5 +14,7 @@ public class RaceCourse {
 	public double excludeLast3furlong;
 	public double last3furlong;
 	
+	public String textString;
+	
 
 }

@@ -11,8 +11,6 @@
 <AnchorPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="1200.0" prefWidth="1480.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.SampleController">
    <children>
       <Label fx:id="labelRaceName" layoutX="676.0" layoutY="72.0" />
-      <TextField fx:id="txtPaddockURL" layoutX="889.0" layoutY="12.0" />
-      <TextField fx:id="txtPaddockURL1" layoutX="889.0" layoutY="53.0" />
       <TextArea fx:id="frame4" layoutY="36.0" prefHeight="80.0" prefWidth="156.0" />
       <TextArea fx:id="frame3" layoutX="156.0" layoutY="36.0" prefHeight="80.0" prefWidth="156.0" />
       <TextArea fx:id="frame2" layoutX="312.0" layoutY="36.0" prefHeight="80.0" prefWidth="156.0" />
@@ -77,16 +75,17 @@
             <TableColumn fx:id="numberTable1" prefWidth="30.0" text="No" />
             <TableColumn fx:id="nameTable1" prefWidth="100.0" text="馬名" />
             <TableColumn fx:id="weightTable" prefWidth="80.0" text="体重" />
-            <TableColumn fx:id="glassGoodRaceResult" prefWidth="100.0" text="芝良5走" />
-            <TableColumn fx:id="glassBitHeavyRaceResult" prefWidth="100.0" text="芝稍5走" />
-            <TableColumn fx:id="glassHeavyRaceResult" prefWidth="100.0" text="芝重5走" />
-            <TableColumn fx:id="glassBadRaceResult" prefWidth="100.0" text="芝不5走" />
+            <TableColumn fx:id="grassGoodRaceResult" prefWidth="100.0" text="芝良5走" />
+            <TableColumn fx:id="grassBitHeavyRaceResult" prefWidth="100.0" text="芝稍5走" />
+            <TableColumn fx:id="grassHeavyRaceResult" prefWidth="100.0" text="芝重5走" />
+            <TableColumn fx:id="grassBadRaceResult" prefWidth="100.0" text="芝不5走" />
             <TableColumn fx:id="dirtGoodRaceResult" prefWidth="100.0" text="ダ良5走" />
             <TableColumn fx:id="dirtBitHeavyRaceResult" prefWidth="100.0" text="ダ稍5走" />
             <TableColumn fx:id="dirtHeavyRaceResult" prefWidth="100.0" text="ダ重5走" />
             <TableColumn fx:id="dirtBadRaceResult" prefWidth="100.0" text="ダ不5走" />
             <TableColumn fx:id="pastMaxPace" prefWidth="100.0" text="最速ペース" />
             <TableColumn fx:id="pastMaxSpeedLast" prefWidth="100.0" text="最速上り" />
+            <TableColumn fx:id="pastMaxSpeed2" prefWidth="100.0" text="最速" />
             <TableColumn fx:id="nameTable2" prefWidth="100.0" text="馬名" />
             <TableColumn fx:id="indexTable1" prefWidth="50.0" text="指数" />
             <TableColumn fx:id="straightSlope" prefWidth="100.0" text="直線傾斜" />
@@ -99,53 +98,56 @@
             <TableColumn fx:id="beforeJockeyTrait" prefWidth="60.0" text="前騎手" />
             <TableColumn fx:id="nowJockeyTrait" prefWidth="60.0" text="当騎手" />
 	        <TableColumn fx:id="rangeTable2" text="距離" />
-            <TableColumn fx:id="first3furlong" prefWidth="60.0" text="前半3F" />
-            <TableColumn fx:id="middle" prefWidth="60.0" text="中盤" />
-            <TableColumn fx:id="last3furlong" prefWidth="60.0" text="ラスト3F" />
+            <TableColumn fx:id="first3furlong" prefWidth="60.0" text="前半3F"/>
+            <TableColumn fx:id="middle" prefWidth="60.0" text="中盤"/>
+            <TableColumn fx:id="last3furlong" prefWidth="60.0" text="ラスト3F"/>
         </columns>
       </TableView>
-      <Button fx:id="buttonOpenPaddock" layoutX="1048.0" layoutY="13.0" mnemonicParsing="false" text="パドック" />
-      <Button fx:id="buttonOpenPaddock1" layoutX="1048.0" layoutY="53.0" mnemonicParsing="false" text="パドック" />
-      <TextField fx:id="txtRaceURL" layoutX="1114.0" layoutY="13.0" />
-      <TextField fx:id="txtRaceURL1" layoutX="1115.0" layoutY="53.0" />
-      <Button fx:id="buttonOpenRace" layoutX="1271.0" layoutY="12.0" mnemonicParsing="false" text="レース" />
-      <Button fx:id="buttonOpenRace1" layoutX="1271.0" layoutY="53.0" mnemonicParsing="false" text="レース" />
+      <TextField fx:id="txtPaddockURL" layoutX="889.0" layoutY="12.0"  prefWidth="0.0" />
+      <TextField fx:id="txtPaddockURL1" layoutX="889.0" layoutY="53.0"  prefWidth="0.0"  />
+      <Button fx:id="buttonOpenPaddock" layoutX="930.0" layoutY="13.0" mnemonicParsing="false" text="パドック" />
+      <Button fx:id="buttonOpenPaddock1" layoutX="930.0" layoutY="53.0" mnemonicParsing="false" text="パドック" />
+      <TextField fx:id="txtRaceURL" layoutX="1000.0" layoutY="13.0" prefWidth="0.0" />
+      <TextField fx:id="txtRaceURL1" layoutX="1000.0" layoutY="53.0" prefWidth="0.0"  />
+      <Button fx:id="buttonOpenRace" layoutX="1030.0" layoutY="12.0" mnemonicParsing="false" text="レース" />
+      <Button fx:id="buttonOpenRace1" layoutX="1030.0" layoutY="53.0" mnemonicParsing="false" text="レース" />
       <TextField fx:id="txtThisPaddockURL" layoutX="638.0" layoutY="207.0" />
       <Button fx:id="buttonThisPaddock" layoutX="797.0" layoutY="207.0" mnemonicParsing="false" text="パドック" />
       <TextField fx:id="txtThisRaceURL" layoutX="641.0" layoutY="247.0" />
       <Button fx:id="buttonThisRace" layoutX="797.0" layoutY="247.0" mnemonicParsing="false" text="レース" />
-      <TextField fx:id="txtPaddockURL2" layoutX="891.0" layoutY="92.0" />
-      <TextField fx:id="txtPaddockURL3" layoutX="891.0" layoutY="133.0" />
-      <Button fx:id="buttonOpenPaddock2" layoutX="1050.0" layoutY="93.0" mnemonicParsing="false" text="パドック" />
-      <Button fx:id="buttonOpenPaddock3" layoutX="1050.0" layoutY="133.0" mnemonicParsing="false" text="パドック" />
-      <TextField fx:id="txtRaceURL2" layoutX="1116.0" layoutY="93.0" />
-      <TextField fx:id="txtRaceURL3" layoutX="1117.0" layoutY="133.0" />
-      <Button fx:id="buttonOpenRace2" layoutX="1273.0" layoutY="92.0" mnemonicParsing="false" text="レース" />
-      <Button fx:id="buttonOpenRace3" layoutX="1273.0" layoutY="133.0" mnemonicParsing="false" text="レース" />
-      <TextField fx:id="txtPaddockURL4" layoutX="891.0" layoutY="169.0" />
-      <TextField fx:id="txtPaddockURL5" layoutX="891.0" layoutY="210.0" />
-      <Button fx:id="buttonOpenPaddock4" layoutX="1050.0" layoutY="170.0" mnemonicParsing="false" text="パドック" />
-      <Button fx:id="buttonOpenPaddock5" layoutX="1050.0" layoutY="210.0" mnemonicParsing="false" text="パドック" />
-      <TextField fx:id="txtRaceURL4" layoutX="1116.0" layoutY="170.0" />
-      <TextField fx:id="txtRaceURL5" layoutX="1117.0" layoutY="210.0" />
-      <Button fx:id="buttonOpenRace4" layoutX="1273.0" layoutY="169.0" mnemonicParsing="false" text="レース" />
-      <Button fx:id="buttonOpenRace5" layoutX="1273.0" layoutY="210.0" mnemonicParsing="false" text="レース" />
-      <TextField fx:id="txtPaddockURL6" layoutX="891.0" layoutY="244.0" />
-      <TextField fx:id="txtPaddockURL7" layoutX="891.0" layoutY="285.0" />
-      <Button fx:id="buttonOpenPaddock6" layoutX="1050.0" layoutY="245.0" mnemonicParsing="false" text="パドック" />
-      <Button fx:id="buttonOpenPaddock7" layoutX="1050.0" layoutY="285.0" mnemonicParsing="false" text="パドック" />
-      <TextField fx:id="txtRaceURL6" layoutX="1116.0" layoutY="245.0" />
-      <TextField fx:id="txtRaceURL7" layoutX="1117.0" layoutY="285.0" />
-      <Button fx:id="buttonOpenRace6" layoutX="1273.0" layoutY="244.0" mnemonicParsing="false" text="レース" />
-      <Button fx:id="buttonOpenRace7" layoutX="1273.0" layoutY="285.0" mnemonicParsing="false" text="レース" />
-      <TextField fx:id="txtResultURL" layoutX="1315.0" layoutY="13.0" />
-      <TextField fx:id="txtResultURL1" layoutX="1316.0" layoutY="53.0" />
-      <TextField fx:id="txtResultURL2" layoutX="1315.0" layoutY="92.0" />
-      <TextField fx:id="txtResultURL3" layoutX="1316.0" layoutY="133.0" />
-      <TextField fx:id="txtResultURL4" layoutX="1315.0" layoutY="170.0" />
-      <TextField fx:id="txtResultURL5" layoutX="1316.0" layoutY="210.0" />
-      <TextField fx:id="txtResultURL6" layoutX="1315.0" layoutY="245.0" />
-      <TextField fx:id="txtResultURL7" layoutX="1316.0" layoutY="285.0" />
+      <TextField fx:id="txtPaddockURL2" layoutX="891.0" layoutY="92.0"  prefWidth="0.0" />
+      <TextField fx:id="txtPaddockURL3" layoutX="891.0" layoutY="133.0" prefWidth="0.0"  />
+      <Button fx:id="buttonOpenPaddock2" layoutX="930.0" layoutY="93.0" mnemonicParsing="false" text="パドック" />
+      <Button fx:id="buttonOpenPaddock3" layoutX="930.0" layoutY="133.0" mnemonicParsing="false" text="パドック" />
+      <TextField fx:id="txtRaceURL2" layoutX="1000.0" layoutY="93.0"  prefWidth="0.0" />
+      <TextField fx:id="txtRaceURL3" layoutX="1000.0" layoutY="133.0"  prefWidth="0.0" />
+      <Button fx:id="buttonOpenRace2" layoutX="1030.0" layoutY="92.0" mnemonicParsing="false" text="レース" />
+      <Button fx:id="buttonOpenRace3" layoutX="1030.0" layoutY="133.0" mnemonicParsing="false" text="レース" />
+      <TextField fx:id="txtPaddockURL4" layoutX="891.0" layoutY="169.0"  prefWidth="0.0" />
+      <TextField fx:id="txtPaddockURL5" layoutX="891.0" layoutY="210.0" prefWidth="0.0"  />
+      <Button fx:id="buttonOpenPaddock4" layoutX="930.0" layoutY="170.0" mnemonicParsing="false" text="パドック" />
+      <Button fx:id="buttonOpenPaddock5" layoutX="930.0" layoutY="210.0" mnemonicParsing="false" text="パドック" />
+      <TextField fx:id="txtRaceURL4" layoutX="1000.0" layoutY="170.0"  prefWidth="0.0" />
+      <TextField fx:id="txtRaceURL5" layoutX="1000.0" layoutY="210.0" prefWidth="0.0"  />
+      <Button fx:id="buttonOpenRace4" layoutX="1030.0" layoutY="169.0" mnemonicParsing="false" text="レース" />
+      <Button fx:id="buttonOpenRace5" layoutX="1030.0" layoutY="210.0" mnemonicParsing="false" text="レース" />
+      <TextField fx:id="txtPaddockURL6" layoutX="891.0" layoutY="244.0"  prefWidth="0.0" />
+      <TextField fx:id="txtPaddockURL7" layoutX="891.0" layoutY="285.0"  prefWidth="0.0" />
+      <Button fx:id="buttonOpenPaddock6" layoutX="930.0" layoutY="245.0" mnemonicParsing="false" text="パドック" />
+      <Button fx:id="buttonOpenPaddock7" layoutX="930.0" layoutY="285.0" mnemonicParsing="false" text="パドック" />
+      <TextField fx:id="txtRaceURL6" layoutX="1000.0" layoutY="245.0"  prefWidth="0.0" />
+      <TextField fx:id="txtRaceURL7" layoutX="1000.0" layoutY="285.0"  prefWidth="0.0" />
+      <Button fx:id="buttonOpenRace6" layoutX="1030.0" layoutY="244.0" mnemonicParsing="false" text="レース" />
+      <Button fx:id="buttonOpenRace7" layoutX="1030.0" layoutY="285.0" mnemonicParsing="false" text="レース" />
+      <TextField fx:id="txtResultURL" layoutX="1080.0" layoutY="13.0"/>
+      <TextField fx:id="txtResultURL1" layoutX="1080.0" layoutY="53.0" />
+      <TextField fx:id="txtResultURL2" layoutX="1080.0" layoutY="92.0" />
+      <TextField fx:id="txtResultURL3" layoutX="1080.0" layoutY="133.0" />
+      <TextField fx:id="txtResultURL4" layoutX="1080.0" layoutY="170.0" />
+      <TextField fx:id="txtResultURL5" layoutX="1080.0" layoutY="210.0" />
+      <TextField fx:id="txtResultURL6" layoutX="1080.0" layoutY="245.0" />
+      <TextField fx:id="txtResultURL7" layoutX="1080.0" layoutY="285.0" />
+      <TextArea fx:id="txtExplainRace" layoutX="1250.0" layoutY="13.0" prefHeight="300.0" prefWidth="200.0"/>
       <Label fx:id="labelRace" layoutX="848.0" layoutY="16.0" text="Label" />
       <Label fx:id="labelRace1" layoutX="848.0" layoutY="57.0" text="Label" />
       <Label fx:id="labelRace2" layoutX="848.0" layoutY="97.0" text="Label" />
@@ -162,10 +164,12 @@
       <Label fx:id="lblRecoveryToday" layoutX="693.0" layoutY="44.0" text="全体" /><Button fx:id="raceLevelbtn" layoutX="636.0" layoutY="277.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="75.0" text="レベル計測" />
       
       <Button fx:id="raceAllGetbtn" onAction="#GetAllURL" layoutX="716.0" layoutY="277.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="75.0" text="一括取得" />
-      <Button fx:id="raceLevelbtn" layoutX="636.0" layoutY="277.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="75.0" text="レベル計測" />
+      <Label fx:id="lblPastReturn" layoutX="796.0" layoutY="277.0" text="過去" />
+      <Button fx:id="raceLevelbtn"  onAction="#RaceLevelCount" layoutX="636.0" layoutY="277.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="75.0" text="レベル計測" />
       <Label fx:id="lblWinWideThree" layoutX="636.0" layoutY="310.0" text="W3" />
       <Label fx:id="lblWinWideFour" layoutX="686.0" layoutY="310.0" text="W4" />
       <Label fx:id="lblWinWideFive" layoutX="736.0" layoutY="310.0" text="W5" />
       <Label fx:id="lblWinWideSix" layoutX="786.0" layoutY="310.0" text="W6" />
+      <Label fx:id="lblTextHosoku" layoutX="800.0" layoutY="320.0" text="補足" />
       </children>
 </AnchorPane>

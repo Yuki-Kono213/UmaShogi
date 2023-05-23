@@ -12,6 +12,10 @@ public class NakayamaGrass1200 extends RaceCourse {
 		raceGround = "芝";
 		first3furlong = 33.5;
 		last3furlong = 34.9;
+		textString = "好走脚質：逃げ・先行\r\n好走枠　：4～8枠\r\n"
+				+ "直線の短いスプリント戦ではあるが、距離損のない内枠よりも外目の枠の方が優勢。"
+				+ "むしろ短い直線でゴチャつく方が不利で、"
+				+ "外目でゆったりと運ぶほうが好成績の傾向。";
 	}
 	
 }

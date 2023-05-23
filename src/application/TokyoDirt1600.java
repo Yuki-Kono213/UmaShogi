@@ -13,6 +13,10 @@ public class TokyoDirt1600 extends RaceCourse {
 		excludeLast3furlong = 61.4;
 		first3furlong = 35.9;
 		last3furlong = 37.4;
+		textString = "好走脚質：先行・差し\r\n好走枠　：6～8枠\r\n"
+				+ "中央ダートでは唯一のダートマイル戦。傾向としては芝スタートで外枠優勢。"
+				+ "あとは上がり上位馬の好走が目立つ。"
+				+ "唯一の条件ということで、リピーター馬も狙いとなる。";
 	}
 	
 }
