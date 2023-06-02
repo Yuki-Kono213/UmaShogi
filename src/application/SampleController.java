@@ -516,7 +516,6 @@ public class SampleController {
 	}
 	String pastRaceTenkai;
 	public void GetURL() {
-		
 
 		numberTable.setCellValueFactory(new PropertyValueFactory<HorseData, String>("no"));
 
@@ -736,6 +735,7 @@ public class SampleController {
 			txtReturn.setText("0");
 			TotalRecoveryCheck();
 
+			if(!lblRecovery.getText().equals("100%"))lblRecovery.setText("???%");
 			arrayPaddockURL = new TextField[] { txtPaddockURL, txtPaddockURL1, txtPaddockURL2, txtPaddockURL3,
 					txtPaddockURL4, txtPaddockURL5, txtPaddockURL6, txtPaddockURL7 };
 			arrayPaddockButton = new Button[] { buttonOpenPaddock, buttonOpenPaddock1, buttonOpenPaddock2,
@@ -827,8 +827,11 @@ public class SampleController {
 						h.position = 19;
 						
 					}
-					h.frame = Integer.parseInt(frameElements.get(i).text());
 					h.number = Math.abs(horseElements.size() / 2 - i);
+					if(frameElements.size() > 0) {h.frame = Integer.parseInt(frameElements.get(i).text());
+					}else {
+						h.frame = (h.number + 1)/ 2;
+					}
 					horseList.add(h);
 					SetTextField(h);
 
@@ -1359,6 +1362,9 @@ public class SampleController {
 			String address, int index, String raceLevel, Double jockeyWeight, String cornerShape, String grassStart,
 			String raceGround, String rotationSide, String rotationSize, String straightDistance,
 			String straightSlope, String jockey, String analysis) {
+		if(analysis == null) {
+			analysis =  RacePointCheck(horseText, h);
+		}
 		HorseData horseData = new HorseData(strArray[h.number], h.name, analysis, horseString,
 				pastRaceCondition, raceRange, labelRaceRange.getText(), address, raceLevel, jockeyWeight, cornerShape,
 				grassStart, raceGround, rotationSide, rotationSize, straightDistance, straightSlope, jockey);
