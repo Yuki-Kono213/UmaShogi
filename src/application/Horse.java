@@ -9,6 +9,7 @@ public class Horse
 	public int frame;
 	public String pastRace;
 	public String pastRaceCondition;
+	public String win;
 	
 	
 	

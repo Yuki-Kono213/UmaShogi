@@ -52,6 +52,7 @@ public class HorseData
 	
 	private String pastMaxSpeed;
 	private String pastMaxPace;
+	private String pastMaxSpeedDifference;
 	private String pastMaxSpeedLast;
 	private String index;
 
@@ -78,7 +79,8 @@ public class HorseData
 	private int actualyTime;
 	{this.index = "0";}
 	  public HorseData(String no, String name, String analysis, List<String> horseString, List<String>pastRaceCondition, int raceRange, String maxRaceField, String address,
-			  String raceLevel, Double thisWeight, String cornerShape, String grassStart,String  raceGround, String rotationSide, String rotationSize, String straightDistance, String straightSlope, String thisRaceJockey) {
+			  String raceLevel, Double thisWeight, String cornerShape, String grassStart,String  raceGround, String rotationSide, String rotationSize, String straightDistance, 
+			  String straightSlope, String thisRaceJockey) {
 		  	 
 		  	 this.raceLevel = raceLevel;
 			 this.no = no;
@@ -152,6 +154,7 @@ public class HorseData
 			 this.nowJockeyTrait = thisRaceJockey;
 			 this.courseBeforeRace = RaceCourseUtil.ReturnRaceCourse(this.raceStage,this.range,this.raceName);
 			 calcIndex(raceRange, maxRaceField);
+			 this.pastMaxSpeedDifference = pastRaceCondition.get(11);
 			 System.out.println(this.name + this.last);
 	  }
 	  public HorseData(String raceLevel) {
@@ -224,7 +227,6 @@ public class HorseData
 //		{
 //			base = -100;
 //		}
-		
 		int rangeDiff = 0;
 		if(raceRange > rangeOrigin) {
 			rangeDiff = (raceRange - rangeOrigin);
@@ -329,6 +331,7 @@ public class HorseData
 			}
 			
 			score += (Integer.parseInt(this.pastMaxSpeed.substring(0,1)) * 600 +  Integer.parseInt(this.pastMaxSpeed.substring(2,4)) * 10 + Integer.parseInt(this.pastMaxSpeed.substring(5,6))) * timeHosei * raceRate * 1600 / raceRange;
+			if(this.pastMaxSpeedDifference != null) {score += Double.parseDouble(this.pastMaxSpeedDifference) * 30 * raceRate;}
 		}
 		else {
 			if(range.contains("ダ")) {
@@ -532,6 +535,8 @@ public class HorseData
 	  
 	  public String getPastMaxSpeed(){ return pastMaxSpeed; }
 	  public void setPastMaxSpeed(String pastMaxSpeed){ this.pastMaxSpeed = pastMaxSpeed; }
+	  public String getPastMaxSpeedDifference(){ return pastMaxSpeedDifference; }
+	  public void setPastMaxSpeedDifference(String pastMaxSpeedDiffence){ this.pastMaxSpeedDifference = pastMaxSpeedDifference; }
 	  public String getPastMaxPace(){ return pastMaxPace; }
 	  public void setPastMaxPace(String pastMaxPace){ this.pastMaxPace = pastMaxPace; }
 	  public String getPastMaxSpeedLast(){ return pastMaxSpeedLast; }

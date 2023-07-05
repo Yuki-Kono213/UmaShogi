@@ -273,7 +273,7 @@ public class RaceDB {
 			System.out.println("Insert: " + updateCount);
 			
 		}
-		public String executeReturnMoney(String range, String stage)
+		public String executeReturnMoney(String range, String stage, String year)
 			throws SQLException{
 			ResultSet resultSet = null;
 			try {
@@ -285,7 +285,7 @@ public class RaceDB {
 				create();
 				// SQL文を発行
 				resultSet = _statement.executeQuery("SELECT SUM(RETURN) *100 / SUM (PAY) FROM RACE WHERE RANGE = " 
-				+ range + " AND STAGE = '"+stage+"' AND GRASS = "+grass+""); 
+				+ range + " AND STAGE = '"+stage+"' AND GRASS = "+grass+" AND RACEURL LIKE '%"+year+"%';"); 
 				resultSet.first();
 				System.out.println(resultSet);
 			} catch (ClassNotFoundException | SQLException e) {

@@ -4,11 +4,14 @@ import java.io.IOException;
 import java.security.PublicKey;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 
 import javax.print.attribute.standard.PrinterStateReason;
@@ -162,6 +165,8 @@ public class SampleController {
 	private TableColumn<HorseData, String> dirtBadRaceResult;
 	@FXML
 	private TableColumn<HorseData, String> pastMaxSpeed;
+	@FXML
+	private TableColumn<HorseData, String> pastMaxSpeedDifference;
 	@FXML
 	private TableColumn<HorseData, String> pastMaxSpeed2;
 	@FXML
@@ -370,7 +375,7 @@ public class SampleController {
 			try {
 				lblPastReturn.setText(new RaceDB().executeReturnMoney(
 						labelRaceRange.getText(), labelRaceStage.getText() 
-								)+ "%");
+								, labelRaceDate.getText().substring(0,4))+ "%");
 			} catch (SQLException e) {
 				// TODO 自動生成された catch ブロック
 				e.printStackTrace();
@@ -447,12 +452,23 @@ public class SampleController {
 	private boolean newHorse = false;
 	public void GetAllURL() {
 		reGet = false;
+		LocalDate dateObj = LocalDate.now();
+		LocalDate raceDate = null;
+		SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd");
 		for(int i = 1; i < 13; i++) {
 			textURL.setText(textURL.getText(0,42)+ Util.raceKeibaLaboURL.get(String.valueOf(i)) + "/");
 			newHorse = false;
 			GetURL();
-			GetRaceMoney();
+			try {
+				raceDate = LocalDate.parse(labelRaceDate.getText(), DateTimeFormatter.ofPattern("yyyy/[]M/[]d"));
+			} catch (Exception e) {
+				// TODO 自動生成された catch ブロック
+				e.printStackTrace();
 			}
+			System.out.println(raceDate);
+			if(raceDate.isBefore(dateObj)) {GetRaceMoney();}
+			
+		}
 	}
 	public void GetRaceMoney() {
 		try {
@@ -594,6 +610,7 @@ public class SampleController {
 		pastMaxSpeed2.setCellValueFactory(new PropertyValueFactory<HorseData, String>("pastMaxSpeed"));
 		pastMaxPace.setCellValueFactory(new PropertyValueFactory<HorseData, String>("pastMaxPace"));
 		pastMaxSpeedLast.setCellValueFactory(new PropertyValueFactory<HorseData, String>("pastMaxSpeedLast"));
+		pastMaxSpeedDifference.setCellValueFactory(new PropertyValueFactory<HorseData, String>("pastMaxSpeedDifference"));
 
 		straightDistance.setCellValueFactory(new PropertyValueFactory<HorseData, String>("straightDistance"));
 		straightSlope.setCellValueFactory(new PropertyValueFactory<HorseData, String>("straightSlope"));
@@ -779,9 +796,15 @@ public class SampleController {
 			rotationSize.setText("回転大小" + rc.rotationSize);
 			grassStart.setText("芝開始" + rc.grassStart);
 			raceGround.setText("芝ダート" + rc.raceGround);
+			try {
 			lblPastReturn.setText(new RaceDB().executeReturnMoney(
 					labelRaceRange.getText(), labelRaceStage.getText() 
-							)+ "%");
+					, labelRaceDate.getText().substring(0,4))+ "%");
+			System.out.println(labelRaceDate.getText().substring(0,4));
+			}
+			catch (Exception e) {
+				lblPastReturn.setText("0%");
+			}
 			txtExplainRace.clear();
 			txtExplainRace.setWrapText(true);
 			txtExplainRace.setText(rc.textString);
@@ -833,7 +856,6 @@ public class SampleController {
 						h.frame = (h.number + 1)/ 2;
 					}
 					horseList.add(h);
-					SetTextField(h);
 
 					try {
 
@@ -841,7 +863,9 @@ public class SampleController {
 						hdb.create();
 						String[] horseText = hdb.returnPastRace(h.name, raceID);
 						String address = "https://www.keibalab.jp" + horseURLElements.get(i).attr("href");
-						if (!raceExist ||horseText[0].isEmpty() || LocalDate
+						System.out.println(horseText[0].split(" ").length);
+						if (!raceExist ||horseText[0].isEmpty() || 
+								horseText[1].split("[ ]+").length < 12 || LocalDate
 								.parse(labelRaceDate.getText(), DateTimeFormatter.ofPattern("yyyy/[]M/[]d"))
 								.isBefore(LocalDate
 										.parse(horseText[0].split(" ")[0], DateTimeFormatter.ofPattern("yyyy/[]M/[]d"))
@@ -858,6 +882,8 @@ public class SampleController {
 							String pastMaxGoodTime = "一年未走";
 							String pastMaxGoodPace = "一年未走";
 							String pastMaxGoodLast = "一年未走";
+							String pastMaxGoodDifference = "0.0";
+							String pastMaxGoodRaceRivalHorseString = "なし";
 							ArrayList<RaceCourse> rcList = new ArrayList<RaceCourse>();
 							ArrayList<PastRaceResult> prList = new ArrayList<PastRaceResult>();
 							String nowTekisei;
@@ -1036,6 +1062,11 @@ public class SampleController {
 												+ HorseElements.get(i2).text().split(" ")[16]
 												+ HorseElements.get(i2).text().split(" ")[17];
 										pastMaxGoodLast = HorseElements.get(i2).text().split(" ")[18];
+										pastMaxGoodDifference =  HorseElements.get(i2).text().split(" ")[14];
+										pastMaxGoodRaceRivalHorseString = HorseElements.get(i2).text().split(" ")[24];
+										if(pastMaxGoodRaceRivalHorseString.contains("(")) {
+											pastMaxGoodDifference = "-" + pastMaxGoodDifference;
+										}
 									}
 
 									pastRaceCount++;
@@ -1069,7 +1100,7 @@ public class SampleController {
 									+ pastRaceCondition[2] + " " + pastRaceCondition[3] + " " + pastRaceCondition[4]
 									+ " " + pastRaceCondition[5] + " " + pastRaceCondition[6] + " "
 									+ pastRaceCondition[7] + " " + pastMaxGoodTime + " " + pastMaxGoodPace + " "
-									+ pastMaxGoodLast;
+									+ pastMaxGoodLast + " " + pastMaxGoodDifference;
 
 							List<String> horseString = new ArrayList<String>(Arrays.asList(h.pastRace.split(" ")));
 							List<String> horseConditionString = new ArrayList<String>(
@@ -1096,11 +1127,12 @@ public class SampleController {
 							new HorseDB().UseHorseDataBase(new String[] { "insert", h.name, raceID.toString(),
 									Integer.toString(h.position), h.pastRace, Integer.toString(h.frame),
 									h.pastRaceCondition, cornerShape, grassStart, raceGround, rotationSide,
-									rotationSize, straightDistance, straightSlope, analysisString });
+									rotationSize, straightDistance, straightSlope, analysisString});
 
 							SetTable(h, horseString, strArray[h.number] + h.pastRace, horseConditionString, address, i,
 									"10000", jockeyWeight, cornerShape, grassStart, raceGround, rotationSide,
 									rotationSize, straightDistance, straightSlope, jockey, analysisString);
+							RacePointCheck(horseText[0],h);
 							Thread.sleep(3000);
 						} else {
 
@@ -1116,11 +1148,15 @@ public class SampleController {
 							SetTable(h, horseString, horseText[0], horseConditionString, address, i, horseText[2],
 									jockeyWeight, horseText[3], horseText[4], horseText[5], horseText[6], horseText[7],
 									horseText[8], horseText[9], jockey, horseText[10]);
+							RacePointCheck(horseText[0],h);
 						}
 					} catch (Exception e) {
 
 						e.printStackTrace();
 					}
+					
+
+					SetTextField(h);
 					// }
 
 				} catch (Exception e) {
@@ -1152,9 +1188,11 @@ public class SampleController {
 				Elements stageel = laboDoc.select(".sortobject a");
 				int cnt = 0;
 				int rowCnt = 0;
+				System.out.println(roundel.size());
 				for (int i = 0; i < stageel.size(); i++) {
 					if (stageel.get(i).attr("href").contains("/db/race/") && cnt * 25 < roundel.size()
 							&& !Util.returnLocalDicExist(roundel.get(cnt * 25 + 1).text(), cnt)
+							&& roundel.get(cnt * 25 + 1).text().split("回").length > 1
 							&& roundel.get(cnt * 25 + 1).text().split("回")[1].length() > 1 && Util.returnDicExist(
 									roundel.get(cnt * 25 + 1).text().split("回")[1].substring(0, 2), cnt)) {
 
@@ -1524,8 +1562,10 @@ public class SampleController {
 
 		String[] array = s.split(" ");
 
+		h.win = "";
 		if (array[7].equals("1")) {
 			text += "勝利";
+			h.win = "勝";
 
 		} else if (Double.parseDouble(array[14]) < 0.2) {
 			text += "惜敗";
@@ -1557,7 +1597,9 @@ public class SampleController {
 					+ Integer.parseInt(newRace.substring(2, 4)) * 10 + Integer.parseInt(newRace.substring(5, 6));
 
 			if ((newTime < maxTime && newCondition.contains("良"))
-					|| (newCondition.contains("良") && !oldCondition.contains("良"))) {
+					|| (newCondition.contains("良") && !oldCondition.contains("良"))
+					|| (newCondition.contains("稍") && !oldCondition.contains("良"))
+					|| (newCondition.contains("重") && !oldCondition.contains("良") && !oldCondition.contains("稍"))) {
 				return true;
 			}
 		}
@@ -1567,82 +1609,82 @@ public class SampleController {
 	private void SetTextField(Horse h) {
 		if (h.frame == 1 || h.frame == 2) {
 			if (h.position == -1) {
-				frame1.insertText(0, "逃" + h.number + h.name + h.rate + "\r\n");
+				frame1.insertText(0, "逃" + h.win + h.number + h.name + h.rate + "\r\n");
 
 			} else if (h.position < 5) {
-				frame1.insertText(0, h.number + h.name + h.rate + "\r\n");
+				frame1.insertText(0, h.win +h.number + h.name + h.rate + "\r\n");
 
 			} else if (h.position < 9) {
-				frame5.insertText(0, h.number + h.name + h.rate + "\r\n");
+				frame5.insertText(0, h.win +h.number + h.name + h.rate + "\r\n");
 
 			} else if (h.position < 13) {
-				frame9.insertText(0, h.number + h.name + h.rate + "\r\n");
+				frame9.insertText(0, h.win +h.number + h.name + h.rate + "\r\n");
 
 			} else if (h.position < 19) {
-				frame13.insertText(0, h.number + h.name + h.rate + "\r\n");
+				frame13.insertText(0,h.win + h.number + h.name + h.rate + "\r\n");
 
 			} else {
-				frame13.insertText(0, h.number + h.name + "?" + h.rate + "\r\n");
+				frame13.insertText(0, h.win +h.number + h.name + "?" + h.rate + "\r\n");
 				newHorse = true;
 			}
 
 		} else if (h.frame == 3 || h.frame == 4) {
 			if (h.position == -1) {
-				frame2.insertText(0, "逃" + h.number + h.name + h.rate + "\r\n");
+				frame2.insertText(0, "逃" + h.win +h.number + h.name + h.rate + "\r\n");
 
 			} else if (h.position < 5) {
-				frame2.insertText(0, h.number + h.name + h.rate + "\r\n");
+				frame2.insertText(0, h.win +h.number + h.name + h.rate + "\r\n");
 
 			} else if (h.position < 9) {
-				frame6.insertText(0, h.number + h.name + h.rate + "\r\n");
+				frame6.insertText(0, h.win +h.number + h.name + h.rate + "\r\n");
 
 			} else if (h.position < 13) {
-				frame10.insertText(0, h.number + h.name + h.rate + "\r\n");
+				frame10.insertText(0, h.win +h.number + h.name + h.rate + "\r\n");
 
 			} else if (h.position < 19) {
-				frame14.insertText(0, h.number + h.name + h.rate + "\r\n");
+				frame14.insertText(0, h.win +h.number + h.name + h.rate + "\r\n");
 			} else {
-				frame14.insertText(0, h.number + h.name + "?" + h.rate + "\r\n");
+				frame14.insertText(0, h.win +h.number + h.name + "?" + h.rate + "\r\n");
 				newHorse = true;
 			}
 
 		} else if (h.frame == 5 || h.frame == 6) {
 			if (h.position == -1) {
-				frame3.insertText(0, "逃" + h.number + h.name + h.rate + "\r\n");
+				frame3.insertText(0, "逃" + h.win +h.number + h.name + h.rate + "\r\n");
 
 			} else if (h.position < 5) {
-				frame3.insertText(0, h.number + h.name + h.rate + "\r\n");
+				frame3.insertText(0, h.win +h.number + h.name + h.rate + "\r\n");
 
 			} else if (h.position < 9) {
-				frame7.insertText(0, h.number + h.name + h.rate + "\r\n");
+				frame7.insertText(0, h.win +h.number + h.name + h.rate + "\r\n");
 
 			} else if (h.position < 13) {
-				frame11.insertText(0, h.number + h.name + h.rate + "\r\n");
+				frame11.insertText(0, h.win +h.number + h.name + h.rate + "\r\n");
 
 			} else if (h.position < 19) {
-				frame15.insertText(0, h.number + h.name + h.rate + "\r\n");
+				frame15.insertText(0, h.win +h.number + h.name + h.rate + "\r\n");
 			} else {
-				frame15.insertText(0, h.number + h.name + "?" + h.rate + "\r\n");
+				frame15.insertText(0, h.win +h.number + h.name + "?" + h.rate + "\r\n");
 				newHorse = true;
 			}
 
 		} else if (h.frame == 7 || h.frame == 8) {
 			if (h.position == -1) {
-				frame4.insertText(0, "逃" + h.number + h.name + h.rate + "\r\n");
+				frame4.insertText(0, "逃" +h.win + h.number + h.name + h.rate + "\r\n");
 
 			} else if (h.position < 5) {
-				frame4.insertText(0, h.number + h.name + h.rate + "\r\n");
+				frame4.insertText(0, h.win +h.number + h.name + h.rate + "\r\n");
 
 			} else if (h.position < 9) {
-				frame8.insertText(0, h.number + h.name + h.rate + "\r\n");
+				frame8.insertText(0, h.win +h.number + h.name + h.rate + "\r\n");
 
 			} else if (h.position < 13) {
-				frame12.insertText(0, h.number + h.name + h.rate + "\r\n");
+				frame12.insertText(0,h.win + h.number + h.name + h.rate + "\r\n");
 
 			} else if (h.position < 19) {
-				frame16.insertText(0, h.number + h.name + h.rate + "\r\n");
+				frame16.insertText(0, h.win +h.number + h.name + h.rate + "\r\n");
 			} else {
-				frame16.insertText(0, h.number + h.name + "?" + h.rate + "\r\n");
+				frame16.insertText(0, h.win +h.number + h.name + "?" + h.rate + "\r\n");
 				newHorse = true;
 			}
 		}
