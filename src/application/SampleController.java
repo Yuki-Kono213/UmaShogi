@@ -368,7 +368,7 @@ public class SampleController {
 			rdb.UseRaceDataBase(
 					new String[] { "update", rdm.RaceName, rdm.RaceURL, txtPay.getText(), txtReturn.getText(),
 							labelRaceRange.getText().substring(0, 1), labelRaceRange.getText().substring(1, 5),
-							labelRaceStage.getText(), grade, hande, String.valueOf(female), condition });
+							labelRaceStage.getText(), grade, hande, String.valueOf(female), condition, raceAge, raceCount });
 
 			rdm.payCash = Integer.parseInt(txtPay.getText());
 			rdm.returnCash = Integer.parseInt(txtReturn.getText());
@@ -441,6 +441,8 @@ public class SampleController {
 
 	private String grade;
 	private String hande;
+	private String raceAge;
+	private String raceCount;
 	private Boolean female;
 	private String condition;
 	private RaceDataManager rdm;
@@ -481,17 +483,27 @@ public class SampleController {
 					hDataArrayList.add(h);
 				}
 			}
-			
+			String[]horse3 = null;
+			String[]horse4 = null;
+			String[]horse5 = null;
+			String[]horse6 = null;
 			hDataArrayList.sort((o1, o2) -> Integer.parseInt(o2.getIndex()) - Integer.parseInt(o1.getIndex()));
-			String[]horse3 = new String[] {hDataArrayList.get(0).getNo(), hDataArrayList.get(1).getNo(), hDataArrayList.get(2).getNo()};
-		
-			String[]horse4 = new String[] {hDataArrayList.get(0).getNo(), hDataArrayList.get(1).getNo(), hDataArrayList.get(2).getNo()
+			if(hDataArrayList.size() > 2) {
+				horse3 = new String[] {hDataArrayList.get(0).getNo(), hDataArrayList.get(1).getNo(), hDataArrayList.get(2).getNo()};
+			}
+			if(hDataArrayList.size() > 3) {
+				horse4 = new String[] {hDataArrayList.get(0).getNo(), hDataArrayList.get(1).getNo(), hDataArrayList.get(2).getNo()
 					,hDataArrayList.get(3).getNo()};
+			}
 		
-			String[]horse5 = new String[] {hDataArrayList.get(0).getNo(), hDataArrayList.get(1).getNo(), hDataArrayList.get(2).getNo()
+			if(hDataArrayList.size() > 4) {
+				horse5 = new String[] {hDataArrayList.get(0).getNo(), hDataArrayList.get(1).getNo(), hDataArrayList.get(2).getNo()
 					,hDataArrayList.get(3).getNo(),hDataArrayList.get(4).getNo()};
-			String[]horse6 = new String[] {hDataArrayList.get(0).getNo(), hDataArrayList.get(1).getNo(), hDataArrayList.get(2).getNo()
+			}
+			if(hDataArrayList.size() > 5) {
+				horse6 = new String[] {hDataArrayList.get(0).getNo(), hDataArrayList.get(1).getNo(), hDataArrayList.get(2).getNo()
 					,hDataArrayList.get(3).getNo(),hDataArrayList.get(4).getNo(),hDataArrayList.get(5).getNo()};
+			}
 			String[] wideArray = wide.get(3).text().replace(",", "").replace("円","").split(" ");
 			String[] wideNoArray = wideNo.get(3).text().split(" ");
 			int horse3int = 0;
@@ -500,21 +512,32 @@ public class SampleController {
 			int horse6int = 0;
 			for (int i =0; i < wideArray.length; i++) {
 				Wide w = new Wide(wideNoArray[i].split("-")[0], wideNoArray[i].split("-")[1], Integer.parseInt(wideArray[i]));
-				if(Arrays.asList(horse3).contains(Util.RankTableMap.get(w.one)) && Arrays.asList(horse3).contains(Util.RankTableMap.get(w.two)) ) {
+				if(horse3 != null && Arrays.asList(horse3).contains(Util.RankTableMap.get(w.one)) && Arrays.asList(horse3).contains(Util.RankTableMap.get(w.two)) ) {
 					horse3int += w.money;
 				}
 				
-				if(Arrays.asList(horse4).contains(Util.RankTableMap.get(w.one)) && Arrays.asList(horse4).contains(Util.RankTableMap.get(w.two)) ) {
+				if(horse4 != null && Arrays.asList(horse4).contains(Util.RankTableMap.get(w.one)) && Arrays.asList(horse4).contains(Util.RankTableMap.get(w.two)) ) {
 					horse4int += w.money;
 				}
 				
-				if(Arrays.asList(horse5).contains(Util.RankTableMap.get(w.one)) && Arrays.asList(horse5).contains(Util.RankTableMap.get(w.two)) ) {
+				if(horse5 != null && Arrays.asList(horse5).contains(Util.RankTableMap.get(w.one)) && Arrays.asList(horse5).contains(Util.RankTableMap.get(w.two)) ) {
 					horse5int += w.money;
 				}
-				if(Arrays.asList(horse6).contains(Util.RankTableMap.get(w.one)) && Arrays.asList(horse6).contains(Util.RankTableMap.get(w.two)) ) {
+				if(horse6 != null && Arrays.asList(horse6).contains(Util.RankTableMap.get(w.one)) && Arrays.asList(horse6).contains(Util.RankTableMap.get(w.two)) ) {
 					horse6int += w.money;
 				}
 			}
+			
+			if(horse4 == null) {
+				horse4int = horse3int;
+			}
+			if(horse5 == null) {
+				horse5int = horse4int;
+			}
+			if(horse6 == null) {
+				horse6int = horse5int;
+			}
+			
 			lblWinWideThree.setText(String.valueOf(horse3int));
 			lblWinWideFour.setText(String.valueOf(horse4int));
 			lblWinWideFive.setText(String.valueOf(horse5int));
@@ -530,6 +553,7 @@ public class SampleController {
 		}
 	
 	}
+	static int loadcnt = 0;
 	String pastRaceTenkai;
 	public void GetURL() {
 
@@ -631,9 +655,12 @@ public class SampleController {
 			textURL.setText(textURL.getText().substring(0, 44) + "/umabashira.html");
 			Document doc = Jsoup.connect(textURL.getText()).get();
 
+			Element age = doc.select(".seirei.std9").get(0);
 			Element rate = doc.select(".seirei.std9").get(1);
 			Elements rateElements = rate.getAllElements();
 			Elements rateSpanElements = rateElements.select("td");
+			Elements ageElements = age.getAllElements();
+			Elements ageSpanElements = ageElements.select("td");
 
 			Elements horseURLElements = doc.select("div[class~=BameiWrap.*] > a");
 			Elements stageElements = doc.select("#topicPath ul li");
@@ -668,7 +695,9 @@ public class SampleController {
 				grade = "新馬";
 			}
 			labelRaceRange.setText(rangeElements.get(1).text().split(" ")[0]);
-
+			raceAge = rangeElements.get(0).text().split(" ")[0];
+			raceCount = rangeElements.get(1).text().split(" ")[1].split("&")[0].replace("頭", "");
+			System.out.println(raceCount + "頭");
 			raceRange = Integer.parseInt(rangeElements.get(1).text().split(" ")[0].substring(1, 5));
 			if (grade == null) {
 				if (rangeElements.get(0).text().contains("オープン")) {
@@ -767,7 +796,8 @@ public class SampleController {
 			arrayResultURL = new TextField[] { txtResultURL, txtResultURL1, txtResultURL2, txtResultURL3, txtResultURL4,
 					txtResultURL5, txtResultURL6, txtResultURL7 };
 
-			SetEventButton();
+			if(loadcnt == 0) {SetEventButton();}
+			loadcnt++;
 
 			txtThisPaddockURL.setText(
 					"https://regist.prc.jp/api/windowopen.aspx?target=race/" + labelRaceDate.getText().substring(0, 4)
@@ -817,6 +847,7 @@ public class SampleController {
 					Horse h = new Horse();
 					double jockeyWeight = 0.0;
 					h.name = horseElements.get(i).text();
+					h.sexAge = ageSpanElements.get(j).select("td").get(0).text().split(" ")[0];
 					if (rateSpanElements.size() != 0 && !rateSpanElements.get(j).text().equals("除外")
 							&& !rateSpanElements.get(j).text().equals("取消")
 							&& !rateSpanElements.get(j).text().isEmpty()) {
@@ -1132,8 +1163,8 @@ public class SampleController {
 							SetTable(h, horseString, strArray[h.number] + h.pastRace, horseConditionString, address, i,
 									"10000", jockeyWeight, cornerShape, grassStart, raceGround, rotationSide,
 									rotationSize, straightDistance, straightSlope, jockey, analysisString);
-							RacePointCheck(horseText[0],h);
-							Thread.sleep(3000);
+							RacePointCheck( strArray[h.number] + h.pastRace,h);
+							Thread.sleep(2000);
 						} else {
 
 							h.pastRace = horseText[0];
@@ -1167,102 +1198,14 @@ public class SampleController {
 			rdb.UseRaceDataBase(
 					new String[] { "updateRace", rdm.RaceName, rdm.RaceURL,
 							labelRaceRange.getText().substring(0, 1), labelRaceRange.getText().substring(1, 5),
-							labelRaceStage.getText(), grade, hande, String.valueOf(female), condition, String.valueOf(newHorse) });
+							labelRaceStage.getText(), grade, hande, String.valueOf(female), condition, String.valueOf(newHorse), raceAge, raceCount  });
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		table.getSelectionModel().selectedItemProperty().addListener((observable, oldVal, newVal) -> {
-
-			String horseAddress = newVal.getAddress();
-			String horseDate = labelRaceDate.getText();
-			try {
-				for (int i = 0; i < arrayPaddockURL.length; i++) {
-					arrayPaddockURL[i].setText("");
-					arrayRaceURL[i].setText("");
-					arrayResultURL[i].setText("");
-				}
-				Document laboDoc = Jsoup.connect(horseAddress).get();
-				Elements roundel = laboDoc.select(".sortobject td");
-				Elements stageel = laboDoc.select(".sortobject a");
-				int cnt = 0;
-				int rowCnt = 0;
-				System.out.println(roundel.size());
-				for (int i = 0; i < stageel.size(); i++) {
-					if (stageel.get(i).attr("href").contains("/db/race/") && cnt * 25 < roundel.size()
-							&& !Util.returnLocalDicExist(roundel.get(cnt * 25 + 1).text(), cnt)
-							&& roundel.get(cnt * 25 + 1).text().split("回").length > 1
-							&& roundel.get(cnt * 25 + 1).text().split("回")[1].length() > 1 && Util.returnDicExist(
-									roundel.get(cnt * 25 + 1).text().split("回")[1].substring(0, 2), cnt)) {
-
-						if (Util.returnDateCompare(horseDate.replace("/", ""),
-								stageel.get(i).attr("href").split("/")[3].substring(0, 8))) {
-							String dateText = stageel.get(i).attr("href").split("/")[3];
-							String dayText = "0";
-							if (roundel.get(cnt * 25 + 1).text().length() == 6
-									&& Util.isNumber(roundel.get(cnt * 25 + 1).text().substring(4, 6))) {
-								dayText = Util.raceURL.get(roundel.get(cnt * 25 + 1).text().substring(4, 6));
-							} else {
-								dayText = Util.raceURL.get(roundel.get(cnt * 25 + 1).text().substring(4, 5));
-							}
-							arrayRaceLabel[rowCnt].setText(roundel.get(cnt * 25 + 12).text());
-							arrayPaddockURL[rowCnt].setText("https://regist.prc.jp/api/windowopen.aspx?target=race/"
-									+ dateText.substring(0, 4) + "/" + dateText.substring(0, 8) + "/"
-									+ dateText.substring(2, 4) + Util.raceURL.get(dateText.substring(8, 10))
-									+ Util.raceURL.get(roundel.get(cnt * 25 + 1).text().split("回")[0]) + dayText
-									+ Util.raceURL.get(dateText.substring(10, 12)) + "_p&quality=1");
-							arrayRaceURL[rowCnt].setText("https://regist.prc.jp/api/windowopen.aspx?target=race/"
-									+ dateText.substring(0, 4) + "/" + dateText.substring(0, 8) + "/"
-									+ dateText.substring(2, 4) + Util.raceURL.get(dateText.substring(8, 10))
-									+ Util.raceURL.get(roundel.get(cnt * 25 + 1).text().split("回")[0]) + dayText
-									+ Util.raceURL.get(dateText.substring(10, 12)) + "&quality=1");
-							arrayResultURL[rowCnt].setText(
-									"https://www.keibalab.jp" + stageel.get(i).attr("href") + "umabashira.html");
-
-							rowCnt++;
-							if (rowCnt == arrayRaceURL.length) {
-								break;
-							}
-
-						}
-						cnt++;
-					} else if (cnt * 25 < roundel.size()
-							&& Util.returnLocalDicExist(roundel.get(cnt * 25 + 1).text(), cnt)) {
-						if (i + 1 < stageel.size() && stageel.get(i).attr("href").split("/")[2].contains("race")
-								&& Util.returnDateCompare(horseDate.replace("/", ""),
-										stageel.get(i).attr("href").split("/")[3].substring(0, 8))) {
-							boolean flag = true;
-							while (flag) {
-								if (i + 1 < stageel.size()
-										&& stageel.get(i).attr("href").split("/")[2].contains("race")) {
-
-									cnt++;
-
-									if (Util.returnDateCompare(horseDate.replace("/", ""),
-											stageel.get(i).attr("href").split("/")[3].substring(0, 8))) {
-										i--;
-										break;
-									}
-
-								} else if (i + 1 == stageel.size()) {
-									i--;
-									break;
-								}
-								i++;
-							}
-						} else {
-							cnt++;
-						}
-					}
-				}
-
-			} catch (IOException e) {
-				// TODO 自動生成された catch ブロック
-				e.printStackTrace();
-			}
-		});
 		
+		RaceDB rdb = new RaceDB();
 		Comparator<HorseData> comparator = Comparator.<HorseData, String>comparing(model -> model.getNo());
 		FXCollections.sort(table.getItems(), comparator);
 
@@ -1405,7 +1348,7 @@ public class SampleController {
 		}
 		HorseData horseData = new HorseData(strArray[h.number], h.name, analysis, horseString,
 				pastRaceCondition, raceRange, labelRaceRange.getText(), address, raceLevel, jockeyWeight, cornerShape,
-				grassStart, raceGround, rotationSide, rotationSize, straightDistance, straightSlope, jockey);
+				grassStart, raceGround, rotationSide, rotationSize, straightDistance, straightSlope, jockey, condition);
 		table.getItems().add(horseData);
 		horseDataArray[index] = horseData;
 		horseArray[index] = h;
@@ -1546,7 +1489,7 @@ public class SampleController {
 			text += "やや不利";
 		} else if (s.contains(("S")) && h.position > 12) {
 			text += "不利";
-		} else if (s.contains(("S")) && h.position > 6) {
+		} else if (s.contains(("S")) && h.position > 8) {
 			text += "やや不利";
 		} else if (s.contains(("S")) && h.position < 5) {
 			text += "有利";
@@ -1563,6 +1506,7 @@ public class SampleController {
 		String[] array = s.split(" ");
 
 		h.win = "";
+		
 		if (array[7].equals("1")) {
 			text += "勝利";
 			h.win = "勝";
@@ -1598,8 +1542,10 @@ public class SampleController {
 
 			if ((newTime < maxTime && newCondition.contains("良"))
 					|| (newCondition.contains("良") && !oldCondition.contains("良"))
-					|| (newCondition.contains("稍") && !oldCondition.contains("良"))
-					|| (newCondition.contains("重") && !oldCondition.contains("良") && !oldCondition.contains("稍"))) {
+					|| (newCondition.contains("稍") && !oldCondition.contains("良")&& !oldCondition.contains("稍"))
+					|| (newCondition.contains("重") && !oldCondition.contains("良") && !oldCondition.contains("稍")&& !oldCondition.contains("重"))
+				|| (newTime < maxTime && newCondition.contains("稍") && !oldCondition.contains("良"))
+				|| (newTime < maxTime && newCondition.contains("重") && !oldCondition.contains("良") && !oldCondition.contains("稍"))) {
 				return true;
 			}
 		}
@@ -1609,82 +1555,82 @@ public class SampleController {
 	private void SetTextField(Horse h) {
 		if (h.frame == 1 || h.frame == 2) {
 			if (h.position == -1) {
-				frame1.insertText(0, "逃" + h.win + h.number + h.name + h.rate + "\r\n");
+				frame1.insertText(0, h.number +h.sexAge + "逃" + h.win +  h.name + h.rate + "\r\n");
 
 			} else if (h.position < 5) {
-				frame1.insertText(0, h.win +h.number + h.name + h.rate + "\r\n");
+				frame1.insertText(0, h.number +h.sexAge +h.win + h.name + h.rate + "\r\n");
 
 			} else if (h.position < 9) {
-				frame5.insertText(0, h.win +h.number + h.name + h.rate + "\r\n");
+				frame5.insertText(0, h.number +h.sexAge +h.win+ h.name + h.rate + "\r\n");
 
 			} else if (h.position < 13) {
-				frame9.insertText(0, h.win +h.number + h.name + h.rate + "\r\n");
+				frame9.insertText(0, h.number +h.sexAge +h.win + h.name + h.rate + "\r\n");
 
 			} else if (h.position < 19) {
-				frame13.insertText(0,h.win + h.number + h.name + h.rate + "\r\n");
+				frame13.insertText(0,h.number +h.sexAge +h.win + h.name + h.rate + "\r\n");
 
 			} else {
-				frame13.insertText(0, h.win +h.number + h.name + "?" + h.rate + "\r\n");
+				frame13.insertText(0,h.number +h.sexAge + h.win + h.name + "?" + h.rate + "\r\n");
 				newHorse = true;
 			}
 
 		} else if (h.frame == 3 || h.frame == 4) {
 			if (h.position == -1) {
-				frame2.insertText(0, "逃" + h.win +h.number + h.name + h.rate + "\r\n");
+				frame2.insertText(0,h.number +h.sexAge + "逃" + h.win + h.name + h.rate + "\r\n");
 
 			} else if (h.position < 5) {
-				frame2.insertText(0, h.win +h.number + h.name + h.rate + "\r\n");
+				frame2.insertText(0,h.number +h.sexAge + h.win + h.name + h.rate + "\r\n");
 
 			} else if (h.position < 9) {
-				frame6.insertText(0, h.win +h.number + h.name + h.rate + "\r\n");
+				frame6.insertText(0,h.number + h.sexAge +h.win  + h.name + h.rate + "\r\n");
 
 			} else if (h.position < 13) {
-				frame10.insertText(0, h.win +h.number + h.name + h.rate + "\r\n");
+				frame10.insertText(0, h.number +h.sexAge +h.win  + h.name + h.rate + "\r\n");
 
 			} else if (h.position < 19) {
-				frame14.insertText(0, h.win +h.number + h.name + h.rate + "\r\n");
+				frame14.insertText(0,h.number +h.sexAge + h.win + h.name + h.rate + "\r\n");
 			} else {
-				frame14.insertText(0, h.win +h.number + h.name + "?" + h.rate + "\r\n");
+				frame14.insertText(0, h.number +h.sexAge +h.win + h.name + "?" + h.rate + "\r\n");
 				newHorse = true;
 			}
 
 		} else if (h.frame == 5 || h.frame == 6) {
 			if (h.position == -1) {
-				frame3.insertText(0, "逃" + h.win +h.number + h.name + h.rate + "\r\n");
+				frame3.insertText(0, h.number +h.sexAge +"逃" + h.win + h.name + h.rate + "\r\n");
 
 			} else if (h.position < 5) {
-				frame3.insertText(0, h.win +h.number + h.name + h.rate + "\r\n");
+				frame3.insertText(0, h.number +h.sexAge +h.win  + h.name + h.rate + "\r\n");
 
 			} else if (h.position < 9) {
-				frame7.insertText(0, h.win +h.number + h.name + h.rate + "\r\n");
+				frame7.insertText(0, h.number +h.sexAge +h.win + h.name + h.rate + "\r\n");
 
 			} else if (h.position < 13) {
-				frame11.insertText(0, h.win +h.number + h.name + h.rate + "\r\n");
+				frame11.insertText(0, h.number +h.sexAge +h.win + h.name + h.rate + "\r\n");
 
 			} else if (h.position < 19) {
-				frame15.insertText(0, h.win +h.number + h.name + h.rate + "\r\n");
+				frame15.insertText(0,h.number +h.sexAge + h.win + h.name + h.rate + "\r\n");
 			} else {
-				frame15.insertText(0, h.win +h.number + h.name + "?" + h.rate + "\r\n");
+				frame15.insertText(0, h.number +h.sexAge +h.win  + h.name + "?" + h.rate + "\r\n");
 				newHorse = true;
 			}
 
 		} else if (h.frame == 7 || h.frame == 8) {
 			if (h.position == -1) {
-				frame4.insertText(0, "逃" +h.win + h.number + h.name + h.rate + "\r\n");
+				frame4.insertText(0, h.number +h.sexAge +"逃" +h.win  + h.name + h.rate + "\r\n");
 
 			} else if (h.position < 5) {
-				frame4.insertText(0, h.win +h.number + h.name + h.rate + "\r\n");
+				frame4.insertText(0, h.number +h.sexAge +h.win + h.name + h.rate + "\r\n");
 
 			} else if (h.position < 9) {
-				frame8.insertText(0, h.win +h.number + h.name + h.rate + "\r\n");
+				frame8.insertText(0, h.number +h.sexAge +h.win+ h.name + h.rate + "\r\n");
 
 			} else if (h.position < 13) {
-				frame12.insertText(0,h.win + h.number + h.name + h.rate + "\r\n");
+				frame12.insertText(0,h.number +h.sexAge +h.win + h.name + h.rate + "\r\n");
 
 			} else if (h.position < 19) {
-				frame16.insertText(0, h.win +h.number + h.name + h.rate + "\r\n");
+				frame16.insertText(0,h.number +h.sexAge + h.win + h.name + h.rate + "\r\n");
 			} else {
-				frame16.insertText(0, h.win +h.number + h.name + "?" + h.rate + "\r\n");
+				frame16.insertText(0,h.number +h.sexAge + h.win + h.name + "?" + h.rate + "\r\n");
 				newHorse = true;
 			}
 		}
@@ -1692,6 +1638,95 @@ public class SampleController {
 	}
 
 	private void SetEventButton() {
+		table.getSelectionModel().selectedItemProperty().addListener((observable, oldVal, newVal) -> {
+
+			String horseAddress = newVal.getAddress();
+			String horseDate = labelRaceDate.getText();
+			try {
+				for (int i = 0; i < arrayPaddockURL.length; i++) {
+					arrayPaddockURL[i].setText("");
+					arrayRaceURL[i].setText("");
+					arrayResultURL[i].setText("");
+				}
+				Document laboDoc = Jsoup.connect(horseAddress).get();
+				Elements roundel = laboDoc.select(".sortobject td");
+				Elements stageel = laboDoc.select(".sortobject a");
+				int cnt = 0;
+				int rowCnt = 0;
+				System.out.println(roundel.size());
+				for (int i = 0; i < stageel.size(); i++) {
+					if (stageel.get(i).attr("href").contains("/db/race/") && cnt * 25 < roundel.size()
+							&& !Util.returnLocalDicExist(roundel.get(cnt * 25 + 1).text(), cnt)
+							&& roundel.get(cnt * 25 + 1).text().split("回").length > 1
+							&& roundel.get(cnt * 25 + 1).text().split("回")[1].length() > 1 && Util.returnDicExist(
+									roundel.get(cnt * 25 + 1).text().split("回")[1].substring(0, 2), cnt)) {
+
+						if (Util.returnDateCompare(horseDate.replace("/", ""),
+								stageel.get(i).attr("href").split("/")[3].substring(0, 8))) {
+							String dateText = stageel.get(i).attr("href").split("/")[3];
+							String dayText = "0";
+							if (roundel.get(cnt * 25 + 1).text().length() == 6
+									&& Util.isNumber(roundel.get(cnt * 25 + 1).text().substring(4, 6))) {
+								dayText = Util.raceURL.get(roundel.get(cnt * 25 + 1).text().substring(4, 6));
+							} else {
+								dayText = Util.raceURL.get(roundel.get(cnt * 25 + 1).text().substring(4, 5));
+							}
+							arrayRaceLabel[rowCnt].setText(roundel.get(cnt * 25 + 12).text());
+							arrayPaddockURL[rowCnt].setText("https://regist.prc.jp/api/windowopen.aspx?target=race/"
+									+ dateText.substring(0, 4) + "/" + dateText.substring(0, 8) + "/"
+									+ dateText.substring(2, 4) + Util.raceURL.get(dateText.substring(8, 10))
+									+ Util.raceURL.get(roundel.get(cnt * 25 + 1).text().split("回")[0]) + dayText
+									+ Util.raceURL.get(dateText.substring(10, 12)) + "_p&quality=1");
+							arrayRaceURL[rowCnt].setText("https://regist.prc.jp/api/windowopen.aspx?target=race/"
+									+ dateText.substring(0, 4) + "/" + dateText.substring(0, 8) + "/"
+									+ dateText.substring(2, 4) + Util.raceURL.get(dateText.substring(8, 10))
+									+ Util.raceURL.get(roundel.get(cnt * 25 + 1).text().split("回")[0]) + dayText
+									+ Util.raceURL.get(dateText.substring(10, 12)) + "&quality=1");
+							arrayResultURL[rowCnt].setText(
+									"https://www.keibalab.jp" + stageel.get(i).attr("href") + "umabashira.html");
+
+							rowCnt++;
+							if (rowCnt == arrayRaceURL.length) {
+								break;
+							}
+
+						}
+						cnt++;
+					} else if (cnt * 25 < roundel.size()
+							&& Util.returnLocalDicExist(roundel.get(cnt * 25 + 1).text(), cnt)) {
+						if (i + 1 < stageel.size() && stageel.get(i).attr("href").split("/")[2].contains("race")
+								&& Util.returnDateCompare(horseDate.replace("/", ""),
+										stageel.get(i).attr("href").split("/")[3].substring(0, 8))) {
+							boolean flag = true;
+							while (flag) {
+								if (i + 1 < stageel.size()
+										&& stageel.get(i).attr("href").split("/")[2].contains("race")) {
+
+									cnt++;
+
+									if (Util.returnDateCompare(horseDate.replace("/", ""),
+											stageel.get(i).attr("href").split("/")[3].substring(0, 8))) {
+										i--;
+										break;
+									}
+
+								} else if (i + 1 == stageel.size()) {
+									i--;
+									break;
+								}
+								i++;
+							}
+						} else {
+							cnt++;
+						}
+					}
+				}
+
+			} catch (IOException e) {
+				// TODO 自動生成された catch ブロック
+				e.printStackTrace();
+			}
+		});
 		arrayPaddockButton[0].setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 

@@ -77,10 +77,11 @@ public class HorseData
 	private String beforeJockeyTrait;
 	private String nowJockeyTrait;
 	private int actualyTime;
+	private String condition;
 	{this.index = "0";}
 	  public HorseData(String no, String name, String analysis, List<String> horseString, List<String>pastRaceCondition, int raceRange, String maxRaceField, String address,
 			  String raceLevel, Double thisWeight, String cornerShape, String grassStart,String  raceGround, String rotationSide, String rotationSize, String straightDistance, 
-			  String straightSlope, String thisRaceJockey) {
+			  String straightSlope, String thisRaceJockey, String condition) {
 		  	 
 		  	 this.raceLevel = raceLevel;
 			 this.no = no;
@@ -155,7 +156,7 @@ public class HorseData
 			 this.courseBeforeRace = RaceCourseUtil.ReturnRaceCourse(this.raceStage,this.range,this.raceName);
 			 calcIndex(raceRange, maxRaceField);
 			 this.pastMaxSpeedDifference = pastRaceCondition.get(11);
-			 System.out.println(this.name + this.last);
+			 this.condition = condition;
 	  }
 	  public HorseData(String raceLevel) {
 
@@ -227,21 +228,23 @@ public class HorseData
 //		{
 //			base = -100;
 //		}
+		
 		int rangeDiff = 0;
 		if(raceRange > rangeOrigin) {
 			rangeDiff = (raceRange - rangeOrigin);
-			if(rangeDiff > 600) {
-				rangeDiff = 600;
+			if(rangeDiff > 2000) {
+				rangeDiff = 2000;
 			}
-			System.out.println("補正短" + rangeDiff);
 		}
 		else if(raceRange < rangeOrigin)
 		{
 			rangeDiff = (int)((raceRange - rangeOrigin) * 13 / 10);
-			if(rangeDiff < -600) {
-				rangeDiff = -600;
+			if(rangeDiff < -1300 && raceRange > 1600) {
+				rangeDiff = -1300;
 			}
-			System.out.println("補正長" + rangeDiff);
+			else if(rangeDiff < -800 && raceRange <= 1600) {
+				rangeDiff = -800;
+			}
 		}
 		else {
 			rangeDiff = -100;
@@ -278,12 +281,22 @@ public class HorseData
 		
 		if(this.analysis.contains("勝利")) {
 
-			score -= 500 * gradeDiff;
+			score -= 800* gradeDiff;	
+			score -= Double.parseDouble(this.behind) * 180000 / ((double)rangeOrigin * 100 /  raceRange) / gradeDiff * 1600 / raceRange ;
+
+			double totalscore = Double.parseDouble(this.behind) * 180000 / ((double)rangeOrigin * 100 /  raceRange) / gradeDiff * 1600 / raceRange ;
+			System.out.println(this.name + "score" + totalscore);
 		}
 		else 
 		{
 			score -= 500 * gradeDiff;
-			score += Double.parseDouble(this.behind) * 60000 / ((double)rangeOrigin * 100 /  raceRange) / gradeDiff * 1600 / raceRange ;
+			Double differance = Double.parseDouble(this.behind);
+			double totalscore = differance * 60000 / ((double)rangeOrigin * 100 /  raceRange) / gradeDiff * 1600 / raceRange;
+			
+			if(totalscore > 800) {
+				totalscore = 800;
+			}
+			score += totalscore;
 		}
 
 		timeHosei = 1.0; 
@@ -295,27 +308,48 @@ public class HorseData
 		{
 			grassHosei(this.stage, rangeOrigin, raceRate);
 		}
-		System.out.println(rangeDiff);
 		score += ((timeOrigin) * timeHosei) * raceRate * 1600 / raceRange  + rangeDiff * timeHosei;
 
 		if(this.courseBeforeRace.excludeLast3furlong == 0.0) {
-			score += ((this.first3furlong - this.courseBeforeRace.first3furlong) +
-					(this.last3furlong - this.courseBeforeRace.last3furlong))* 500;
+			Double firstDifference = this.first3furlong - this.courseBeforeRace.first3furlong;
+			Double finalDifferecne = this.last3furlong - this.courseBeforeRace.last3furlong;
+			if(firstDifference > 1.5) {
+				firstDifference = 1.5;
+			}
+			if(finalDifferecne > 1.5) {
+				finalDifferecne = 1.6;
+			}
 
-			System.out.println("短" + ((this.first3furlong - this.courseBeforeRace.first3furlong) +
-					(this.last3furlong - this.courseBeforeRace.last3furlong))* 500);
+			if(rangeOrigin > raceRange && finalDifferecne > 0.8) 
+			{
+				finalDifferecne = 0.8;
+				
+			}
+			score += (firstDifference + finalDifferecne)* 500;
+
 		}
 		else {
-			score += ((this.excludeLast3furlong - this.courseBeforeRace.excludeLast3furlong) +
-					(this.last3furlong - this.courseBeforeRace.last3furlong))* 500;
-			System.out.println("長" +  ((this.excludeLast3furlong - this.courseBeforeRace.excludeLast3furlong) +
-					(this.last3furlong - this.courseBeforeRace.last3furlong))* 500);
+			Double firstDifference = this.excludeLast3furlong - this.courseBeforeRace.excludeLast3furlong;
+			Double finalDifferecne = this.last3furlong - this.courseBeforeRace.last3furlong;
+			if(firstDifference > 1.5) {
+				firstDifference = 1.5;
+			}
+			if(finalDifferecne > 1.5) {
+				finalDifferecne = 1.5;
+			}
+			if(rangeOrigin > raceRange && finalDifferecne > 0.8) 
+			{
+				finalDifferecne = 0.8;
+				System.out.println(this.name);
+				
+			}
+			score += (firstDifference + finalDifferecne )* 500;
 					
 		}
 		
-		int jockeyRate = 20;
-		if(raceRange < 1600) {
-			jockeyRate = 30;
+		int jockeyRate = 30;
+		if(raceRange < 1500) {
+			jockeyRate = 50;
 		}
 		score -= (Double.parseDouble(this.jockeyWeight) * jockeyRate);
 		score += (this.thisRaceJockeyWeight * jockeyRate);
@@ -331,7 +365,7 @@ public class HorseData
 			}
 			
 			score += (Integer.parseInt(this.pastMaxSpeed.substring(0,1)) * 600 +  Integer.parseInt(this.pastMaxSpeed.substring(2,4)) * 10 + Integer.parseInt(this.pastMaxSpeed.substring(5,6))) * timeHosei * raceRate * 1600 / raceRange;
-			if(this.pastMaxSpeedDifference != null) {score += Double.parseDouble(this.pastMaxSpeedDifference) * 30 * raceRate;}
+			//if(this.pastMaxSpeedDifference != null) {score += Double.parseDouble(this.pastMaxSpeedDifference) * 30 * raceRate;}
 		}
 		else {
 			if(range.contains("ダ")) {
@@ -358,7 +392,7 @@ public class HorseData
 			
 		}
 		score += pastRaceScore;
-		int grade = 1;
+		int grade = 2;
 		if(gradeDiff >= 1.20) {
 			grade = 3;
 		}
@@ -366,15 +400,14 @@ public class HorseData
 			grade = 2;
 		}
 		
-		int hosei = (Integer.parseInt(this.pastRace.substring(5,9)) - Integer.parseInt(this.pastRace.substring(0,4))) * raceRange / 1600;
+		int hosei = (Integer.parseInt(this.pastRace.substring(5,9)) - Integer.parseInt(this.pastRace.substring(0,4)));
 		if(hosei > 500) {
 			hosei = 500;
 		}
-		hosei -= (Integer.parseInt(this.pastRace.substring(0,4)) -6000)* grade * raceRange / 1600;
+		hosei -= (Integer.parseInt(this.pastRace.substring(0,4)) -6000)* grade;
 		if(hosei < -1000 * grade) {
 			hosei = -1000 * grade;
 		}
-		System.out.println(this.name+hosei);
 		score += hosei;
 		//CalcCourseAptitude(this.cornerShape.split("-"));
 		//CalcCourseAptitude(this.grassStart.split("-"));
@@ -391,7 +424,7 @@ public class HorseData
 
 		int percentage =  (int)(Double.parseDouble(this.goodRace)) * 10;
 		if(gradeDiff == 1.0) {
-			percentage /= 2;
+			//percentage /= 2;
 		}
 		score -= percentage;
 		score = 100000 - score;
@@ -400,6 +433,78 @@ public class HorseData
 	public static String removeNumeric(String str) {
         return str.replaceAll("[\\d]", "");
     }
+	
+	private void calcCondition() {
+		if(range.contains("芝") && condition.contains("不") && this.grassBadRaceResult.contains("①")) {
+			score -= 300;
+		}
+
+		else if(range.contains("芝") && condition.contains("不") && this.grassBadRaceResult.contains("②")) {
+			score -= 200;
+		}
+		else if(range.contains("芝") && condition.contains("不") && this.grassBadRaceResult.contains("③")) {
+			score -= 100;
+		}
+		
+		if(range.contains("芝") && condition.contains("重") && this.grassHeavyRaceResult.contains("①")) {
+			score -= 300;
+		}
+
+		else if(range.contains("芝") && condition.contains("重") && this.grassHeavyRaceResult.contains("②")) {
+			score -= 200;
+		}
+		else if(range.contains("芝") && condition.contains("重") && this.grassHeavyRaceResult.contains("③")) {
+			score -= 100;
+		}
+		
+
+		if(range.contains("芝") && condition.contains("稍") && this.grassBitHeavyRaceResult.contains("①")) {
+			score -= 300;
+		}
+
+		else if(range.contains("芝") && condition.contains("稍") && this.grassBitHeavyRaceResult.contains("②")) {
+			score -= 200;
+		}
+		else if(range.contains("芝") && condition.contains("稍") && this.grassBitHeavyRaceResult.contains("③")) {
+			score -= 100;
+		}
+		
+		if(range.contains("ダ") && condition.contains("不") && this.dirtBadRaceResult.contains("①")) {
+			score -= 300;
+		}
+
+		else if(range.contains("ダ") && condition.contains("不") && this.dirtBadRaceResult.contains("②")) {
+			score -= 200;
+		}
+		else if(range.contains("ダ") && condition.contains("不") && this.dirtBadRaceResult.contains("③")) {
+			score -= 100;
+		}
+		
+		if(range.contains("ダ") && condition.contains("重") && this.dirtHeavyRaceResult.contains("①")) {
+			score -= 300;
+		}
+
+		else if(range.contains("ダ") && condition.contains("重") && this.dirtHeavyRaceResult.contains("②")) {
+			score -= 200;
+		}
+		else if(range.contains("ダ") && condition.contains("重") && this.dirtHeavyRaceResult.contains("③")) {
+			score -= 100;
+		}
+		
+
+		if(range.contains("ダ") && condition.contains("稍") && this.dirtBitHeavyRaceResult.contains("①")) {
+			score -= 300;
+		}
+
+		else if(range.contains("ダ") && condition.contains("稍") && this.dirtBitHeavyRaceResult.contains("②")) {
+			score -= 200;
+		}
+		else if(range.contains("ダ") && condition.contains("稍") && this.dirtBitHeavyRaceResult.contains("③")) {
+			score -= 100;
+		}
+		
+	}
+	
 	private void dirtHosei(String stage, int raceRange, int coefficient) {
 
 		timeHosei = 0.945;

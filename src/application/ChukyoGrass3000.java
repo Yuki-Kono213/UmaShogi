@@ -8,7 +8,7 @@ public class ChukyoGrass3000 extends RaceCourse {
 		rotationSize = "";
 		cornerShape = "O字";
 		grassStart = "";
-		range = 2200;
+		range = 3000;
 		raceGround = "芝";
 		excludeLast3furlong = 98.7;
 		first3furlong = 36.0;

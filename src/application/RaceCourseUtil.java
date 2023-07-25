@@ -321,6 +321,10 @@ public class RaceCourseUtil
 					return new ChukyoGrass2200();
 					
 				}
+				else if(range.contains("3000")) {
+					return new ChukyoGrass3000();
+					
+				}
 			}
 			else if(range.contains("ダ")) 
 			{

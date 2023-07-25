@@ -10,6 +10,7 @@ public class Horse
 	public String pastRace;
 	public String pastRaceCondition;
 	public String win;
+	public String sexAge;
 	
 	
 	
