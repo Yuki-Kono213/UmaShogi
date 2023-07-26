@@ -317,7 +317,7 @@ public class HorseData
 				firstDifference = 1.5;
 			}
 			if(finalDifferecne > 1.5) {
-				finalDifferecne = 1.6;
+				finalDifferecne = 1.5;
 			}
 
 			if(rangeOrigin > raceRange && finalDifferecne > 0.8) 

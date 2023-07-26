@@ -461,14 +461,16 @@ public class SampleController {
 			textURL.setText(textURL.getText(0,42)+ Util.raceKeibaLaboURL.get(String.valueOf(i)) + "/");
 			newHorse = false;
 			GetURL();
-			try {
-				raceDate = LocalDate.parse(labelRaceDate.getText(), DateTimeFormatter.ofPattern("yyyy/[]M/[]d"));
-			} catch (Exception e) {
-				// TODO 自動生成された catch ブロック
-				e.printStackTrace();
+			if(!labelRaceName.getText().contains("障害")) {
+				try {
+					raceDate = LocalDate.parse(labelRaceDate.getText(), DateTimeFormatter.ofPattern("yyyy/[]M/[]d"));
+					Thread.sleep(1000);
+				} catch (Exception e) {
+					// TODO 自動生成された catch ブロック
+					e.printStackTrace();
+				}
 			}
-			System.out.println(raceDate);
-			if(raceDate.isBefore(dateObj)) {GetRaceMoney();}
+			if(raceDate != null && raceDate.isBefore(dateObj)) {GetRaceMoney();}
 			
 		}
 	}
