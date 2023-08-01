@@ -1,23 +1,16 @@
 package application;
 
 import java.io.IOException;
-import java.security.PublicKey;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 
-import javax.print.attribute.standard.PrinterStateReason;
-import javax.print.event.PrintJobAttributeEvent;
-
-import org.h2.mvstore.type.StringDataType;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -556,6 +549,8 @@ public class SampleController {
 	
 	}
 	static int loadcnt = 0;
+	public static LocalDate matchDate;
+	public static RaceCourse rc;
 	String pastRaceTenkai;
 	public void GetURL() {
 
@@ -675,6 +670,7 @@ public class SampleController {
 			Elements conditionElements = doc.select(".raceaboutbox.clearfix li");
 			Elements heavyElements = doc.select(".kinryou.std9 td");
 			condition = conditionElements.get(1).text();
+			System.out.println("コンディション" + condition);
 			labelRaceName.setText(doc.select(".raceTitle.fL").get(0).text());
 			grade = null;
 			if (labelRaceName.getText().contains("ＧⅠ")) {
@@ -819,7 +815,7 @@ public class SampleController {
 			int j = 0;
 			horseDataArray = new HorseData[horseElements.size() / 2];
 			horseArray = new Horse[horseElements.size() / 2];
-			RaceCourse rc = RaceCourseUtil.ReturnRaceCourse(labelRaceStage.getText(), labelRaceRange.getText(),
+			rc = RaceCourseUtil.ReturnRaceCourse(labelRaceStage.getText(), labelRaceRange.getText(),
 					doc.select(".raceTitle.fL").get(0).text());
 			straightSlope.setText("直線傾斜" + rc.straightSlope);
 			straightDistance.setText("直線長さ" + rc.straightDistance);
@@ -891,7 +887,8 @@ public class SampleController {
 					horseList.add(h);
 
 					try {
-
+						matchDate = LocalDate
+						.parse(labelRaceDate.getText(), DateTimeFormatter.ofPattern("yyyy/[]M/[]d"));
 						HorseDB hdb = new HorseDB();
 						hdb.create();
 						String[] horseText = hdb.returnPastRace(h.name, raceID);
