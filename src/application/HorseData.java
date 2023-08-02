@@ -299,8 +299,8 @@ public class HorseData
 			Double differance = Double.parseDouble(this.behind);
 			double totalscore = differance * 60000 / ((double)rangeOrigin * 100 /  raceRange) / gradeDiff * 1600 / raceRange;
 			
-			if(totalscore > 800) {
-				totalscore = 800;
+			if(totalscore > 1000) {
+				totalscore = 1000;
 			}
 			score += totalscore;
 		}
@@ -365,9 +365,34 @@ public class HorseData
 				if(!this.pastMaxSpeedLast.equals("一年未走")) {
 					RaceCourse rc = RaceCourseUtil.ReturnRaceCourse(this.pastMaxSpeed, range +  String.valueOf(raceRange), "");
 					Double pastFinalTime = Double.parseDouble(this.pastMaxSpeedLast) - rc.last3furlong;
+					if(maxRaceField.contains("芝")) {
+
+						if(this.pastMaxSpeed.contains("稍")) {
+							pastFinalTime -= 0.3;
+						}
+						else if(this.pastMaxSpeed.contains("重")) {
+							pastFinalTime -= 0.6;
+						}
+						else if(this.pastMaxSpeed.contains("不")) {
+							pastFinalTime -= 0.9;
+						}
+					}
+					else if(maxRaceField.contains("ダ")) {
+
+						if(this.pastMaxSpeed.contains("稍")) {
+							pastFinalTime += 0.3;
+						}
+						else if(this.pastMaxSpeed.contains("重")) {
+							pastFinalTime += 0.6;
+						}
+						else if(this.pastMaxSpeed.contains("不")) {
+							pastFinalTime += 0.9;
+						}
+					}
 					if( pastFinalTime  > (this.last3furlong - this.courseBeforeRace.last3furlong)) {
 						pastFinalTime = this.last3furlong - this.courseBeforeRace.last3furlong;
 					}
+					
 					finalDifference += (pastFinalTime);
 				}
 				else {
@@ -415,7 +440,32 @@ public class HorseData
 			if(this.courseThisRace.textString.contains("：差し") || this.courseThisRace.textString.contains("・差し") ) {
 				if(!this.pastMaxSpeedLast.equals("一年未走")) {
 					RaceCourse rc = RaceCourseUtil.ReturnRaceCourse(this.pastMaxSpeed, range +  String.valueOf(raceRange), "");
+
 					Double pastFinalTime = Double.parseDouble(this.pastMaxSpeedLast) - rc.last3furlong;
+					if(maxRaceField.contains("芝")) {
+
+						if(this.pastMaxSpeed.contains("稍")) {
+							pastFinalTime -= 0.3;
+						}
+						else if(this.pastMaxSpeed.contains("重")) {
+							pastFinalTime -= 0.6;
+						}
+						else if(this.pastMaxSpeed.contains("不")) {
+							pastFinalTime -= 0.9;
+						}
+					}
+					else if(maxRaceField.contains("ダ")) {
+
+						if(this.pastMaxSpeed.contains("稍")) {
+							pastFinalTime += 0.3;
+						}
+						else if(this.pastMaxSpeed.contains("重")) {
+							pastFinalTime += 0.6;
+						}
+						else if(this.pastMaxSpeed.contains("不")) {
+							pastFinalTime += 0.9;
+						}
+					}
 					if( pastFinalTime  > (this.last3furlong - this.courseBeforeRace.last3furlong)) {
 						pastFinalTime = this.last3furlong - this.courseBeforeRace.last3furlong;
 					}
