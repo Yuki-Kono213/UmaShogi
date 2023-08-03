@@ -11,6 +11,7 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
+import org.h2.util.SmallLRUCache;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -824,11 +825,11 @@ public class SampleController {
 			rotationSize.setText("回転大小" + rc.rotationSize);
 			grassStart.setText("芝開始" + rc.grassStart);
 			raceGround.setText("芝ダート" + rc.raceGround);
+			System.out.println(rc.textString);
 			try {
 			lblPastReturn.setText(new RaceDB().executeReturnMoney(
 					labelRaceRange.getText(), labelRaceStage.getText() 
 					, labelRaceDate.getText().substring(0,4))+ "%");
-			System.out.println(labelRaceDate.getText().substring(0,4));
 			}
 			catch (Exception e) {
 				lblPastReturn.setText("0%");

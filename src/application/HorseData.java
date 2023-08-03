@@ -313,6 +313,10 @@ public class HorseData
 			jockeyRate = 80;
 			falongRate = 500;
 		}
+		else if(raceRange >= 1500 && raceRange <= 2000) {
+			jockeyRate = 60;
+			falongRate = 400;
+		}
 		if(range.contains("ダ")) {
 			dirtHosei(this.stage, rangeOrigin, raceRate);
 		}
@@ -342,11 +346,19 @@ public class HorseData
 
 
 
-			if(rangeOrigin > raceRange && rangeOrigin - raceRange > 350 && finalDifference > 0.6) 
+			if(rangeOrigin > raceRange && rangeOrigin - raceRange > 650 && finalDifference > 0.4) 
 			{
-				finalDifference = 0.6;
+				finalDifference = 0.4;
 				if(firstDifference < -1.2) {
 					firstDifference = -1.2;
+				}
+				
+			}
+			else if(rangeOrigin > raceRange && rangeOrigin - raceRange > 350 && finalDifference > 0.6) 
+			{
+				finalDifference = 0.6;
+				if(firstDifference < -1.4) {
+					firstDifference = -1.4;
 				}
 				
 			}
@@ -419,11 +431,19 @@ public class HorseData
 			}
 
 
-			if(rangeOrigin > raceRange && rangeOrigin - raceRange > 350 && finalDifference > 0.6) 
+			if(rangeOrigin > raceRange && rangeOrigin - raceRange > 650 && finalDifference > 0.4) 
 			{
-				finalDifference = 0.6;
+				finalDifference = 0.4;
 				if(firstDifference < -1.2) {
 					firstDifference = -1.2;
+				}
+				
+			}
+			else if(rangeOrigin > raceRange && rangeOrigin - raceRange > 350 && finalDifference > 0.6) 
+			{
+				finalDifference = 0.6;
+				if(firstDifference < -1.4) {
+					firstDifference = -1.4;
 				}
 				
 			}
