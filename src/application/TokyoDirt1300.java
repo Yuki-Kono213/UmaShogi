@@ -2,6 +2,7 @@ package application;
 
 public class TokyoDirt1300 extends RaceCourse {
 	{
+		courseName = "東京ダート1300";
 		straightDistance = "長い";
 		straightSlope = "やや坂";
 		rotationSide = "左回り";

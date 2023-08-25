@@ -1,7 +1,12 @@
 package application;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 public class HorseData 
 {
@@ -35,6 +40,7 @@ public class HorseData
 	private String goodRace;
 	private String pastRace;
 	private String address;
+	private Double rate;
 	
 	private String raceLevel;
 
@@ -75,11 +81,12 @@ public class HorseData
 	private String beforeJockeyTrait;
 	private String nowJockeyTrait;
 	private int actualyTime;
+	private int thisRaceFrame;
 	private String condition;
 	{this.index = "0";}
 	  public HorseData(String no, String name, String analysis, List<String> horseString, List<String>pastRaceCondition, int raceRange, String maxRaceField, String address,
 			  String raceLevel, Double thisWeight, String cornerShape, String grassStart,String  raceGround, String rotationSide, String rotationSize, String straightDistance, 
-			  String straightSlope, String thisRaceJockey, String condition) {
+			  String straightSlope, String thisRaceJockey, String condition, int frame, Double rate) {
 		  	 
 		  	 this.raceLevel = raceLevel;
 			 this.no = no;
@@ -154,7 +161,9 @@ public class HorseData
 			 this.courseBeforeRace = RaceCourseUtil.ReturnRaceCourse(this.raceStage,this.range,this.raceName);
 			 this.courseThisRace = SampleController.rc;
 			 this.pastMaxSpeedDifference = pastRaceCondition.get(11);
-			 this.condition = condition;
+//			 this.condition = condition;
+			 this.thisRaceFrame = frame;
+			 this.rate = rate;
 			 calcIndex(raceRange, maxRaceField);
 	  }
 	  public HorseData(String raceLevel) {
@@ -207,8 +216,14 @@ public class HorseData
 		  }
 	  }
 
+		double thisRaceGradeDiff = 1.0;
 	public void calcIndex(int raceRange, String maxRaceField) {
 
+		if(rate == 0.0 && 
+				SampleController.staticRaceDate.isBefore(LocalDate.now()) || SampleController.staticRaceDate.equals(LocalDate.now())) {
+			this.index = "0";
+			return;
+		}
 		int base = 0;
 		score = 0;
 		
@@ -230,9 +245,29 @@ public class HorseData
 		
 		
 		if(SampleController.matchDate.isBefore(LocalDate
-				.parse(this.date, DateTimeFormatter.ofPattern("yyyy/[]M/[]d")).plusMonths(6))) {
+				.parse(this.date, DateTimeFormatter.ofPattern("yyyy/[]M/[]d")).plusMonths(6)) && SampleController.rdm.grass) {
+			score -= 100;
+			
+		}
+		else if(SampleController.matchDate.isBefore(LocalDate
+				.parse(this.date, DateTimeFormatter.ofPattern("yyyy/[]M/[]d")).plusMonths(6)) && !SampleController.rdm.grass) {
 			score -= 200;
 			
+		}
+		
+		if(SampleController.grassStartBool && SampleController.condition.contains("良")) {
+			if(thisRaceFrame > 0 && thisRaceFrame < 3) {
+				score += 200;
+			}
+			else if(thisRaceFrame > 2 && thisRaceFrame < 5) {
+				score += 100;
+			}
+			else if(thisRaceFrame > 4 && thisRaceFrame < 7) {
+				score -= 100;
+			}	
+			else if(thisRaceFrame > 6 && thisRaceFrame < 9) {
+				score -= 200;
+			}
 		}
 		
 		int rangeDiff = 0;
@@ -253,7 +288,36 @@ public class HorseData
 			}
 		}
 		else {
-			rangeDiff = -100;
+			rangeDiff = -200;
+		}
+		thisRaceGradeDiff = 1.0;
+		if(SampleController.grade.contains("1勝"))
+		{
+			thisRaceGradeDiff = 1.05;
+		}
+		else if(SampleController.grade.contains("2勝"))
+		{
+			thisRaceGradeDiff = 1.10;
+		}
+		else if(SampleController.grade.contains("3勝"))
+		{
+			thisRaceGradeDiff = 1.15;
+		}
+		else if(SampleController.grade.contains("オープン") || SampleController.grade.contains("OP") || SampleController.grade.contains("Ｌ") )
+		{
+			thisRaceGradeDiff = 1.2;
+		}
+		else if(SampleController.grade.contains("ＧⅢ") || SampleController.grade.contains("重賞"))
+		{
+			thisRaceGradeDiff = 1.3;
+		}
+		else if(SampleController.grade.contains("ＧⅡ"))
+		{
+			thisRaceGradeDiff = 1.4;
+		}
+		else if(SampleController.grade.contains("ＧⅠ"))
+		{
+			thisRaceGradeDiff = 1.5;
 		}
 		gradeDiff = 1.0;
 		if(this.raceName.contains("1勝"))
@@ -268,7 +332,7 @@ public class HorseData
 		{
 			gradeDiff = 1.15;
 		}
-		else if(this.raceName.contains("OP") || this.raceName.contains("Ｌ") )
+		else if(this.raceName.contains("オープン") ||this.raceName.contains("OP") || this.raceName.contains("Ｌ") )
 		{
 			gradeDiff = 1.2;
 		}
@@ -284,34 +348,39 @@ public class HorseData
 		{
 			gradeDiff = 1.5;
 		}
-		
+
+		score -= 800 * gradeDiff;
 		if(this.analysis.contains("勝利")) {
 
-			score -= 800* gradeDiff;	
-			score -= Double.parseDouble(this.behind) * 180000 / ((double)rangeOrigin * 100 /  raceRange) / gradeDiff * 1600 / raceRange ;
-
 			double totalscore = Double.parseDouble(this.behind) * 180000 / ((double)rangeOrigin * 100 /  raceRange) / gradeDiff * 1600 / raceRange ;
-			System.out.println(this.name + "score" + totalscore);
+			
+			score -= totalscore;
+
+			
 		}
 		else 
 		{
-			score -= 500 * gradeDiff;
 			Double differance = Double.parseDouble(this.behind);
-			double totalscore = differance * 60000 / ((double)rangeOrigin * 100 /  raceRange) / gradeDiff * 1600 / raceRange;
+			double totalscore = differance * 120000 / ((double)rangeOrigin * 100 /  raceRange) / gradeDiff * 1600 / raceRange;
 			
-			if(totalscore > 1000) {
-				totalscore = 1000;
+			if(totalscore > 2000) {
+				totalscore = 2000;
 			}
 			score += totalscore;
 		}
 
 		timeHosei = 1.0; 
 		int raceRate = 10;
+		//int falongRate = 300;
 		int falongRate = 300;
 		int jockeyRate = 50;
 		if(raceRange < 1500) {
 			jockeyRate = 80;
-			falongRate = 500;
+			//falongRate = 500;
+		}
+		else if(raceRange >= 1500 && raceRange <= 2000) {
+			jockeyRate = 60;
+			//falongRate = 400;
 		}
 		if(range.contains("ダ")) {
 			dirtHosei(this.stage, rangeOrigin, raceRate);
@@ -338,66 +407,46 @@ public class HorseData
 				finalDifference = 1.0;
 			}
 
+			if(rangeOrigin > raceRange && rangeOrigin - raceRange > 650 && finalDifference > 0.4) 
+			{
+				finalDifference = 0.4;
+				if(firstDifference + finalDifference <= 0.0) {
 
-
-
-
-			if(rangeOrigin > raceRange && rangeOrigin - raceRange > 350 && finalDifference > 0.6) 
+					firstDifference /= 2;
+				}
+				
+			}
+			else if(rangeOrigin > raceRange && rangeOrigin - raceRange > 350 && finalDifference > 0.6) 
 			{
 				finalDifference = 0.6;
-				if(firstDifference < -1.2) {
-					firstDifference = -1.2;
+				if(firstDifference + finalDifference <= 0.0) {
+
+					firstDifference /= 2;
 				}
 				
 			}
 			else if(rangeOrigin > raceRange && finalDifference > 0.8) 
 			{
 				finalDifference = 0.8;
-				if(firstDifference < -1.6) {
-					firstDifference = -1.6;
+				if(firstDifference + finalDifference <= 0.0) {
+
+					firstDifference /= 2;
 				}
-				
-				
-				
 			}
+			if(this.courseThisRace.textString.contains("：逃げ")) {
 
+				firstDifference += this.first3furlong - this.courseBeforeRace.first3furlong;
+			}
 			if(this.courseThisRace.textString.contains("：差し") || this.courseThisRace.textString.contains("・差し") ) {
-				if(!this.pastMaxSpeedLast.equals("一年未走")) {
-					RaceCourse rc = RaceCourseUtil.ReturnRaceCourse(this.pastMaxSpeed, range +  String.valueOf(raceRange), "");
-					Double pastFinalTime = Double.parseDouble(this.pastMaxSpeedLast) - rc.last3furlong;
-					if(maxRaceField.contains("芝")) {
 
-						if(this.pastMaxSpeed.contains("稍")) {
-							pastFinalTime -= 0.3;
-						}
-						else if(this.pastMaxSpeed.contains("重")) {
-							pastFinalTime -= 0.6;
-						}
-						else if(this.pastMaxSpeed.contains("不")) {
-							pastFinalTime -= 0.9;
-						}
-					}
-					else if(maxRaceField.contains("ダ")) {
-
-						if(this.pastMaxSpeed.contains("稍")) {
-							pastFinalTime += 0.3;
-						}
-						else if(this.pastMaxSpeed.contains("重")) {
-							pastFinalTime += 0.6;
-						}
-						else if(this.pastMaxSpeed.contains("不")) {
-							pastFinalTime += 0.9;
-						}
-					}
-					if( pastFinalTime  > (this.last3furlong - this.courseBeforeRace.last3furlong)) {
-						pastFinalTime = this.last3furlong - this.courseBeforeRace.last3furlong;
-					}
-					
-					finalDifference += (pastFinalTime);
-				}
-				else {
-					finalDifference += (this.last3furlong - this.courseBeforeRace.last3furlong);
-				}
+				finalDifference += calcAgariTime(maxRaceField, range);
+			}
+			if(this.courseThisRace.textString.contains("・追い込み") ) {
+				finalDifference += calcAgariTime(maxRaceField, range);
+			}
+			if((this.courseThisRace.courseName.contains("阪神ダート1200") 
+					) && thisRaceGradeDiff >= 1.10) {
+				finalDifference += calcAgariTime(maxRaceField, range);
 			}
 			score += (firstDifference + finalDifference)* falongRate;
 
@@ -418,72 +467,67 @@ public class HorseData
 				finalDifference = 1.0;
 			}
 
+			if(rangeOrigin > raceRange && rangeOrigin - raceRange > 650 && finalDifference > 0.4) 
+			{
+				finalDifference = 0.4;
+				if(firstDifference + finalDifference <= 0.0) {
 
-			if(rangeOrigin > raceRange && rangeOrigin - raceRange > 350 && finalDifference > 0.6) 
+					firstDifference /= 2;
+				}
+				
+			}
+			else if(rangeOrigin > raceRange && rangeOrigin - raceRange > 350 && finalDifference > 0.6) 
 			{
 				finalDifference = 0.6;
-				if(firstDifference < -1.2) {
-					firstDifference = -1.2;
+				if(firstDifference + finalDifference <= 0.0) {
+
+					firstDifference /= 2;
 				}
 				
 			}
 			else if(rangeOrigin > raceRange && finalDifference > 0.8) 
 			{
 				finalDifference = 0.8;
-				if(firstDifference < -1.6) {
-					firstDifference = -1.6;
+				if(firstDifference + finalDifference <= 0.0) {
+
+					firstDifference /= 2;
 				}
-				
-				
-				
+			}
+			if(this.courseThisRace.textString.contains("：逃げ")) {
+
+				firstDifference += this.first3furlong - this.courseBeforeRace.first3furlong;
 			}
 			if(this.courseThisRace.textString.contains("：差し") || this.courseThisRace.textString.contains("・差し") ) {
-				if(!this.pastMaxSpeedLast.equals("一年未走")) {
-					RaceCourse rc = RaceCourseUtil.ReturnRaceCourse(this.pastMaxSpeed, range +  String.valueOf(raceRange), "");
 
-					Double pastFinalTime = Double.parseDouble(this.pastMaxSpeedLast) - rc.last3furlong;
-					if(maxRaceField.contains("芝")) {
-
-						if(this.pastMaxSpeed.contains("稍")) {
-							pastFinalTime -= 0.3;
-						}
-						else if(this.pastMaxSpeed.contains("重")) {
-							pastFinalTime -= 0.6;
-						}
-						else if(this.pastMaxSpeed.contains("不")) {
-							pastFinalTime -= 0.9;
-						}
-					}
-					else if(maxRaceField.contains("ダ")) {
-
-						if(this.pastMaxSpeed.contains("稍")) {
-							pastFinalTime += 0.3;
-						}
-						else if(this.pastMaxSpeed.contains("重")) {
-							pastFinalTime += 0.6;
-						}
-						else if(this.pastMaxSpeed.contains("不")) {
-							pastFinalTime += 0.9;
-						}
-					}
-					if( pastFinalTime  > (this.last3furlong - this.courseBeforeRace.last3furlong)) {
-						pastFinalTime = this.last3furlong - this.courseBeforeRace.last3furlong;
-					}
-					finalDifference += (pastFinalTime);
-				}
-				else {
-					finalDifference += (this.last3furlong - this.courseBeforeRace.last3furlong);
-				}
+				finalDifference += calcAgariTime(maxRaceField, range);
 			}
-			
+			if(this.courseThisRace.textString.contains("・追い込み") ) {
+				finalDifference += calcAgariTime(maxRaceField, range);
+			}
+			if((this.courseThisRace.courseName.contains("阪神ダート1200") 
+					) && thisRaceGradeDiff >= 1.10) {
+				finalDifference += calcAgariTime(maxRaceField, range);
+			}
 			score += (firstDifference + finalDifference )* falongRate;
 					
 		}
 		score -= (Double.parseDouble(this.jockeyWeight) * jockeyRate);
 		score += (this.thisRaceJockeyWeight * jockeyRate);
 
-		if(this.pastMaxSpeed.contains(":"))
+		if(!this.pastMaxSpeed.contains(":") || ((timeOrigin) * timeHosei) * raceRate * 1600 / raceRange  + rangeDiff * timeHosei + 100 < 
+				(Integer.parseInt(this.pastMaxSpeed.substring(0,1)) * 600 +  Integer.parseInt(this.pastMaxSpeed.substring(2,4)) * 10 + Integer.parseInt(this.pastMaxSpeed.substring(5,6))) * timeHosei * raceRate * 1600 / raceRange)
 		{
+			if(range.contains("ダ")) {
+				dirtHosei(this.stage, rangeOrigin, raceRate);
+			}
+			else 
+			{
+				grassHosei(this.stage,rangeOrigin, raceRate);
+			}
+			score += ((timeOrigin) * timeHosei) * raceRate * 1600 / raceRange  + rangeDiff * timeHosei + 100;
+			//if(this.pastMaxSpeedDifference != null) {score += Double.parseDouble(this.pastMaxSpeedDifference) * 30 * raceRate;}
+		}
+		else {
 			if(maxRaceField.contains("ダ")) {
 				dirtHosei(this.pastMaxSpeed, raceRange, raceRate);
 			}
@@ -493,39 +537,35 @@ public class HorseData
 			}
 			
 			score += (Integer.parseInt(this.pastMaxSpeed.substring(0,1)) * 600 +  Integer.parseInt(this.pastMaxSpeed.substring(2,4)) * 10 + Integer.parseInt(this.pastMaxSpeed.substring(5,6))) * timeHosei * raceRate * 1600 / raceRange;
-			//if(this.pastMaxSpeedDifference != null) {score += Double.parseDouble(this.pastMaxSpeedDifference) * 30 * raceRate;}
-		}
-		else {
-			if(range.contains("ダ")) {
-				dirtHosei(this.stage, rangeOrigin, raceRate);
-			}
-			else 
-			{
-				grassHosei(this.stage,rangeOrigin, raceRate);
-			}
-			score += ((timeOrigin) * timeHosei) * raceRate * 1600 / raceRange  + rangeDiff * timeHosei + 100;
+
+	
 		}
 
 		//boolean goodRank = false;
 		int pastRaceScore = 0;
 		String pastRaceString = removeNumeric(this.pastRace);
+		double rateWin = 1.0;
 		for(int i= 0; i < 5; i++)
 		{
+			if(i <  pastRaceString.length() && pastRaceString.substring(i,i+1).equals("①")) {
+				rateWin += 0.2;
+			}
 			if(i <  pastRaceString.length() && !pastRaceString.substring(i,i+1).equals("－")) {
-				pastRaceScore += (Util.RankMap.get(pastRaceString.substring(i,i+1)) + 15) * 10;
+				pastRaceScore += (Util.RankMap.get(pastRaceString.substring(i,i+1)) + 15) * (20 - i * 4) * rateWin;
 			}
 			else {
-				pastRaceScore += (Util.RankMap.get(pastRaceString.substring(0,1)) + 15) * 10;
+				pastRaceScore += (Util.RankMap.get(pastRaceString.substring(0,1)) + 15) * (20 - i * 4) * rateWin;
 			}
 			
 		}
 		score += pastRaceScore;
+		System.out.println(this.name + pastRaceScore);
 		int grade = 2;
-		if(gradeDiff >= 1.20) {
-			grade = 3;
+		if(thisRaceGradeDiff >= 1.20) {
+			grade = 4;
 		}
-		else if(gradeDiff >= 1.10){
-			grade = 2;
+		else if(thisRaceGradeDiff >= 1.10){
+			grade = 3;
 		}
 		
 		int hosei = (Integer.parseInt(this.pastRace.substring(5,9)) - Integer.parseInt(this.pastRace.substring(0,4)));
@@ -535,10 +575,11 @@ public class HorseData
 		hosei -= (Integer.parseInt(this.pastRace.substring(0,4)) -6000)* grade;
 		if(hosei < -1000 * grade) {
 			hosei = -1000 * grade;
-		}
+		}	
+		System.out.println(this.name + hosei);
 		score += hosei;
-		
-		if(gradeDiff >= 1.10) {
+		totalscore = 0;
+		if(thisRaceGradeDiff >= 1.10) {
 			CalcCourseAptitude(this.cornerShape.split("-"));
 			CalcCourseAptitude(this.grassStart.split("-"));
 			CalcCourseAptitude(this.raceGround.split("-"));
@@ -548,8 +589,9 @@ public class HorseData
 			CalcCourseAptitude(this.straightSlope.split("-"));
 		}
 
+		System.out.println(this.name + totalscore);
 
-		score += (Integer.parseInt(this.result) - Integer.parseInt(this.expect)) * 20; 
+		//score += (Integer.parseInt(this.result) - Integer.parseInt(this.expect)) * 20; 
 
 		score += base;
 		calcCondition();
@@ -564,73 +606,126 @@ public class HorseData
 	public static String removeNumeric(String str) {
         return str.replaceAll("[\\d]", "");
     }
-	
+	int totalscore;
+	private Double calcAgariTime(String maxRaceField, String raceRange) {
+		double difference = 0.0;
+		if(!this.pastMaxSpeedLast.equals("一年未走")) {
+			RaceCourse rc = RaceCourseUtil.ReturnRaceCourse(this.pastMaxSpeed, range +  String.valueOf(raceRange), "");
+
+			Double pastFinalTime = Double.parseDouble(this.pastMaxSpeedLast) - rc.last3furlong;
+			if(maxRaceField.contains("芝")) {
+
+				if(this.pastMaxSpeed.contains("稍")) {
+					pastFinalTime -= 0.3;
+				}
+				else if(this.pastMaxSpeed.contains("重")) {
+					pastFinalTime -= 0.6;
+				}
+				else if(this.pastMaxSpeed.contains("不")) {
+					pastFinalTime -= 0.9;
+				}
+			}
+			else if(maxRaceField.contains("ダ")) {
+
+				if(this.pastMaxSpeed.contains("稍")) {
+					pastFinalTime += 0.3;
+				}
+				else if(this.pastMaxSpeed.contains("重")) {
+					pastFinalTime += 0.6;
+				}
+				else if(this.pastMaxSpeed.contains("不")) {
+					pastFinalTime += 0.9;
+				}
+			}
+			if( pastFinalTime  > (this.last3furlong - this.courseBeforeRace.last3furlong)) {
+				pastFinalTime = this.last3furlong - this.courseBeforeRace.last3furlong;
+			}
+			difference += (pastFinalTime);
+		}
+		else {
+			difference += (this.last3furlong - this.courseBeforeRace.last3furlong);
+		}
+		
+		return difference;
+	}
 	private void calcCondition() {
-		if(range.contains("芝") && this.condition.contains("不") && this.grassBadRaceResult.contains("①")) {
-			score -= 500;
+
+		if(thisRaceGradeDiff > 1.0 && SampleController.rdm.grass && this.grassGoodRaceResult.contains("出走なし") && this.grassBitHeavyRaceResult.contains("出走なし")
+			&& this.grassHeavyRaceResult.contains("出走なし") && this.grassBadRaceResult.contains("出走なし")) {
+			score += 400;
 		}
 
-		else if(range.contains("芝") && this.condition.contains("不") && this.grassBadRaceResult.contains("②")) {
+		if(thisRaceGradeDiff > 1.0 && !SampleController.rdm.grass && this.dirtGoodRaceResult.contains("出走なし") && this.dirtBitHeavyRaceResult.contains("出走なし")
+			&& this.dirtHeavyRaceResult.contains("出走なし") && this.dirtBadRaceResult.contains("出走なし")) {
+			score += 400;
+		}
+		if(SampleController.rdm.grass && SampleController.condition.contains("良") && this.grassGoodRaceResult.contains("①")) {
 			score -= 300;
 		}
-		else if(range.contains("芝") && this.condition.contains("不") && this.grassBadRaceResult.contains("③")) {
+		else if(SampleController.rdm.grass && SampleController.condition.contains("良") && this.grassGoodRaceResult.contains("②")) {
+			score -= 200;
+		}
+		else if(SampleController.rdm.grass && SampleController.condition.contains("良") && this.grassGoodRaceResult.contains("③")) {
+			score -= 100;
+		}
+		else if(SampleController.rdm.grass && SampleController.condition.contains("不") && this.grassBadRaceResult.contains("①")) {
+			score -= 400;
+		}
+		else if(SampleController.rdm.grass && SampleController.condition.contains("不") && this.grassBadRaceResult.contains("②")) {
+			score -= 300;
+		}
+		else if(SampleController.rdm.grass && SampleController.condition.contains("不") && this.grassBadRaceResult.contains("③")) {
+			score -= 200;
+		}else if(SampleController.rdm.grass && SampleController.condition.contains("重") && this.grassHeavyRaceResult.contains("①")) {
+			score -= 400;
+		}
+		else if(SampleController.rdm.grass && SampleController.condition.contains("重") && this.grassHeavyRaceResult.contains("②")) {
+			score -= 300;
+		}
+		else if(SampleController.rdm.grass && SampleController.condition.contains("重") && this.grassHeavyRaceResult.contains("③")) {
+			score -= 200;
+		}else if(SampleController.rdm.grass && SampleController.condition.contains("稍") && this.grassBitHeavyRaceResult.contains("①")) {
+			score -= 400;
+		}
+		else if(SampleController.rdm.grass && SampleController.condition.contains("稍") && this.grassBitHeavyRaceResult.contains("②")) {
+			score -= 300;
+		}
+		else if(SampleController.rdm.grass && SampleController.condition.contains("稍") && this.grassBitHeavyRaceResult.contains("③")) {
 			score -= 200;
 		}
 		
-		if(range.contains("芝") && this.condition.contains("重") && this.grassHeavyRaceResult.contains("①")) {
-			score -= 500;
-		}
-
-		else if(range.contains("芝") && this.condition.contains("重") && this.grassHeavyRaceResult.contains("②")) {
+		if(!SampleController.rdm.grass &&  SampleController.condition.contains("良") && this.dirtGoodRaceResult.contains("①")) {
 			score -= 300;
 		}
-		else if(range.contains("芝") && this.condition.contains("重") && this.grassHeavyRaceResult.contains("③")) {
+		else if(!SampleController.rdm.grass &&  SampleController.condition.contains("良") && this.dirtGoodRaceResult.contains("②")) {
 			score -= 200;
 		}
-		
-
-		if(range.contains("芝") && this.condition.contains("稍") && this.grassBitHeavyRaceResult.contains("①")) {
-			score -= 500;
+		else if(!SampleController.rdm.grass &&  SampleController.condition.contains("良") && this.dirtGoodRaceResult.contains("③")) {
+			score -= 100;
+		}else if(!SampleController.rdm.grass && SampleController.condition.contains("不") && this.dirtBadRaceResult.contains("①")) {
+			score -= 400;
 		}
-
-		else if(range.contains("芝") && this.condition.contains("稍") && this.grassBitHeavyRaceResult.contains("②")) {
+		else if(!SampleController.rdm.grass && SampleController.condition.contains("不") && this.dirtBadRaceResult.contains("②")) {
 			score -= 300;
 		}
-		else if(range.contains("芝") && this.condition.contains("稍") && this.grassBitHeavyRaceResult.contains("③")) {
+		else if(!SampleController.rdm.grass &&  SampleController.condition.contains("不") && this.dirtBadRaceResult.contains("③")) {
 			score -= 200;
 		}
-		
-		if(range.contains("ダ") && this.condition.contains("不") && this.dirtBadRaceResult.contains("①")) {
-			score -= 500;
-		}
-
-		else if(range.contains("ダ") && this.condition.contains("不") && this.dirtBadRaceResult.contains("②")) {
+		else if(!SampleController.rdm.grass &&  SampleController.condition.contains("重") && this.dirtHeavyRaceResult.contains("①")) {
+			score -= 400;
+		}else if(!SampleController.rdm.grass &&  SampleController.condition.contains("重") && this.dirtHeavyRaceResult.contains("②")) {
 			score -= 300;
 		}
-		else if(range.contains("ダ") &&  this.condition.contains("不") && this.dirtBadRaceResult.contains("③")) {
+		else if(!SampleController.rdm.grass &&  SampleController.condition.contains("重") && this.dirtHeavyRaceResult.contains("③")) {
 			score -= 200;
 		}
-		
-		if(range.contains("ダ") &&  this.condition.contains("重") && this.dirtHeavyRaceResult.contains("①")) {
-			score -= 500;
+		else if(!SampleController.rdm.grass &&  SampleController.condition.contains("稍") && this.dirtBitHeavyRaceResult.contains("①")) {
+			score -= 400;
 		}
-
-		else if(range.contains("ダ") &&  this.condition.contains("重") && this.dirtHeavyRaceResult.contains("②")) {
+		else if(!SampleController.rdm.grass &&  SampleController.condition.contains("稍") && this.dirtBitHeavyRaceResult.contains("②")) {
 			score -= 300;
 		}
-		else if(range.contains("ダ") &&  this.condition.contains("重") && this.dirtHeavyRaceResult.contains("③")) {
-			score -= 200;
-		}
-		
-
-		if(range.contains("ダ") &&  this.condition.contains("稍") && this.dirtBitHeavyRaceResult.contains("①")) {
-			score -= 500;
-		}
-
-		else if(range.contains("ダ") &&  this.condition.contains("稍") && this.dirtBitHeavyRaceResult.contains("②")) {
-			score -= 300;
-		}
-		else if(range.contains("ダ") &&  this.condition.contains("稍") && this.dirtBitHeavyRaceResult.contains("③")) {
+		else if(!SampleController.rdm.grass &&  SampleController.condition.contains("稍") && this.dirtBitHeavyRaceResult.contains("③")) {
 			score -= 200;
 		}
 		
@@ -638,7 +733,7 @@ public class HorseData
 	
 	private void dirtHosei(String stage, int raceRange, int coefficient) {
 
-		timeHosei = 0.945;
+		timeHosei = 0.955;
 		if(stage.contains("稍"))
 		{
 			score += 30 * ((double)raceRange / 600 ) * coefficient / 10;
@@ -673,24 +768,21 @@ public class HorseData
 	{
 		int[]calcHorse = new int[]{Integer.parseInt(courseHorse[0]), Integer.parseInt(courseHorse[1]),Integer.parseInt(courseHorse[2]), Integer.parseInt(courseHorse[3])};
 		for(int i = 0 ; i < calcHorse.length; i++) {
-			if(calcHorse[i] > 7) {
-				calcHorse[i] = 7;
+			if(calcHorse[i] > 10) {
+				calcHorse[i] = 10;
 			}
 		}
 		int cnt = 0;
 		cnt += calcHorse[0] * 50;
 		cnt += calcHorse[1] * 30;
 		cnt += calcHorse[2] * 20;
-		//cnt -= calcHorse[3] * 5;
-		if(gradeDiff < 1.10) {
-			cnt /= 2;
-		}
 		
 		//if((calcHorse[0] + calcHorse[1] + calcHorse[2] + calcHorse[3]) != 0) {
 		//}
-		cnt *= 20;
+		cnt *= 10;
 		cnt /= (calcHorse[0] + calcHorse[1] + calcHorse[2] + calcHorse[3] + 1);
 		score -= cnt;
+		totalscore -= cnt;
 	}
 	  /* getter,setterがないとTableViewに反映されない */
 	  public String getAddress(){ return address; }

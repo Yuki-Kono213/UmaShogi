@@ -7,6 +7,7 @@ public class RaceCourse {
 	public String rotationSize;
 	public String cornerShape;
 	public String grassStart;
+	public String courseName = "";
 	public int range;
 	public String raceGround;
 	
@@ -14,7 +15,7 @@ public class RaceCourse {
 	public double excludeLast3furlong;
 	public double last3furlong;
 	
-	public String textString;
+	public String textString = "";
 	
 
 }

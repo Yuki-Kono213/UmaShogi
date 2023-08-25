@@ -2,6 +2,7 @@ package application;
 
 public class HanshinDirt1200 extends RaceCourse {
 	{
+		courseName = "阪神ダート1200";
 		straightDistance = "";
 		straightSlope = "急坂";
 		rotationSide = "右回り";
