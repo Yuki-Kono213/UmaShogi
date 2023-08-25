@@ -13,12 +13,15 @@ import java.util.Calendar;
 import java.util.Comparator;
 import java.util.List;
 
+<<<<<<< HEAD
 import javax.swing.JFileChooser;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 
+=======
+>>>>>>> branch 'master' of https://github.com/Yuki-Kono213/UmaShogi
 import org.h2.util.SmallLRUCache;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -886,6 +889,7 @@ public class SampleController {
 			rotationSize.setText("回転大小" + rc.rotationSize);
 			grassStart.setText("芝開始" + rc.grassStart);
 			raceGround.setText("芝ダート" + rc.raceGround);
+			System.out.println(rc.textString);
 			try {
 			lblPastReturn.setText(new RaceDB().executeReturnMoney(
 					labelRaceRange.getText(), labelRaceStage.getText() 

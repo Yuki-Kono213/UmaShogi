@@ -382,6 +382,10 @@ public class HorseData
 			jockeyRate = 60;
 			//falongRate = 400;
 		}
+		else if(raceRange >= 1500 && raceRange <= 2000) {
+			jockeyRate = 60;
+			falongRate = 400;
+		}
 		if(range.contains("ダ")) {
 			dirtHosei(this.stage, rangeOrigin, raceRate);
 		}
@@ -412,16 +416,37 @@ public class HorseData
 				finalDifference = 0.4;
 				if(firstDifference + finalDifference <= 0.0) {
 
+<<<<<<< HEAD
 					firstDifference /= 2;
+				}
+				
+			}
+			else if(rangeOrigin > raceRange && rangeOrigin - raceRange > 350 && finalDifference > 0.6) 
+=======
+
+
+
+			if(rangeOrigin > raceRange && rangeOrigin - raceRange > 650 && finalDifference > 0.4) 
+>>>>>>> branch 'master' of https://github.com/Yuki-Kono213/UmaShogi
+			{
+<<<<<<< HEAD
+				finalDifference = 0.6;
+				if(firstDifference + finalDifference <= 0.0) {
+
+					firstDifference /= 2;
+=======
+				finalDifference = 0.4;
+				if(firstDifference < -1.2) {
+					firstDifference = -1.2;
+>>>>>>> branch 'master' of https://github.com/Yuki-Kono213/UmaShogi
 				}
 				
 			}
 			else if(rangeOrigin > raceRange && rangeOrigin - raceRange > 350 && finalDifference > 0.6) 
 			{
 				finalDifference = 0.6;
-				if(firstDifference + finalDifference <= 0.0) {
-
-					firstDifference /= 2;
+				if(firstDifference < -1.4) {
+					firstDifference = -1.4;
 				}
 				
 			}
@@ -472,16 +497,34 @@ public class HorseData
 				finalDifference = 0.4;
 				if(firstDifference + finalDifference <= 0.0) {
 
+<<<<<<< HEAD
 					firstDifference /= 2;
+				}
+				
+			}
+			else if(rangeOrigin > raceRange && rangeOrigin - raceRange > 350 && finalDifference > 0.6) 
+=======
+			if(rangeOrigin > raceRange && rangeOrigin - raceRange > 650 && finalDifference > 0.4) 
+>>>>>>> branch 'master' of https://github.com/Yuki-Kono213/UmaShogi
+			{
+<<<<<<< HEAD
+				finalDifference = 0.6;
+				if(firstDifference + finalDifference <= 0.0) {
+
+					firstDifference /= 2;
+=======
+				finalDifference = 0.4;
+				if(firstDifference < -1.2) {
+					firstDifference = -1.2;
+>>>>>>> branch 'master' of https://github.com/Yuki-Kono213/UmaShogi
 				}
 				
 			}
 			else if(rangeOrigin > raceRange && rangeOrigin - raceRange > 350 && finalDifference > 0.6) 
 			{
 				finalDifference = 0.6;
-				if(firstDifference + finalDifference <= 0.0) {
-
-					firstDifference /= 2;
+				if(firstDifference < -1.4) {
+					firstDifference = -1.4;
 				}
 				
 			}
