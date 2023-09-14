@@ -1,8 +1,12 @@
 package application;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 public class HorseData 
 {
@@ -217,9 +221,14 @@ public class HorseData
 		double thisRaceGradeDiff = 1.0;
 	public void calcIndex(int raceRange, String maxRaceField) {
 
+<<<<<<< HEAD
 		if(rate == 0.0 && (((LocalDate.now().getDayOfWeek() == DayOfWeek.SATURDAY && SampleController.staticRaceDate.getDayOfWeek() != DayOfWeek.SUNDAY) || 
 			(LocalDate.now().getDayOfWeek() == DayOfWeek.SUNDAY &&  SampleController.staticRaceDate.getDayOfWeek() != DayOfWeek.SATURDAY)) 
 			||	SampleController.staticRaceDate.isBefore(LocalDate.now()))) {
+=======
+		if(rate == 0.0 && 
+				SampleController.staticRaceDate.isBefore(LocalDate.now()) || SampleController.staticRaceDate.equals(LocalDate.now())) {
+>>>>>>> refs/remotes/origin/master
 			this.index = "0";
 			return;
 		}
@@ -245,6 +254,7 @@ public class HorseData
 		
 		if(SampleController.matchDate.isBefore(LocalDate
 				.parse(this.date, DateTimeFormatter.ofPattern("yyyy/[]M/[]d")).plusMonths(6)) && SampleController.rdm.grass) {
+<<<<<<< HEAD
 			score += 200;
 			
 		}
@@ -305,7 +315,30 @@ public class HorseData
 			else if(thisRaceFrame > 6 && thisRaceFrame < 9) {
 				score -= 300;
 			}
+=======
+			score -= 100;
 			
+		}
+		else if(SampleController.matchDate.isBefore(LocalDate
+				.parse(this.date, DateTimeFormatter.ofPattern("yyyy/[]M/[]d")).plusMonths(6)) && !SampleController.rdm.grass) {
+			score -= 200;
+>>>>>>> refs/remotes/origin/master
+			
+		}
+		
+		if(SampleController.grassStartBool && SampleController.condition.contains("良")) {
+			if(thisRaceFrame > 0 && thisRaceFrame < 3) {
+				score += 200;
+			}
+			else if(thisRaceFrame > 2 && thisRaceFrame < 5) {
+				score += 100;
+			}
+			else if(thisRaceFrame > 4 && thisRaceFrame < 7) {
+				score -= 100;
+			}	
+			else if(thisRaceFrame > 6 && thisRaceFrame < 9) {
+				score -= 200;
+			}
 		}
 		
 		int rangeDiff = 0;
@@ -326,7 +359,11 @@ public class HorseData
 			}
 		}
 		else {
+<<<<<<< HEAD
 			//rangeDiff = -100;
+=======
+			rangeDiff = -200;
+>>>>>>> refs/remotes/origin/master
 		}
 		thisRaceGradeDiff = 1.0;
 		if(SampleController.grade.contains("1勝"))
@@ -410,15 +447,31 @@ public class HorseData
 		timeHosei = 1.0; 
 		int raceRate = 10;
 		//int falongRate = 300;
+<<<<<<< HEAD
 		int falongRate = 200;
+=======
+		int falongRate = 300;
+>>>>>>> refs/remotes/origin/master
 		int jockeyRate = 50;
 		if(raceRange < 1500) {
 			jockeyRate = 80;
+<<<<<<< HEAD
 			falongRate = 400;
 		}
 		else if(raceRange >= 1500 && raceRange <= 2000) {
 			jockeyRate = 60;
 			//falongRate = 300;
+=======
+			//falongRate = 500;
+		}
+		else if(raceRange >= 1500 && raceRange <= 2000) {
+			jockeyRate = 60;
+			//falongRate = 400;
+		}
+		else if(raceRange >= 1500 && raceRange <= 2000) {
+			jockeyRate = 60;
+			falongRate = 400;
+>>>>>>> refs/remotes/origin/master
 		}
 		if(range.contains("ダ")) {
 			dirtHosei(this.stage, rangeOrigin, raceRate);
@@ -489,6 +542,72 @@ public class HorseData
 			else if(finalDifference > 1.0) {
 				finalDifference = 1.0;
 			}
+<<<<<<< HEAD
+=======
+
+			if(rangeOrigin > raceRange && rangeOrigin - raceRange > 650 && finalDifference > 0.4) 
+			{
+				finalDifference = 0.4;
+				if(firstDifference + finalDifference <= 0.0) {
+
+<<<<<<< HEAD
+					firstDifference /= 2;
+				}
+				
+			}
+			else if(rangeOrigin > raceRange && rangeOrigin - raceRange > 350 && finalDifference > 0.6) 
+=======
+
+
+
+			if(rangeOrigin > raceRange && rangeOrigin - raceRange > 650 && finalDifference > 0.4) 
+>>>>>>> branch 'master' of https://github.com/Yuki-Kono213/UmaShogi
+			{
+<<<<<<< HEAD
+				finalDifference = 0.6;
+				if(firstDifference + finalDifference <= 0.0) {
+
+					firstDifference /= 2;
+=======
+				finalDifference = 0.4;
+				if(firstDifference < -1.2) {
+					firstDifference = -1.2;
+>>>>>>> branch 'master' of https://github.com/Yuki-Kono213/UmaShogi
+				}
+				
+			}
+			else if(rangeOrigin > raceRange && rangeOrigin - raceRange > 350 && finalDifference > 0.6) 
+			{
+				finalDifference = 0.6;
+				if(firstDifference < -1.4) {
+					firstDifference = -1.4;
+				}
+				
+			}
+			else if(rangeOrigin > raceRange && finalDifference > 0.8) 
+			{
+				finalDifference = 0.8;
+				if(firstDifference + finalDifference <= 0.0) {
+
+					firstDifference /= 2;
+				}
+			}
+			if(this.courseThisRace.textString.contains("：逃げ")) {
+
+				firstDifference += this.first3furlong - this.courseBeforeRace.first3furlong;
+			}
+			if(this.courseThisRace.textString.contains("：差し") || this.courseThisRace.textString.contains("・差し") ) {
+
+				finalDifference += calcAgariTime(maxRaceField, range);
+			}
+			if(this.courseThisRace.textString.contains("・追い込み") ) {
+				finalDifference += calcAgariTime(maxRaceField, range);
+			}
+			if((this.courseThisRace.courseName.contains("阪神ダート1200") 
+					) && thisRaceGradeDiff >= 1.10) {
+				finalDifference += calcAgariTime(maxRaceField, range);
+			}
+>>>>>>> refs/remotes/origin/master
 			score += (firstDifference + finalDifference)* falongRate;
 
 		}
@@ -551,6 +670,69 @@ public class HorseData
 			else if(finalDifference > 1.0) {
 				finalDifference = 1.0;
 			}
+<<<<<<< HEAD
+=======
+
+			if(rangeOrigin > raceRange && rangeOrigin - raceRange > 650 && finalDifference > 0.4) 
+			{
+				finalDifference = 0.4;
+				if(firstDifference + finalDifference <= 0.0) {
+
+<<<<<<< HEAD
+					firstDifference /= 2;
+				}
+				
+			}
+			else if(rangeOrigin > raceRange && rangeOrigin - raceRange > 350 && finalDifference > 0.6) 
+=======
+			if(rangeOrigin > raceRange && rangeOrigin - raceRange > 650 && finalDifference > 0.4) 
+>>>>>>> branch 'master' of https://github.com/Yuki-Kono213/UmaShogi
+			{
+<<<<<<< HEAD
+				finalDifference = 0.6;
+				if(firstDifference + finalDifference <= 0.0) {
+
+					firstDifference /= 2;
+=======
+				finalDifference = 0.4;
+				if(firstDifference < -1.2) {
+					firstDifference = -1.2;
+>>>>>>> branch 'master' of https://github.com/Yuki-Kono213/UmaShogi
+				}
+				
+			}
+			else if(rangeOrigin > raceRange && rangeOrigin - raceRange > 350 && finalDifference > 0.6) 
+			{
+				finalDifference = 0.6;
+				if(firstDifference < -1.4) {
+					firstDifference = -1.4;
+				}
+				
+			}
+			else if(rangeOrigin > raceRange && finalDifference > 0.8) 
+			{
+				finalDifference = 0.8;
+				if(firstDifference + finalDifference <= 0.0) {
+
+					firstDifference /= 2;
+				}
+			}
+			if(this.courseThisRace.textString.contains("：逃げ")) {
+
+				firstDifference += this.first3furlong - this.courseBeforeRace.first3furlong;
+			}
+			if(this.courseThisRace.textString.contains("：差し") || this.courseThisRace.textString.contains("・差し") ) {
+
+				finalDifference += calcAgariTime(maxRaceField, range);
+			}
+			if(this.courseThisRace.textString.contains("・追い込み") ) {
+				finalDifference += calcAgariTime(maxRaceField, range);
+			}
+			if((this.courseThisRace.courseName.contains("阪神ダート1200") 
+					) && thisRaceGradeDiff >= 1.10) {
+				finalDifference += calcAgariTime(maxRaceField, range);
+			}
+>>>>>>> refs/remotes/origin/master
 			score += (firstDifference + finalDifference )* falongRate;
 					
 		}
@@ -567,7 +749,11 @@ public class HorseData
 			{
 				grassHosei(this.stage,rangeOrigin, raceRate);
 			}
+<<<<<<< HEAD
 			score += ((timeOrigin) * timeHosei) * raceRate * 1600 / raceRange  + rangeDiff * timeHosei;
+=======
+			score += ((timeOrigin) * timeHosei) * raceRate * 1600 / raceRange  + rangeDiff * timeHosei + 100;
+>>>>>>> refs/remotes/origin/master
 			//if(this.pastMaxSpeedDifference != null) {score += Double.parseDouble(this.pastMaxSpeedDifference) * 30 * raceRate;}
 		}
 		else {
@@ -607,7 +793,11 @@ public class HorseData
 		if(thisRaceGradeDiff >= 1.20) {
 			grade = 4;
 		}
+<<<<<<< HEAD
 		else if(thisRaceGradeDiff >= 1.05){
+=======
+		else if(thisRaceGradeDiff >= 1.10){
+>>>>>>> refs/remotes/origin/master
 			grade = 3;
 		}
 		
@@ -622,7 +812,11 @@ public class HorseData
 		System.out.println(this.name + hosei);
 		score += hosei;
 		totalscore = 0;
+<<<<<<< HEAD
 		if(thisRaceGradeDiff >= 1.05) {
+=======
+		if(thisRaceGradeDiff >= 1.10) {
+>>>>>>> refs/remotes/origin/master
 			CalcCourseAptitude(this.cornerShape.split("-"));
 			CalcCourseAptitude(this.grassStart.split("-"));
 			CalcCourseAptitude(this.raceGround.split("-"));
@@ -695,21 +889,39 @@ public class HorseData
 
 		if(thisRaceGradeDiff > 1.0 && SampleController.rdm.grass && this.grassGoodRaceResult.contains("出走なし") && this.grassBitHeavyRaceResult.contains("出走なし")
 			&& this.grassHeavyRaceResult.contains("出走なし") && this.grassBadRaceResult.contains("出走なし")) {
+<<<<<<< HEAD
 			score += 200;
+=======
+			score += 400;
+>>>>>>> refs/remotes/origin/master
 		}
 
 		if(thisRaceGradeDiff > 1.0 && !SampleController.rdm.grass && this.dirtGoodRaceResult.contains("出走なし") && this.dirtBitHeavyRaceResult.contains("出走なし")
 			&& this.dirtHeavyRaceResult.contains("出走なし") && this.dirtBadRaceResult.contains("出走なし")) {
+<<<<<<< HEAD
 			score += 200;
 		}
 		if(SampleController.rdm.grass && SampleController.condition.contains("良") && this.grassGoodRaceResult.contains("①")) {
 			score -= 400;
 		}
 		else if(SampleController.rdm.grass && SampleController.condition.contains("良") && this.grassGoodRaceResult.contains("②")) {
+=======
+			score += 400;
+		}
+		if(SampleController.rdm.grass && SampleController.condition.contains("良") && this.grassGoodRaceResult.contains("①")) {
+>>>>>>> refs/remotes/origin/master
 			score -= 300;
 		}
+<<<<<<< HEAD
 		else if(SampleController.rdm.grass && SampleController.condition.contains("良") && this.grassGoodRaceResult.contains("③")) {
 			score -= 200;
+=======
+		else if(SampleController.rdm.grass && SampleController.condition.contains("良") && this.grassGoodRaceResult.contains("②")) {
+			score -= 200;
+		}
+		else if(SampleController.rdm.grass && SampleController.condition.contains("良") && this.grassGoodRaceResult.contains("③")) {
+			score -= 100;
+>>>>>>> refs/remotes/origin/master
 		}
 		else if(SampleController.rdm.grass && SampleController.condition.contains("不") && this.grassBadRaceResult.contains("①")) {
 			score -= 400;
@@ -738,11 +950,15 @@ public class HorseData
 		}
 		
 		if(!SampleController.rdm.grass &&  SampleController.condition.contains("良") && this.dirtGoodRaceResult.contains("①")) {
+<<<<<<< HEAD
 			score -= 400;
 		}
 		else if(!SampleController.rdm.grass &&  SampleController.condition.contains("良") && this.dirtGoodRaceResult.contains("②")) {
+=======
+>>>>>>> refs/remotes/origin/master
 			score -= 300;
 		}
+<<<<<<< HEAD
 		else if(!SampleController.rdm.grass &&  SampleController.condition.contains("良") && this.dirtGoodRaceResult.contains("③")) {
 			score -= 200;
 		}else if(!SampleController.rdm.grass && SampleController.condition.contains("不") && this.dirtBadRaceResult.contains("①")) {
@@ -752,13 +968,46 @@ public class HorseData
 			score -= 300;
 		}
 		else if(!SampleController.rdm.grass &&  SampleController.condition.contains("不") && this.dirtBadRaceResult.contains("③")) {
+=======
+		else if(!SampleController.rdm.grass &&  SampleController.condition.contains("良") && this.dirtGoodRaceResult.contains("②")) {
+>>>>>>> refs/remotes/origin/master
 			score -= 200;
 		}
+<<<<<<< HEAD
 		else if(!SampleController.rdm.grass &&  SampleController.condition.contains("重") && this.dirtHeavyRaceResult.contains("①")) {
 			score -= 400;
 		}else if(!SampleController.rdm.grass &&  SampleController.condition.contains("重") && this.dirtHeavyRaceResult.contains("②")) {
+=======
+		else if(!SampleController.rdm.grass &&  SampleController.condition.contains("良") && this.dirtGoodRaceResult.contains("③")) {
+			score -= 100;
+		}else if(!SampleController.rdm.grass && SampleController.condition.contains("不") && this.dirtBadRaceResult.contains("①")) {
+			score -= 400;
+		}
+		else if(!SampleController.rdm.grass && SampleController.condition.contains("不") && this.dirtBadRaceResult.contains("②")) {
+>>>>>>> refs/remotes/origin/master
 			score -= 300;
 		}
+<<<<<<< HEAD
+		else if(!SampleController.rdm.grass &&  SampleController.condition.contains("重") && this.dirtHeavyRaceResult.contains("③")) {
+=======
+		else if(!SampleController.rdm.grass &&  SampleController.condition.contains("不") && this.dirtBadRaceResult.contains("③")) {
+>>>>>>> refs/remotes/origin/master
+			score -= 200;
+		}
+<<<<<<< HEAD
+		else if(!SampleController.rdm.grass &&  SampleController.condition.contains("稍") && this.dirtBitHeavyRaceResult.contains("①")) {
+			score -= 400;
+		}
+		else if(!SampleController.rdm.grass &&  SampleController.condition.contains("稍") && this.dirtBitHeavyRaceResult.contains("②")) {
+=======
+		else if(!SampleController.rdm.grass &&  SampleController.condition.contains("重") && this.dirtHeavyRaceResult.contains("①")) {
+			score -= 400;
+		}else if(!SampleController.rdm.grass &&  SampleController.condition.contains("重") && this.dirtHeavyRaceResult.contains("②")) {
+>>>>>>> refs/remotes/origin/master
+			score -= 300;
+		}
+<<<<<<< HEAD
+=======
 		else if(!SampleController.rdm.grass &&  SampleController.condition.contains("重") && this.dirtHeavyRaceResult.contains("③")) {
 			score -= 200;
 		}
@@ -768,6 +1017,7 @@ public class HorseData
 		else if(!SampleController.rdm.grass &&  SampleController.condition.contains("稍") && this.dirtBitHeavyRaceResult.contains("②")) {
 			score -= 300;
 		}
+>>>>>>> refs/remotes/origin/master
 		else if(!SampleController.rdm.grass &&  SampleController.condition.contains("稍") && this.dirtBitHeavyRaceResult.contains("③")) {
 			score -= 200;
 		}
@@ -820,9 +1070,14 @@ public class HorseData
 		cnt += calcHorse[1] * 30;
 		cnt += calcHorse[2] * 20;
 		
+<<<<<<< HEAD
 		if(thisRaceGradeDiff <= 1.05) {
 			//cnt /= 2;
 		}
+=======
+		//if((calcHorse[0] + calcHorse[1] + calcHorse[2] + calcHorse[3]) != 0) {
+		//}
+>>>>>>> refs/remotes/origin/master
 		cnt *= 10;
 		cnt /= (calcHorse[0] + calcHorse[1] + calcHorse[2] + calcHorse[3] + 1);
 		score -= cnt;

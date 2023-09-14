@@ -13,6 +13,7 @@ import java.util.Calendar;
 import java.util.Comparator;
 import java.util.List;
 
+<<<<<<< HEAD
 import javax.lang.model.element.NestingKind;
 import javax.swing.JFileChooser;
 
@@ -20,6 +21,17 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 
+=======
+<<<<<<< HEAD
+import javax.swing.JFileChooser;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+
+=======
+>>>>>>> branch 'master' of https://github.com/Yuki-Kono213/UmaShogi
+>>>>>>> refs/remotes/origin/master
 import org.h2.util.SmallLRUCache;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -463,7 +475,10 @@ public class SampleController {
 	public static String stage;
 	private Boolean female;
 	public static String condition;
+<<<<<<< HEAD
 	public static String grassDirt;
+=======
+>>>>>>> refs/remotes/origin/master
 	public static RaceDataManager rdm;
 	private boolean reGet = false; 
 	public void ReGetURL() {
@@ -659,6 +674,7 @@ public class SampleController {
 			lblWinUmarenFiveNagashi.setText(String.valueOf(horseUmarenNagashi5int));
 			new RaceDB().UseRaceDataBase(
 					new String[] {"updateMoney", rdm.RaceURL,lblWinWideThree.getText(), lblWinWideFour.getText() 
+<<<<<<< HEAD
 							, lblWinWideFive.getText() , lblWinWideSix.getText(), lblWinWideFiveNagashi.getText()
 							, lblWinUmarenThree.getText(), lblWinUmarenFour.getText() 
 							, lblWinUmarenFive.getText() , lblWinUmarenSix.getText(), lblWinUmarenFiveNagashi.getText() });
@@ -666,6 +682,11 @@ public class SampleController {
 					lblWinWideFive.getText() + " " + lblWinWideSix.getText() + " " +  lblWinWideFiveNagashi.getText());
 			System.out.println(lblWinUmarenThree.getText() + " " + lblWinUmarenFour.getText() + " " +
 					lblWinUmarenFive.getText() + " " + lblWinUmarenSix.getText() + " " +  lblWinUmarenFiveNagashi.getText());
+=======
+							, lblWinWideFive.getText() , lblWinWideSix.getText() });
+			System.out.println(lblWinWideThree.getText() + " " + lblWinWideFour.getText() + " " +
+					lblWinWideFive.getText() + " " + lblWinWideSix.getText() + " ");
+>>>>>>> refs/remotes/origin/master
 			
 		} catch (IOException e) {
 			// TODO 自動生成された catch ブロック
@@ -673,7 +694,10 @@ public class SampleController {
 		}
 	
 	}
+<<<<<<< HEAD
 	public static String[]pastGetStrings = new String[13];
+=======
+>>>>>>> refs/remotes/origin/master
 	public static LocalDate staticRaceDate;
 	static int loadcnt = 0;
 	public static LocalDate matchDate;
@@ -892,10 +916,15 @@ public class SampleController {
 			Integer raceID = raceData[0];
 			if (rangeElements.get(1).text().contains("芝")) {
 				rdm.grass = true;
+<<<<<<< HEAD
 				grassDirt = "芝";
 			} else {
 				rdm.grass = false;
 				grassDirt = "ダ";
+=======
+			} else {
+				rdm.grass = false;
+>>>>>>> refs/remotes/origin/master
 			}
 			if (raceID == -1 || raceData[3] == 0 || reGet) {
 				rdm.payCash =  raceData[1];
@@ -975,6 +1004,7 @@ public class SampleController {
 			rotationSize.setText("回転大小" + rc.rotationSize);
 			grassStart.setText("芝開始" + rc.grassStart);
 			raceGround.setText("芝ダート" + rc.raceGround);
+			System.out.println(rc.textString);
 			try {
 			lblPastReturn.setText(new RaceDB().executeReturnMoney(
 					labelRaceRange.getText(), labelRaceStage.getText() 
