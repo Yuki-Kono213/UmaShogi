@@ -13,6 +13,7 @@ public class NiigataDirt2500 extends RaceCourse {
 		excludeLast3furlong = 121.2;
 		first3furlong = 37.4;
 		last3furlong = 39.1;
+		startDistance = "普通";
 	}
 	
 }

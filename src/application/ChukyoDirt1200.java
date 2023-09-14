@@ -1,5 +1,7 @@
 package application;
 
+import java.util.*;
+
 public class ChukyoDirt1200 extends RaceCourse {
 	{
 		straightDistance = "長い";
@@ -16,6 +18,8 @@ public class ChukyoDirt1200 extends RaceCourse {
 				+ "ダートにしては直線が長いコースで、短距離戦ですら差し馬の台頭も見られる。"
 				+ "コーナー半径がタイトな点も中京競馬場の特徴で、"
 				+ "特にダートはコーナーで一息入り先行有利。";
+		startDistance = "普通";
+		goodRaceFrame = new ArrayList<Integer>(Arrays.asList(1,2,3,4,5,6,7));
 	
 	}
 	

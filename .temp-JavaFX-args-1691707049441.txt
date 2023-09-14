@@ -1,0 +1,6 @@
+"--module-path=C:\\Users\\heart\\Downloads\\openjfx-19.0.2.1_windows-x64_bin-sdk\\javafx-sdk-19.0.2.1\\lib"
+--add-modules=javafx.controls,javafx.fxml
+-Dfile.encoding=UTF-8
+-classpath
+"C:\\Users\\heart\\eclipse-workspace\\UmaShogi\\bin;C:\\Users\\heart\\eclipse-workspace\\UmaShogi\\javafx.base.jar;C:\\Users\\heart\\eclipse-workspace\\UmaShogi\\javafx.fxml.jar;C:\\Users\\heart\\eclipse-workspace\\UmaShogi\\javafx.graphics.jar;C:\\Users\\heart\\eclipse-workspace\\UmaShogi\\javafx.controls.jar;C:\\Users\\heart\\eclipse-workspace\\UmaShogi\\h2-2.1.210.jar;C:\\Users\\heart\\eclipse-workspace\\UmaShogi\\jsoup-1.15.1.jar"
+application.UmaShogi

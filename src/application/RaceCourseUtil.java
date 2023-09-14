@@ -264,7 +264,7 @@ public class RaceCourseUtil
 					return new NiigataGrass1800();
 					
 				}
-				else if(range.contains("2000") && raceName.contains("2歳") || raceName.contains("3歳未勝利")) {
+				else if(range.contains("2000") && (raceName.contains("2歳") || raceName.contains("3歳未勝利"))) {
 					return new NiigataGrass2000In();
 					
 				}
@@ -383,7 +383,7 @@ public class RaceCourseUtil
 					
 				}
 				else if(range.contains("2400")) {
-					return new KyotoGrass2400();
+					return new KyotoGrass2400Out();
 					
 				}
 				else if(range.contains("3000")) {

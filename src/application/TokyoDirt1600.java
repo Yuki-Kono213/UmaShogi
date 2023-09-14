@@ -1,5 +1,8 @@
 package application;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class TokyoDirt1600 extends RaceCourse {
 	{
 		straightDistance = "長い";
@@ -17,6 +20,8 @@ public class TokyoDirt1600 extends RaceCourse {
 				+ "中央ダートでは唯一のダートマイル戦。傾向としては芝スタートで外枠優勢。"
 				+ "あとは上がり上位馬の好走が目立つ。"
 				+ "唯一の条件ということで、リピーター馬も狙いとなる。";
+		startDistance = "長い";
+		goodRaceFrame = new ArrayList<Integer>(Arrays.asList(6,7,8));
 	}
 	
 }

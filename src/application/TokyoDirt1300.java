@@ -1,7 +1,11 @@
 package application;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class TokyoDirt1300 extends RaceCourse {
 	{
+		courseName = "東京ダート1300";
 		straightDistance = "長い";
 		straightSlope = "やや坂";
 		rotationSide = "左回り";
@@ -17,6 +21,8 @@ public class TokyoDirt1300 extends RaceCourse {
 				+ "ダ―ト短距離戦にしては逃げ馬の成績が圧倒的というわけではなく、"
 				+ "必ずしも逃げる必要がない5番手以内が理想。"
 				+ "好位から上がり上位の脚が使える馬がベスト。";
+		startDistance = "普通";
+		goodRaceFrame = new ArrayList<Integer>(Arrays.asList(1,2,3,4));
 	}
 	
 }

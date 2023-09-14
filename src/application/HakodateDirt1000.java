@@ -1,5 +1,8 @@
 package application;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class HakodateDirt1000 extends RaceCourse {
 	{
 		straightDistance = "短い";
@@ -16,6 +19,9 @@ public class HakodateDirt1000 extends RaceCourse {
 				+ "スタート直後から上り坂で4コーナーまで続き、直線は緩やかな下り坂。"
 				+ "直線も短く、圧倒的に逃げ馬と先行馬が有利なコース。"
 				+ "枠は1～3枠と7～8枠が優勢。中枠はやや割り引き。";
+		startDistance = "普通";
+
+		goodRaceFrame = new ArrayList<Integer>(Arrays.asList(1,2,3,7,8));
 	}
 	
 }

@@ -1,5 +1,8 @@
 package application;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class HanshinGrass2200 extends RaceCourse {
 	{
 		straightDistance = "";
@@ -17,6 +20,8 @@ public class HanshinGrass2200 extends RaceCourse {
 				+ "スタート後、コーナーまで距離があるので先行争いが激化しやすい。"
 				+ "また、そこでゴチャつくためか1枠の成績が異常に悪く、"
 				+ "その点は考慮しておきたい。";
+		startDistance = "長い";
+		goodRaceFrame = new ArrayList<Integer>(Arrays.asList(2,3,4));
 	}
 	
 }

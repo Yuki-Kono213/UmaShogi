@@ -1,5 +1,8 @@
 package application;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class NiigataGrass2400 extends RaceCourse {
 	{
 		straightDistance = "";
@@ -17,6 +20,8 @@ public class NiigataGrass2400 extends RaceCourse {
 				+ "長距離戦ということで同中のペースは緩みやすいが、直線が短くなる内回りコース。"
 				+ "ゆえに直線一気も通用せず、先行馬が最も有利に。"
 				+ "立ち回りが重要で、2～4枠が好成績を残している。";
+		startDistance = "長い";
+		goodRaceFrame = new ArrayList<Integer>(Arrays.asList(2,3,4));
 	}
 	
 }

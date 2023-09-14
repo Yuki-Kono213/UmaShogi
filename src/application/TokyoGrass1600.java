@@ -17,6 +17,7 @@ public class TokyoGrass1600 extends RaceCourse {
 				+ "上がり1位馬の勝率が高く、上がり3位以内での決着が多い。"
 				+ "決め手が問われるコースといっていいだろう。"
 				+ "枠順の差はなく末脚比べに。";
+		startDistance = "長い";
 	}
 	
 }

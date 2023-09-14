@@ -1,5 +1,8 @@
 package application;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class FukushimaDirt1700 extends RaceCourse {
 	{
 		straightDistance = "短い";
@@ -17,6 +20,8 @@ public class FukushimaDirt1700 extends RaceCourse {
 				+ "小回りダート戦というイメージそのままに、"
 				+ "枠順は1～4枠の内目が優勢。また、脚質も逃げ馬と先行馬の活躍が目立つ。"
 				+ "内、前で競馬できる馬が狙い。";
+		startDistance = "普通";
+		goodRaceFrame = new ArrayList<Integer>(Arrays.asList(1,2,3,4));
 	}
 	
 }

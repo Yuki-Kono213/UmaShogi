@@ -13,6 +13,7 @@ public class KokuraDirt2400 extends RaceCourse {
 		excludeLast3furlong = 116.4;
 		first3furlong = 37.7;
 		last3furlong = 39.1;
+		startDistance = "普通";
 	}
 	
 }

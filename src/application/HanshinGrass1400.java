@@ -1,5 +1,8 @@
 package application;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class HanshinGrass1400 extends RaceCourse {
 	{
 		straightDistance = "";
@@ -17,6 +20,8 @@ public class HanshinGrass1400 extends RaceCourse {
 				+ "3～4コーナーが緩やかな阪神競馬場は外枠不利。"
 				+ "特に1400mではより顕著に表れており、"
 				+ "1～3枠重視で。";
+		startDistance = "長い";
+		goodRaceFrame = new ArrayList<Integer>(Arrays.asList(1,2,3));
 	}
 	
 }

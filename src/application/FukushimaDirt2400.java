@@ -13,6 +13,7 @@ public class FukushimaDirt2400 extends RaceCourse {
 		excludeLast3furlong = 116.9;
 		first3furlong = 37.9;
 		last3furlong = 39.5;
+		startDistance = "普通";
 	}
 	
 }
