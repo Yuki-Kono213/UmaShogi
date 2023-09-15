@@ -1,5 +1,8 @@
 package application;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class NakayamaGrass2500 extends RaceCourse {
 	{
 		straightDistance = "";
@@ -17,6 +20,8 @@ public class NakayamaGrass2500 extends RaceCourse {
 				+ "有馬記念が行われるグランプリ・コースとしておなじみ。"
 				+ "その有馬記念では公開枠順抽選で外枠を引いた陣営の落胆が印象的。"
 				+ "実際に外枠の成績は悪く割り引きたい。";
+		startDistance = "普通";
+		goodRaceFrame = new ArrayList<Integer>(Arrays.asList(1,2,3,4,5,6));
 	}
 	
 }

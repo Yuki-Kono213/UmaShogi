@@ -13,6 +13,7 @@ public class NiigataGrass2000In extends RaceCourse {
 		excludeLast3furlong = 86.2;
 		first3furlong = 36.2;
 		last3furlong = 35.7;
+		startDistance = "長い";
 	}
 	
 }

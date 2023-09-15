@@ -1,5 +1,8 @@
 package application;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class ChukyoGrass1400 extends RaceCourse {
 	{
 		straightDistance = "長い";
@@ -17,6 +20,9 @@ public class ChukyoGrass1400 extends RaceCourse {
 				+ "スタート後は緩やかな上り坂で最初のコーナーまでの距離が長く、"
 				+ "そのため先行争いが起きやすい。直線が長く急坂が待ち構えることも相まって、"
 				+ "基本的に差しが決まりやすい。";
+		startDistance = "長い";
+
+		goodRaceFrame = new ArrayList<Integer>(Arrays.asList(1,2,3,4,5));
 	}
 	
 }

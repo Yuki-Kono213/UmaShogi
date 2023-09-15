@@ -17,6 +17,7 @@ public class TokyoGrass1400 extends RaceCourse {
 				+ "このコースは異常なほどスローペースになりやすく、前残りが多発。"
 				+ "特に頭数が多いほど後方馬のコースロスも大きくなり、"
 				+ "より前の馬に有利な展開になる。";
+		startDistance = "普通";
 	}
 	
 }

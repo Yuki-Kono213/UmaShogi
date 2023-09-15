@@ -1,5 +1,8 @@
 package application;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class KokuraDirt1000 extends RaceCourse {
 	{
 		straightDistance = "短い";
@@ -16,6 +19,8 @@ public class KokuraDirt1000 extends RaceCourse {
 				+ "スタートから下り坂というコースレイアウトで、前半からスピードに乗せやすい。"
 				+ "ハイペースも誘発しそうだが、直線は平坦で短い。"
 				+ "そのまま押し切れるコースでダッシュ力が重要となる。";
+		startDistance = "普通";
+		goodRaceFrame = new ArrayList<Integer>(Arrays.asList(1,2,3,4,5,6));
 	
 	}
 	

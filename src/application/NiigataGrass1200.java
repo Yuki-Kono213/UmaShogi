@@ -1,5 +1,8 @@
 package application;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class NiigataGrass1200 extends RaceCourse {
 	{
 		straightDistance = "";
@@ -16,6 +19,8 @@ public class NiigataGrass1200 extends RaceCourse {
 				+ "クラスによって脚質傾向が異なるのが特徴。"
 				+ "下級条件は逃げ先行が有利。上級条件では好位～中団からの差しも届く。"
 				+ "こちらも追い込み馬は共通して苦戦傾向にある。";
+		startDistance = "長い";
+		goodRaceFrame = new ArrayList<Integer>(Arrays.asList(3,4));
 	}
 	
 }

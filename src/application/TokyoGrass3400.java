@@ -1,5 +1,8 @@
 package application;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class TokyoGrass3400 extends RaceCourse {
 	{
 		straightDistance = "長い";
@@ -17,6 +20,7 @@ public class TokyoGrass3400 extends RaceCourse {
 				+ "ダイヤモンドSのみで利用されるコース。"
 				+ "長距離戦だが道中はペースが緩みやすく、直線の決め手勝負になりやすい。"
 				+ "コースロスもそこまで気にする必要なく、外枠でも良績。";
+		goodRaceFrame = new ArrayList<Integer>(Arrays.asList(5,6,7,8));
 	}
 	
 }

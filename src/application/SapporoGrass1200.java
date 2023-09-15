@@ -1,5 +1,8 @@
 package application;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class SapporoGrass1200 extends RaceCourse {
 	{
 		straightDistance = "短い";
@@ -16,6 +19,8 @@ public class SapporoGrass1200 extends RaceCourse {
 				+ "直線が短くコーナー半径が緩やかな札幌競馬場。"
 				+ "遠心力が働く外枠が不利であることと、"
 				+ "直線が短いので後方待機組が届かないのが大きな特徴である。";
+		startDistance = "長い";
+		goodRaceFrame = new ArrayList<Integer>(Arrays.asList(1,2,3,4,5));
 	}
 	
 }

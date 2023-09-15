@@ -1,5 +1,8 @@
 package application;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class HakodateGrass1200 extends RaceCourse {
 	{
 		straightDistance = "短い";
@@ -16,6 +19,8 @@ public class HakodateGrass1200 extends RaceCourse {
 				+ "JRAの中で最も直線の短い競馬場。"
 				+ "また、ゴールまで下り坂というコースレイアウトのため、基本的に逃げ～好位で競馬をする馬の活躍が目立つ。"
 				+ "8枠は距離ロスが大きく割り引きたい。";
+		startDistance = "長い";
+		goodRaceFrame = new ArrayList<Integer>(Arrays.asList(1,2,3,4,5,6,7));
 	}
 	
 }

@@ -1,5 +1,8 @@
 package application;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class KyotoDirt1900 extends RaceCourse {
 	{
 		straightDistance = "";
@@ -17,6 +20,8 @@ public class KyotoDirt1900 extends RaceCourse {
 				+ "ダート長距離戦はラップに特徴があり、"
 				+ "100m延びるだけで適正が大きく異なる。"
 				+ "速い上がりが必要になり、決め手が問われるコースといえる。";
+		startDistance = "普通";
+		goodRaceFrame = new ArrayList<Integer>(Arrays.asList(4,5,6,7,8));
 	}
 	
 }

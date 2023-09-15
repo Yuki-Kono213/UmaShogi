@@ -1,5 +1,8 @@
 package application;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class HanshinDirt2000 extends RaceCourse {
 	{
 		straightDistance = "";
@@ -17,6 +20,8 @@ public class HanshinDirt2000 extends RaceCourse {
 				+ "ダートの長距離戦に分類される距離で、道中のペースは緩みやすい。"
 				+ "決め手勝負になりやすく、"
 				+ "ダートながら速い上がりが必要となる。";
+		startDistance = "長い";
+		goodRaceFrame = new ArrayList<Integer>(Arrays.asList(2,3));
 	}
 	
 }

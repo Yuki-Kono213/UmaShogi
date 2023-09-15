@@ -1,5 +1,8 @@
 package application;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class NakayamaDirt1800 extends RaceCourse {
 	{
 		straightDistance = "";
@@ -17,6 +20,8 @@ public class NakayamaDirt1800 extends RaceCourse {
 				+ "直線で急坂が待ち構えるタフなコース。枠順は5～8枠の外目が優勢で、"
 				+ "脚質は逃げ馬と先行馬が有利。"
 				+ "道中揉まれるロスを押さえて直線に向かいたい。";
+		startDistance = "普通";
+		goodRaceFrame = new ArrayList<Integer>(Arrays.asList(5,6,7,8));
 	}
 	
 }
