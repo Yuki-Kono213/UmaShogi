@@ -356,6 +356,7 @@ public class SampleController {
 	private Label lblWinWideFiveNagashi;
 
 	@FXML
+<<<<<<< HEAD
 	private Label lblWinAnaHorseThree;
 	@FXML
 	private Label lblWinAnaHorseFour;
@@ -365,6 +366,17 @@ public class SampleController {
 	private Label lblWinAnaHorseSix;
 	@FXML
 	private Label lblWinAnaHorseFiveNagashi;
+=======
+	private Label lblWinUmarenThree;
+	@FXML
+	private Label lblWinUmarenFour;
+	@FXML
+	private Label lblWinUmarenFive;
+	@FXML
+	private Label lblWinUmarenSix;
+	@FXML
+	private Label lblWinUmarenFiveNagashi;
+>>>>>>> branch 'master' of https://github.com/Yuki-Kono213/UmaShogi
 
 	private PastRaceResult prr = new PastRaceResult();
 
@@ -550,6 +562,7 @@ public class SampleController {
 	    }else if (selected == JFileChooser.ERROR_OPTION){
 	    }
 	}
+<<<<<<< HEAD
 
 	ArrayList<HorseData> hDataArrayList = new ArrayList<>();
 	ArrayList<HorseData> hDataAnaArrayList = new ArrayList<>();
@@ -597,6 +610,9 @@ public class SampleController {
 		
 		table.sort();
 	}
+=======
+	    
+>>>>>>> branch 'master' of https://github.com/Yuki-Kono213/UmaShogi
 	public void GetRaceMoney() {
 		try {
 			Document doc = Jsoup.connect(textURL.getText().replace("umabashira.html", "") + "raceresult.html").get();
@@ -606,6 +622,7 @@ public class SampleController {
 			String[]horse4 = null;
 			String[]horse5 = null;
 			String[]horse6 = null;
+<<<<<<< HEAD
 			String[]anaHorse3 = new String[3];
 			String[]anaHorse4 = new String[4];
 			String[]anaHorse5 = new String[5];
@@ -613,6 +630,10 @@ public class SampleController {
 			String[]anaHorse5nagashi = new String[5];
 			String[]horse5nagashi = new String[5];
 			String jikuHorse = hDataArrayList.get(0).getNo();
+=======
+			String[]horse5nagashi = null;
+			hDataArrayList.sort((o1, o2) -> Integer.parseInt(o2.getIndex()) - Integer.parseInt(o1.getIndex()));
+>>>>>>> branch 'master' of https://github.com/Yuki-Kono213/UmaShogi
 			if(hDataArrayList.size() > 2) {
 				horse3 = new String[] {hDataArrayList.get(0).getNo(), hDataArrayList.get(1).getNo(), hDataArrayList.get(2).getNo()};
 				//anaHorse3 = new String[] {hDataAnaArrayList.get(0).getNo(), hDataAnaArrayList.get(1).getNo(), hDataAnaArrayList.get(2).getNo()};
@@ -673,6 +694,7 @@ public class SampleController {
 					,hDataArrayList.get(3).getNo(),hDataArrayList.get(4).getNo(),hDataArrayList.get(5).getNo()};
 				horse5nagashi = new String[]{ hDataArrayList.get(1).getNo(), hDataArrayList.get(2).getNo()
 					,hDataArrayList.get(3).getNo(),hDataArrayList.get(4).getNo(),hDataArrayList.get(5).getNo()};
+<<<<<<< HEAD
 				//anaHorse6 = new String[] {hDataAnaArrayList.get(0).getNo(), hDataAnaArrayList.get(1).getNo(), hDataAnaArrayList.get(2).getNo()
 				//		, hDataAnaArrayList.get(3).getNo(), hDataAnaArrayList.get(4).getNo(), hDataAnaArrayList.get(5).getNo()};
 			
@@ -698,24 +720,43 @@ public class SampleController {
 						break;
 					}
 				}
+=======
+>>>>>>> branch 'master' of https://github.com/Yuki-Kono213/UmaShogi
 			}
 			
 			
 			String[] wideArray = wide.get(3).text().replace(",", "").replace("円","").split(" ");
+<<<<<<< HEAD
 			//String[] anaHorseArray = wide.get(6).text().replace(",", "").replace("円","").split(" ");
 			String[] anaHorseArray = wideArray;
+=======
+			String[] umarenArray = wide.get(6).text().replace(",", "").replace("円","").split(" ");
+>>>>>>> branch 'master' of https://github.com/Yuki-Kono213/UmaShogi
 			String[] wideNoArray = wideNo.get(3).text().split(" ");
+<<<<<<< HEAD
 			String[] anaHorseNoArray = wideNo.get(6).text().split(" ");
+=======
+			String[] umarenNoArray = wideNo.get(6).text().split(" ");
+>>>>>>> branch 'master' of https://github.com/Yuki-Kono213/UmaShogi
 			int horse3int = 0;
 			int horse4int = 0;
 			int horse5int = 0;
 			int horse6int = 0;
 			int horseNagashi5int = 0;
+<<<<<<< HEAD
 			int anaHorse3int = 0;
 			int anaHorse4int = 0;
 			int anaHorse5int = 0;
 			int anaHorse6int = 0;
 			int anaHorseNagashi5int = 0;
+=======
+			int horseUmaren3int = 0;
+			int horseUmaren4int = 0;
+			int horseUmaren5int = 0;
+			int horseUmaren6int = 0;
+			int horseUmarenNagashi5int = 0;
+			String jikuHorse = hDataArrayList.get(0).getNo();
+>>>>>>> branch 'master' of https://github.com/Yuki-Kono213/UmaShogi
 			for (int i =0; i < wideArray.length; i++) {
 				Wide w = new Wide(wideNoArray[i].split("-")[0], wideNoArray[i].split("-")[1], Integer.parseInt(wideArray[i]));
 				if(horse3 != null && Arrays.asList(horse3).contains(Util.RankTableMap.get(w.one)) && Arrays.asList(horse3).contains(Util.RankTableMap.get(w.two)) ) {
@@ -738,6 +779,7 @@ public class SampleController {
 				}
 			}
 			
+<<<<<<< HEAD
 			for (int i =0; i < anaHorseArray.length; i++) {
 				Wide w = new Wide(wideNoArray[i].split("-")[0], wideNoArray[i].split("-")[1], Integer.parseInt(anaHorseArray[i]));
 				if(anaHorse3 != null && Arrays.asList(anaHorse3).contains(Util.RankTableMap.get(w.one)) && Arrays.asList(anaHorse3).contains(Util.RankTableMap.get(w.two)) ) {
@@ -757,6 +799,27 @@ public class SampleController {
 				if(horse5nagashi != null && (jikuHorse.contains(Util.RankTableMap.get(w.one)) || jikuHorse.contains(Util.RankTableMap.get(w.two)))
 						&& (Arrays.asList(anaHorse5nagashi).contains(Util.RankTableMap.get(w.one))||Arrays.asList(anaHorse5nagashi).contains(Util.RankTableMap.get(w.two)))) {
 					anaHorseNagashi5int += w.money;
+=======
+			for (int i =0; i < umarenArray.length; i++) {
+				Wide w = new Wide(umarenNoArray[i].split("-")[0], umarenNoArray[i].split("-")[1], Integer.parseInt(umarenArray[i]));
+				if(horse3 != null && Arrays.asList(horse3).contains(Util.RankTableMap.get(w.one)) && Arrays.asList(horse3).contains(Util.RankTableMap.get(w.two)) ) {
+					horseUmaren3int += w.money;
+				}
+				
+				if(horse4 != null && Arrays.asList(horse4).contains(Util.RankTableMap.get(w.one)) && Arrays.asList(horse4).contains(Util.RankTableMap.get(w.two)) ) {
+					horseUmaren4int += w.money;
+				}
+				
+				if(horse5 != null && Arrays.asList(horse5).contains(Util.RankTableMap.get(w.one)) && Arrays.asList(horse5).contains(Util.RankTableMap.get(w.two)) ) {
+					horseUmaren5int += w.money;
+				}
+				if(horse6 != null && Arrays.asList(horse6).contains(Util.RankTableMap.get(w.one)) && Arrays.asList(horse6).contains(Util.RankTableMap.get(w.two)) ) {
+					horseUmaren6int += w.money;
+				}
+				if(horse5nagashi != null && (jikuHorse.contains(Util.RankTableMap.get(w.one)) || jikuHorse.contains(Util.RankTableMap.get(w.two)))
+						&& (Arrays.asList(horse5nagashi).contains(Util.RankTableMap.get(w.one))||Arrays.asList(horse5nagashi).contains(Util.RankTableMap.get(w.two)))) {
+					horseUmarenNagashi5int += w.money;
+>>>>>>> branch 'master' of https://github.com/Yuki-Kono213/UmaShogi
 				}
 			}
 			
@@ -775,20 +838,37 @@ public class SampleController {
 			lblWinWideFive.setText(String.valueOf(horse5int));
 			lblWinWideSix.setText(String.valueOf(horse6int));
 			lblWinWideFiveNagashi.setText(String.valueOf(horseNagashi5int));
+<<<<<<< HEAD
 			lblWinAnaHorseThree.setText(String.valueOf(anaHorse3int));
 			lblWinAnaHorseFour.setText(String.valueOf(anaHorse4int));
 			lblWinAnaHorseFive.setText(String.valueOf(anaHorse5int));
 			lblWinAnaHorseSix.setText(String.valueOf(anaHorse6int));
 			lblWinAnaHorseFiveNagashi.setText(String.valueOf(anaHorseNagashi5int));
+=======
+			lblWinUmarenThree.setText(String.valueOf(horseUmaren3int));
+			lblWinUmarenFour.setText(String.valueOf(horseUmaren4int));
+			lblWinUmarenFive.setText(String.valueOf(horseUmaren5int));
+			lblWinUmarenSix.setText(String.valueOf(horseUmaren6int));
+			lblWinUmarenFiveNagashi.setText(String.valueOf(horseUmarenNagashi5int));
+>>>>>>> branch 'master' of https://github.com/Yuki-Kono213/UmaShogi
 			new RaceDB().UseRaceDataBase(
 					new String[] {"updateMoney", rdm.RaceURL,lblWinWideThree.getText(), lblWinWideFour.getText() 
 							, lblWinWideFive.getText() , lblWinWideSix.getText(), lblWinWideFiveNagashi.getText()
+<<<<<<< HEAD
 							, lblWinAnaHorseThree.getText(), lblWinAnaHorseFour.getText() 
 							, lblWinAnaHorseFive.getText() , lblWinAnaHorseSix.getText(), lblWinAnaHorseFiveNagashi.getText() });
 			System.out.println(lblWinWideThree.getText() + " " + lblWinWideFour.getText() + " " +
 					lblWinWideFive.getText() + " " + lblWinWideSix.getText() + " " +  lblWinWideFiveNagashi.getText());
 			System.out.println(lblWinAnaHorseThree.getText() + " " + lblWinAnaHorseFour.getText() + " " +
 					lblWinAnaHorseFive.getText() + " " + lblWinAnaHorseSix.getText() + " " +  lblWinAnaHorseFiveNagashi.getText());
+=======
+							, lblWinUmarenThree.getText(), lblWinUmarenFour.getText() 
+							, lblWinUmarenFive.getText() , lblWinUmarenSix.getText(), lblWinUmarenFiveNagashi.getText() });
+			System.out.println(lblWinWideThree.getText() + " " + lblWinWideFour.getText() + " " +
+					lblWinWideFive.getText() + " " + lblWinWideSix.getText() + " " +  lblWinWideFiveNagashi.getText());
+			System.out.println(lblWinUmarenThree.getText() + " " + lblWinUmarenFour.getText() + " " +
+					lblWinUmarenFive.getText() + " " + lblWinUmarenSix.getText() + " " +  lblWinUmarenFiveNagashi.getText());
+>>>>>>> branch 'master' of https://github.com/Yuki-Kono213/UmaShogi
 			
 		} catch (IOException e) {
 			// TODO 自動生成された catch ブロック
@@ -1065,6 +1145,7 @@ public class SampleController {
 			new RaceDB().execute(new String[]{"pastReturn",labelRaceDate.getText().split("/")[0],labelRaceStage.getText(), 
 					labelRaceRange.getText().replace("芝", "").replace("ダ","" ).replace("m", ""),
 					String.valueOf(rdm.grass),raceCount,condition, hande});
+<<<<<<< HEAD
 			if(LocalDate.now()
 				.isEqual(LocalDate.parse(labelRaceDate.getText(),
 						DateTimeFormatter.ofPattern("yyyy/[]M/[]d")))
@@ -1086,6 +1167,20 @@ public class SampleController {
 				lblWinAnaHorseFiveNagashi.setText(pastGetStrings[10]);
 				lblPastPercentage.setText(pastGetStrings[11] + "%");
 			}
+=======
+			lblPastCount.setText(pastGetStrings[0] + "回");
+			lblWinWideThree.setText(pastGetStrings[1]);
+			lblWinWideFour.setText(pastGetStrings[2]);
+			lblWinWideFive.setText(pastGetStrings[3]);
+			lblWinWideSix.setText(pastGetStrings[4]);
+			lblWinWideFiveNagashi.setText(pastGetStrings[5]);
+			lblWinUmarenThree.setText(pastGetStrings[6]);
+			lblWinUmarenFour.setText(pastGetStrings[7]);
+			lblWinUmarenFive.setText(pastGetStrings[8]);
+			lblWinUmarenSix.setText(pastGetStrings[9]);
+			lblWinUmarenFiveNagashi.setText(pastGetStrings[10]);
+			lblPastPercentage.setText(pastGetStrings[11] + "%");
+>>>>>>> branch 'master' of https://github.com/Yuki-Kono213/UmaShogi
 			txtThisPaddockURL.setText(
 					"https://regist.prc.jp/api/windowopen.aspx?target=race/" + labelRaceDate.getText().substring(0, 4)
 							+ "/" + labelRaceDate.getText().substring(0, 10).replace("/", "") + "/"
@@ -1642,8 +1737,13 @@ public class SampleController {
 		HorseData horseData = new HorseData(strArray[h.number], h.name, analysis, horseString,
 				pastRaceCondition, raceRange, labelRaceRange.getText(), address, raceLevel, jockeyWeight, cornerShape,
 				grassStart, raceGround, rotationSide, rotationSize, straightDistance, straightSlope, jockey, condition
+<<<<<<< HEAD
 				,h.frame, h.rate, h.position);
 		//table.getItems().add(horseData);
+=======
+				,h.frame, h.rate);
+		table.getItems().add(horseData);
+>>>>>>> branch 'master' of https://github.com/Yuki-Kono213/UmaShogi
 		horseDataArray[index] = horseData;
 		horseArray[index] = h;
 

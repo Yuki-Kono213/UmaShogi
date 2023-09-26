@@ -274,6 +274,7 @@ public class RaceDB {
 				e.printStackTrace();
 			};
 			if(hande.equals("ハンデ")) {
+<<<<<<< HEAD
 				System.out.println(hande);
 				hande = "";
 			}
@@ -332,6 +333,47 @@ public class RaceDB {
 						}
 						else {
 							SampleController.pastGetStrings = new String[13];
+=======
+				hande = "";
+			}
+			else {
+				hande = "ハンデ";
+			}
+			System.out.println(year);
+				ResultSet resultSet = _statement.executeQuery(
+						"SELECT COUNT( * ), SUM (WIDE3) / COUNT( * ), SUM (WIDE4) / COUNT( * ), SUM (WIDE5) / COUNT( * ), SUM (WIDE6) / COUNT( * ),SUM(WIDE5NAGASHI)/COUNT(*),"
+						+ "SUM (UMAREN3) / COUNT( * ), SUM (UMAREN4) / COUNT( * ), SUM (UMAREN5) / COUNT( * ), SUM (UMAREN6) / COUNT( * ),"
+						+ "SUM(UMAREN5NAGASHI)/COUNT(*),COUNT(WIDE5 > 0 OR NULL) * 100 / COUNT( * ) "
+						+ " FROM " +  TABLE_NAME + " WHERE WIDE4 IS NOT NULL"
+						+ " AND (RACEURL LIKE '%"+year+"%')AND NOT NAME LIKE '%新馬%'AND NOT NAME LIKE '%2歳%'AND NOT AGE LIKE '%障害%'"
+						+ " AND HANDE != '"+hande+"' AND CONDITION = '"+condition+"' AND COUNT = "+Integer.parseInt(count)+" AND STAGE = '"+stage+"'"
+						+ " AND RANGE = "+Integer.parseInt(range)+" AND GRASS = "+Boolean.parseBoolean(grass)+"");
+				System.out.println(resultSet);
+				try{
+					boolean br = resultSet.first();
+					if(br == false) {
+						return;
+					}
+					do{
+						if(resultSet.getInt(1) > 2 || Integer.parseInt(year) > 2022) {
+						String Count = String.valueOf(resultSet.getInt(1));
+						String wide3 = String.valueOf(resultSet.getInt(2));
+						String wide4 = String.valueOf(resultSet.getInt(3));
+						String wide5 = String.valueOf(resultSet.getInt(4));
+						String wide6 = String.valueOf(resultSet.getInt(5));
+						String wide5nagashi = String.valueOf(resultSet.getInt(6));
+						String umaren3 = String.valueOf(resultSet.getInt(7));
+						String umaren4 = String.valueOf(resultSet.getInt(8));
+						String umaren5 = String.valueOf(resultSet.getInt(9));
+						String umaren6 = String.valueOf(resultSet.getInt(10));
+						String umaren5nagashi = String.valueOf(resultSet.getInt(11));
+						String wide5Percentage = String.valueOf(resultSet.getInt(12));
+						SampleController.pastGetStrings = new String[]{Count, wide3, wide4, wide5, wide6, wide5nagashi
+								, umaren3, umaren4, umaren5, umaren6, umaren5nagashi, wide5Percentage};
+						}
+						else {
+							SampleController.pastGetStrings = new String[11];
+>>>>>>> branch 'master' of https://github.com/Yuki-Kono213/UmaShogi
 						}
 					}while(resultSet.next());
 				}finally{

@@ -178,10 +178,18 @@
       <Label fx:id="lblWinWideFive" layoutX="736.0" layoutY="310.0" text="W5" />
       <Label fx:id="lblWinWideSix" layoutX="786.0" layoutY="310.0" text="W6" />
       <Label fx:id="lblWinWideFiveNagashi" layoutX="836.0" layoutY="310.0" text="W5n" />
+<<<<<<< HEAD
       <Label fx:id="lblWinAnaHorseThree" layoutX="636.0" layoutY="325.0" text="U3" />
       <Label fx:id="lblWinAnaHorseFour" layoutX="686.0" layoutY="325.0" text="U4" />
       <Label fx:id="lblWinAnaHorseFive" layoutX="736.0" layoutY="325.0" text="U5" />
       <Label fx:id="lblWinAnaHorseSix" layoutX="786.0" layoutY="325.0" text="U6" />
       <Label fx:id="lblWinAnaHorseFiveNagashi" layoutX="836.0" layoutY="325.0" text="U5n" />
+=======
+      <Label fx:id="lblWinUmarenThree" layoutX="636.0" layoutY="325.0" text="U3" />
+      <Label fx:id="lblWinUmarenFour" layoutX="686.0" layoutY="325.0" text="U4" />
+      <Label fx:id="lblWinUmarenFive" layoutX="736.0" layoutY="325.0" text="U5" />
+      <Label fx:id="lblWinUmarenSix" layoutX="786.0" layoutY="325.0" text="U6" />
+      <Label fx:id="lblWinUmarenFiveNagashi" layoutX="836.0" layoutY="325.0" text="U5n" />
+>>>>>>> branch 'master' of https://github.com/Yuki-Kono213/UmaShogi
       </children>
 </AnchorPane>

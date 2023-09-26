@@ -36,7 +36,11 @@ public class HorseData
 	private String goodRace;
 	private String pastRace;
 	private String address;
+<<<<<<< HEAD
 	public Double rate;
+=======
+	private Double rate;
+>>>>>>> branch 'master' of https://github.com/Yuki-Kono213/UmaShogi
 	
 	private String raceLevel;
 
@@ -88,7 +92,11 @@ public class HorseData
 	{this.index = "0";}
 	  public HorseData(String no, String name, String analysis, List<String> horseString, List<String>pastRaceCondition, int raceRange, String maxRaceField, String address,
 			  String raceLevel, Double thisWeight, String cornerShape, String grassStart,String  raceGround, String rotationSide, String rotationSize, String straightDistance, 
+<<<<<<< HEAD
 			  String straightSlope, String thisRaceJockey, String condition, int frame, Double rate, int position) {
+=======
+			  String straightSlope, String thisRaceJockey, String condition, int frame, Double rate) {
+>>>>>>> branch 'master' of https://github.com/Yuki-Kono213/UmaShogi
 		  	 
 		  	 this.raceLevel = raceLevel;
 			 this.no = no;
@@ -167,7 +175,10 @@ public class HorseData
 //			 this.condition = condition;
 			 this.thisRaceFrame = frame;
 			 this.rate = rate;
+<<<<<<< HEAD
 			 this.position = position;
+=======
+>>>>>>> branch 'master' of https://github.com/Yuki-Kono213/UmaShogi
 			 calcIndex(raceRange, maxRaceField);
 	  }
 	  public HorseData(String raceLevel) {
@@ -227,7 +238,10 @@ public class HorseData
 			(LocalDate.now().getDayOfWeek() == DayOfWeek.SUNDAY &&  SampleController.staticRaceDate.getDayOfWeek() != DayOfWeek.SATURDAY)) 
 			||	SampleController.staticRaceDate.isBefore(LocalDate.now()))) {
 			this.index = "0";
+<<<<<<< HEAD
 			this.anaIndex = "0";
+=======
+>>>>>>> branch 'master' of https://github.com/Yuki-Kono213/UmaShogi
 			return;
 		}
 		int base = 0;
@@ -405,7 +419,12 @@ public class HorseData
 		}
 		else 
 		{
+<<<<<<< HEAD
 			double totalscore = Double.parseDouble(this.behind) * 120000 / ((double)rangeOrigin * 100 /  raceRange) / gradeDiff * 1600 / raceRange;
+=======
+			Double differance = Double.parseDouble(this.behind);
+			double totalscore = differance * 120000 / ((double)rangeOrigin * 100 /  raceRange) / gradeDiff * 1600 / raceRange;
+>>>>>>> branch 'master' of https://github.com/Yuki-Kono213/UmaShogi
 			
 			if(totalscore > 2000) {
 				totalscore = 2000;
@@ -424,7 +443,11 @@ public class HorseData
 		}
 		else if(raceRange >= 1500 && raceRange <= 2000) {
 			jockeyRate = 60;
+<<<<<<< HEAD
 			falongRate = 300;
+=======
+			//falongRate = 300;
+>>>>>>> branch 'master' of https://github.com/Yuki-Kono213/UmaShogi
 		}
 		if(range.contains("ダ")) {
 			dirtHosei(this.stage, rangeOrigin, raceRate);
@@ -442,7 +465,53 @@ public class HorseData
 			
 			if(this.courseThisRace.textString.contains("：逃げ")) {
 
+<<<<<<< HEAD
 				//firstDifference += calcStartTime(range);
+=======
+				firstDifference += (this.first3furlong - this.courseBeforeRace.first3furlong);
+			}
+			if(this.courseThisRace.textString.contains("：差し") || this.courseThisRace.textString.contains("・差し") ) {
+
+				finalDifference += calcAgariTime(maxRaceField, range);
+			}
+			if(this.courseThisRace.textString.contains("・追い込み") ) {
+				finalDifference += calcAgariTime(maxRaceField, range);
+			}
+			if((this.courseThisRace.courseName.contains("阪神ダート1200") 
+					) && thisRaceGradeDiff >= 1.10) {
+				finalDifference += calcAgariTime(maxRaceField, range);
+			}
+
+			if(rangeOrigin > raceRange && rangeOrigin - raceRange > 650 && finalDifference > 0.4) 
+			{
+				finalDifference = 0.4;
+				if(firstDifference + finalDifference <= -0.4) {
+
+					//firstDifference /= 2;
+				}
+				
+			}
+			else if(rangeOrigin > raceRange && rangeOrigin - raceRange > 350 && finalDifference > 0.6) 
+			{
+				finalDifference = 0.6;
+				if(firstDifference + finalDifference <= -0.60) {
+
+					//firstDifference /= 2;
+				}
+				
+			}
+			else if(rangeOrigin > raceRange && finalDifference > 0.8) 
+			{
+				finalDifference = 0.8;
+				if(firstDifference + finalDifference <= -0.8) {
+
+					//firstDifference /= 2;
+				}
+			}
+			
+			if(firstDifference > 1.5 && raceRange > 1400) {
+				firstDifference = 1.5;
+>>>>>>> branch 'master' of https://github.com/Yuki-Kono213/UmaShogi
 			}
 			if(this.courseThisRace.textString.contains("：先行") || this.courseThisRace.textString.contains("・先行") ) {
 
@@ -459,6 +528,7 @@ public class HorseData
 					) && thisRaceGradeDiff >= 1.10) {
 				//finalDifference += calcAgariTime(maxRaceField, range);
 			}
+<<<<<<< HEAD
 
 			if(thisRaceGradeDiff >= 1.05) {
 				finalDifference += calcAgariTime(maxRaceField, range);
@@ -502,6 +572,8 @@ public class HorseData
 			else if(finalDifference > 0.7) {
 				finalDifference = 0.7;
 			}
+=======
+>>>>>>> branch 'master' of https://github.com/Yuki-Kono213/UmaShogi
 			score += (firstDifference + finalDifference)* falongRate;
 
 		}
@@ -509,6 +581,7 @@ public class HorseData
 			Double firstDifference = this.excludeLast3furlong - this.courseBeforeRace.excludeLast3furlong;
 			Double finalDifference = this.last3furlong - this.courseBeforeRace.last3furlong;
 
+<<<<<<< HEAD
 
 			if(this.courseThisRace.textString.contains("：逃げ")) {
 
@@ -572,6 +645,62 @@ public class HorseData
 			}
 			else if(finalDifference > 0.7) {
 				finalDifference = 0.7;
+=======
+			if(this.courseThisRace.textString.contains("：逃げ")) {
+
+				firstDifference += (this.first3furlong - this.courseBeforeRace.first3furlong);
+			}
+			if(this.courseThisRace.textString.contains("：差し") || this.courseThisRace.textString.contains("・差し") ) {
+
+				finalDifference += calcAgariTime(maxRaceField, range);
+			}
+			if(this.courseThisRace.textString.contains("・追い込み") ) {
+				finalDifference += calcAgariTime(maxRaceField, range);
+			}
+			if((this.courseThisRace.courseName.contains("阪神ダート1200") 
+					) && thisRaceGradeDiff >= 1.10) {
+				finalDifference += calcAgariTime(maxRaceField, range);
+			}
+			
+			if(rangeOrigin > raceRange && rangeOrigin - raceRange > 650 && finalDifference > 0.4) 
+			{
+				finalDifference = 0.4;
+				if(firstDifference + finalDifference <= -0.4) {
+
+					//firstDifference /= 2;
+				}
+				
+			}
+			else if(rangeOrigin > raceRange && rangeOrigin - raceRange > 350 && finalDifference > 0.6) 
+			{
+				finalDifference = 0.6;
+				if(firstDifference + finalDifference <= -0.60) {
+
+					//firstDifference /= 2;
+				}
+				
+			}
+			else if(rangeOrigin > raceRange && finalDifference > 0.8) 
+			{
+				finalDifference = 0.8;
+				if(firstDifference + finalDifference <= -0.8) {
+
+					//firstDifference /= 2;
+				}
+			}
+			
+			if(firstDifference > 1.5 && raceRange > 1400) {
+				firstDifference = 1.5;
+			}
+			else if(firstDifference > 1.0) {
+				firstDifference = 1.0;
+			}
+			if(finalDifference > 1.5 && raceRange > 1400) {
+				finalDifference = 1.5;
+			}
+			else if(finalDifference > 1.0) {
+				finalDifference = 1.0;
+>>>>>>> branch 'master' of https://github.com/Yuki-Kono213/UmaShogi
 			}
 			score += (firstDifference + finalDifference )* falongRate;
 					
@@ -698,6 +827,7 @@ public class HorseData
         return str.replaceAll("[\\d]", "");
     }
 	int totalscore;
+<<<<<<< HEAD
 	private Double calcStartTime(String raceRange) {
 		Double pastFirstTime = this.first3furlong - courseBeforeRace.first3furlong;
 		if(!this.pastMaxSpeedLast.equals("一年未走")) {
@@ -730,6 +860,8 @@ public class HorseData
 		
 		return pastFirstTime;
 	}
+=======
+>>>>>>> branch 'master' of https://github.com/Yuki-Kono213/UmaShogi
 	private Double calcAgariTime(String maxRaceField, String raceRange) {
 		double difference = 0.0;
 		if(!this.pastMaxSpeedLast.equals("一年未走")) {
@@ -856,7 +988,11 @@ public class HorseData
 	
 	private void dirtHosei(String stage, int raceRange, int coefficient) {
 
+<<<<<<< HEAD
 		timeHosei = 0.950;
+=======
+		timeHosei = 0.955;
+>>>>>>> branch 'master' of https://github.com/Yuki-Kono213/UmaShogi
 		if(stage.contains("稍"))
 		{
 			score += 30 * ((double)raceRange / 600 ) * coefficient / 10;
@@ -901,7 +1037,11 @@ public class HorseData
 		cnt += calcHorse[2] * 20;
 		
 		if(thisRaceGradeDiff <= 1.05) {
+<<<<<<< HEAD
 			cnt /= 2;
+=======
+			//cnt /= 2;
+>>>>>>> branch 'master' of https://github.com/Yuki-Kono213/UmaShogi
 		}
 		cnt *= 10;
 		cnt /= (calcHorse[0] + calcHorse[1] + calcHorse[2] + calcHorse[3] + 1);
