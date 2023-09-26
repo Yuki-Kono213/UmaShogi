@@ -1,5 +1,8 @@
 package application;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class HakodateGrass2600 extends RaceCourse {
 	{
 		straightDistance = "短い";
@@ -17,6 +20,7 @@ public class HakodateGrass2600 extends RaceCourse {
 				+ "他の競馬場の芝コースと比較して、やや差し馬も届くコース。"
 				+ "とはいえ、基本的には先行有利は変わらず、4コーナー5番手以内が理想。"
 				+ "差し馬も中盤までに押し上げられる馬を。";
+		goodRaceFrame = new ArrayList<Integer>(Arrays.asList(2,3,4,5));
 	}
 	
 }

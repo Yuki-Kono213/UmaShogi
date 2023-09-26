@@ -9,6 +9,7 @@ import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
+import java.util.concurrent.locks.Condition;
 
 public class RaceDB {
 
@@ -151,7 +152,10 @@ public class RaceDB {
 				executeUpdateRace(args[1],args[2],args[3],args[4],args[5],args[6],args[7],args[8],args[9],args[10],args[11],args[12]);
 			}else if("updateMoney".equals(command)) {
 				System.out.println(args[1]);
-				executeUpdateMoney(args[1],args[2],args[3],args[4], args[5]);
+				executeUpdateMoney(args[1],args[2],args[3],args[4], args[5], args[6],args[7],args[8],args[9], args[10], args[11]);
+			}
+			else if("pastReturn".equals(command)) {
+				executeReturnAverageRace(args[1],args[2],args[3],args[4],args[5],args[6],args[7]);
 			}
 		}
 		
@@ -250,14 +254,91 @@ public class RaceDB {
 				
 			}
 		
-		private void executeUpdateMoney(String url, String wide3, String wide4, String wide5, String wide6) 
+		private void executeUpdateMoney(String url, String wide3, String wide4, String wide5, String wide6, String wide5Nagashi
+				, String umaren3, String umaren4, String umaren5, String umaren6, String umaren5Nagashi) 
 				throws SQLException{
 				// SQL文を発行
-				int updateCount = _statement.executeUpdate("UPDATE "+ TABLE_NAME + " SET (WIDE3,WIDE4,WIDE5,WIDE6) = " 
-						+  "('"+Integer.parseInt(wide3)+"','"+Integer.parseInt(wide4)+"','"+Integer.parseInt(wide5)+"','"+Integer.parseInt(wide6)+"') WHERE RACEURL = '"+url+"'");
+				int updateCount = _statement.executeUpdate("UPDATE "+ TABLE_NAME + " SET (WIDE3,WIDE4,WIDE5,WIDE6,WIDE5NAGASHI,UMAREN3,UMAREN4,UMAREN5,UMAREN6,UMAREN5NAGASHI) = " 
+						+  "('"+Integer.parseInt(wide3)+"','"+Integer.parseInt(wide4)+"','"+Integer.parseInt(wide5)+"'"
+								+ ",'"+Integer.parseInt(wide6)+"','"+Integer.parseInt(wide5Nagashi)+"'" 
+								+ ",'"+Integer.parseInt(umaren3)+"','"+Integer.parseInt(umaren4)+"','"+Integer.parseInt(umaren5)+"'"
+								+ ",'"+Integer.parseInt(umaren6)+"','"+Integer.parseInt(umaren5Nagashi)+ "') WHERE RACEURL = '"+url+"'");
 				}
 				
+		private void executeReturnAverageRace(String year, String stage, String range, String grass, String count, String condition, String hande)
+			throws SQLException{
+			try {
+				create();
+			} catch (ClassNotFoundException | SQLException e) {
+				// TODO 自動生成された catch ブロック
+				e.printStackTrace();
+			};
+			if(hande.equals("ハンデ")) {
+				System.out.println(hande);
+				hande = "";
+			}
+			else {
+				hande = "ハンデ";
+			}
+			System.out.println(year);
+				ResultSet resultSetBefore =_statement.executeQuery(
+					"SELECT COUNT( * )"
+					+ " FROM " +  TABLE_NAME + " WHERE WIDE4 IS NOT NULL"
+					+ " AND (RACEURL LIKE '%"+year+"%')AND NOT NAME LIKE '%新馬%'AND NOT NAME LIKE '%2歳%'AND NOT AGE LIKE '%障害%'"
+					+ " AND NOT HANDE LIKE '%"+hande+"%' AND CONDITION = '"+condition+"' AND COUNT = "+Integer.parseInt(count)+" AND STAGE = '"+stage+"'"
+					+ " AND RANGE = "+Integer.parseInt(range)+" AND GRASS = "+Boolean.parseBoolean(grass)+"");
+				try{
+				boolean brb = resultSetBefore.first();
+				if(brb == false || resultSetBefore.getInt(1) == 0) {
+					return;
+				}
+				do{
+				}while(resultSetBefore.next());
+				}finally{
+					resultSetBefore.close();
+					SampleController.pastGetStrings = new String[13];
+				}
+
+				ResultSet resultSet = _statement.executeQuery(
+						"SELECT COUNT( * ), SUM (WIDE3) / COUNT( * ), SUM (WIDE4) / COUNT( * ), SUM (WIDE5) / COUNT( * ), SUM (WIDE6) / COUNT( * ),SUM(WIDE5NAGASHI)/COUNT(*),"
+						+ "SUM (UMAREN3) / COUNT( * ), SUM (UMAREN4) / COUNT( * ), SUM (UMAREN5) / COUNT( * ), SUM (UMAREN6) / COUNT( * ),"
+						+ "SUM(UMAREN5NAGASHI)/COUNT(*),COUNT(WIDE5 > 0 OR NULL) * 100 / COUNT( * ) "
+						+ " FROM " +  TABLE_NAME + " WHERE WIDE4 IS NOT NULL"
+						+ " AND (RACEURL LIKE '%"+year+"%')AND NOT NAME LIKE '%新馬%'AND NOT NAME LIKE '%2歳%'AND NOT AGE LIKE '%障害%'"
+						+ " AND HANDE != '"+hande+"' AND CONDITION = '"+condition+"' AND COUNT = "+Integer.parseInt(count)+" AND STAGE = '"+stage+"'"
+						+ " AND RANGE = "+Integer.parseInt(range)+" AND GRASS = "+Boolean.parseBoolean(grass)+"");
+				System.out.println(resultSet);
+				try{
+					boolean br = resultSet.first();
+					if(br == false) {
+						return;
+					}
+					do{
+						if((resultSet.getInt(1) > 2 || Integer.parseInt(year) > 2022)) {
+						String Count = String.valueOf(resultSet.getInt(1));
+						String wide3 = String.valueOf(resultSet.getInt(2));
+						String wide4 = String.valueOf(resultSet.getInt(3));
+						String wide5 = String.valueOf(resultSet.getInt(4));
+						String wide6 = String.valueOf(resultSet.getInt(5));
+						String wide5nagashi = String.valueOf(resultSet.getInt(6));
+						String umaren3 = String.valueOf(resultSet.getInt(7));
+						String umaren4 = String.valueOf(resultSet.getInt(8));
+						String umaren5 = String.valueOf(resultSet.getInt(9));
+						String umaren6 = String.valueOf(resultSet.getInt(10));
+						String umaren5nagashi = String.valueOf(resultSet.getInt(11));
+						String wide5Percentage = String.valueOf(resultSet.getInt(12));
+						SampleController.pastGetStrings = new String[]{Count, wide3, wide4, wide5, wide6, wide5nagashi
+								, umaren3, umaren4, umaren5, umaren6, umaren5nagashi, wide5Percentage};
+						}
+						else {
+							SampleController.pastGetStrings = new String[13];
+						}
+					}while(resultSet.next());
+				}finally{
+					resultSet.close();
+				}
 			
+		}
 		/**
 		 * INSERT処理を実行します。
 		 * @param id

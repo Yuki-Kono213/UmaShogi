@@ -1,5 +1,8 @@
 package application;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class KyotoGrass3000 extends RaceCourse {
 	{
 		straightDistance = "長い";
@@ -17,6 +20,7 @@ public class KyotoGrass3000 extends RaceCourse {
 				+ "菊花賞で使用されるコース。近年は外枠からも好走例が多い。"
 				+ "それよりもポジショニングが重要で、好走するには4コーナー5番手以内が理想。"
 				+ "スタミナを活かす早めの競馬で。";
+		goodRaceFrame = new ArrayList<Integer>(Arrays.asList(6,7));
 	}
 	
 }

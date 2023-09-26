@@ -1,5 +1,8 @@
 package application;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class SapporoGrass1500 extends RaceCourse {
 	{
 		straightDistance = "短い";
@@ -17,6 +20,7 @@ public class SapporoGrass1500 extends RaceCourse {
 				+ "1500mという札幌競馬場のみで行われる距離設定。"
 				+ "マイルに近く、決め手が重要になるコースといえる。"
 				+ "先行、もしくはある程度のポジションが取れる差し馬が優勢。";
+		goodRaceFrame = new ArrayList<Integer>(Arrays.asList(1,2,3,4,5,6));
 	}
 	
 }

@@ -1,5 +1,8 @@
 package application;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class KyotoDirt1400 extends RaceCourse {
 	{
 		straightDistance = "";
@@ -17,6 +20,8 @@ public class KyotoDirt1400 extends RaceCourse {
 				+ "芝スタートながら枠順による有利不利は少なく、"
 				+ "わずかに外側が有利といった程度。芝でスピードがつきやすく、"
 				+ "その分、逃げ馬の勝率は1200mより落ちる。";
+		startDistance = "長い";
+		goodRaceFrame = new ArrayList<Integer>(Arrays.asList(5,6,7,8));
 	}
 	
 }

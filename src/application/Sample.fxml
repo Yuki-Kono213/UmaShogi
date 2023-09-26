@@ -37,16 +37,19 @@
       <Label layoutX="14.0" layoutY="13.0" text="URL" />
       <Label layoutX="-160.0" layoutY="32.0" text="Label" />
       <TextField fx:id="textURL" layoutX="57.0" layoutY="9.0" prefHeight="26.0" prefWidth="370.0" />
-      <Button layoutX="430.0" layoutY="9.0" mnemonicParsing="false" onAction="#GetURL" text="URL取得" />
-      <Button layoutX="500.0" layoutY="9.0" mnemonicParsing="false" onAction="#ReGetURL" text="再取得" />
-      <Button layoutX="570.0" layoutY="9.0" mnemonicParsing="false" onAction="#GetRaceMoney" text="指数" />
+      <Button layoutX="420.0" layoutY="9.0" mnemonicParsing="false" onAction="#GetURL" text="URL取得" />
+      <Button layoutX="480.0" layoutY="9.0" mnemonicParsing="false" onAction="#ReGetURL" text="再取得" />
+      <Button layoutX="540.0" layoutY="9.0" mnemonicParsing="false" onAction="#GetRaceMoney" text="指数" />
+      <Button layoutX="590.0" layoutY="9.0" mnemonicParsing="false" onAction="#GetRaceMoneyFile" text="File" />
       <Label layoutX="626.0" layoutY="144.0" text="場名" />
       <Label fx:id="labelRaceStage" layoutX="676.0" layoutY="140.0" prefHeight="26.0" prefWidth="91.0" />
       <TableView fx:id="table" layoutX="7.0" layoutY="353.0" prefHeight="200.0" prefWidth="1480.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="340.0">
         <columns>
             <TableColumn fx:id="numberTable" prefWidth="30.0" text="No" />
+            <TableColumn fx:id="jikuTable" prefWidth="30.0" text="軸穴" />
             <TableColumn fx:id="nameTable" prefWidth="100.0" text="馬名" />
             <TableColumn fx:id="indexTable" prefWidth="50.0" text="指数" />
+            <TableColumn fx:id="anaIndexTable" prefWidth="50.0" text="穴指数" />
             <TableColumn fx:id="dateTable" prefWidth="100.0" text="日付" />
             <TableColumn fx:id="raceStageTable" prefWidth="60.0" text="レース場" />
 	        <TableColumn fx:id="rangeTable" text="距離" />
@@ -89,6 +92,7 @@
             <TableColumn fx:id="pastMaxSpeed2" prefWidth="100.0" text="最速" />
             <TableColumn fx:id="nameTable2" prefWidth="100.0" text="馬名" />
             <TableColumn fx:id="indexTable1" prefWidth="50.0" text="指数" />
+            <TableColumn fx:id="anaIndexTable1" prefWidth="50.0" text="穴指数" />
             <TableColumn fx:id="straightSlope" prefWidth="100.0" text="直線傾斜" />
             <TableColumn fx:id="straightDistance" prefWidth="100.0" text="直線長さ" />
             <TableColumn fx:id="cornerShape" prefWidth="100.0" text="回転形状" />
@@ -149,14 +153,14 @@
       <TextField fx:id="txtResultURL6" layoutX="1080.0" layoutY="245.0" />
       <TextField fx:id="txtResultURL7" layoutX="1080.0" layoutY="285.0" />
       <TextArea fx:id="txtExplainRace" layoutX="1250.0" layoutY="13.0" prefHeight="300.0" prefWidth="200.0"/>
-      <Label fx:id="labelRace" layoutX="848.0" layoutY="16.0" text="Label" />
-      <Label fx:id="labelRace1" layoutX="848.0" layoutY="57.0" text="Label" />
-      <Label fx:id="labelRace2" layoutX="848.0" layoutY="97.0" text="Label" />
-      <Label fx:id="labelRace3" layoutX="848.0" layoutY="136.0" text="Label" />
-      <Label fx:id="labelRace4" layoutX="848.0" layoutY="173.0" text="Label" />
-      <Label fx:id="labelRace5" layoutX="848.0" layoutY="214.0" text="Label" />
-      <Label fx:id="labelRace6" layoutX="848.0" layoutY="248.0" text="Label" />
-      <Label fx:id="labelRace7" layoutX="848.0" layoutY="289.0" text="Label" />
+      <Label fx:id="labelRace" layoutX="858.0" layoutY="16.0" text="Label" />
+      <Label fx:id="labelRace1" layoutX="858.0" layoutY="57.0" text="Label" />
+      <Label fx:id="labelRace2" layoutX="858.0" layoutY="97.0" text="Label" />
+      <Label fx:id="labelRace3" layoutX="858.0" layoutY="136.0" text="Label" />
+      <Label fx:id="labelRace4" layoutX="858.0" layoutY="173.0" text="Label" />
+      <Label fx:id="labelRace5" layoutX="858.0" layoutY="214.0" text="Label" />
+      <Label fx:id="labelRace6" layoutX="858.0" layoutY="248.0" text="Label" />
+      <Label fx:id="labelRace7" layoutX="858.0" layoutY="289.0" text="Label" />
       <TextField fx:id="txtPay" layoutX="662.0" layoutY="9.0" prefHeight="26.0" prefWidth="62.0" />
       <TextField fx:id="txtReturn" layoutX="763.0" layoutY="9.0" prefHeight="26.0" prefWidth="62.0" />
       <Label layoutX="629.0" layoutY="14.0" text="購入" />
@@ -165,12 +169,19 @@
       <Label fx:id="lblRecoveryToday" layoutX="693.0" layoutY="44.0" text="全体" /><Button fx:id="raceLevelbtn" layoutX="636.0" layoutY="277.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="75.0" text="レベル計測" />
       
       <Button fx:id="raceAllGetbtn" onAction="#GetAllURL" layoutX="716.0" layoutY="277.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="75.0" text="一括取得" />
-      <Label fx:id="lblPastReturn" layoutX="796.0" layoutY="277.0" text="過去" />
+      <Label fx:id="lblPastReturn" layoutX="796.0" layoutY="275.0" text="過去" />
+      <Label fx:id="lblPastCount" layoutX="796.0" layoutY="295.0" text="総数" />
+      <Label fx:id="lblPastPercentage" layoutX="826.0" layoutY="295.0" text="確率" />
       <Button fx:id="raceLevelbtn"  onAction="#RaceLevelCount" layoutX="636.0" layoutY="277.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="75.0" text="レベル計測" />
       <Label fx:id="lblWinWideThree" layoutX="636.0" layoutY="310.0" text="W3" />
       <Label fx:id="lblWinWideFour" layoutX="686.0" layoutY="310.0" text="W4" />
       <Label fx:id="lblWinWideFive" layoutX="736.0" layoutY="310.0" text="W5" />
       <Label fx:id="lblWinWideSix" layoutX="786.0" layoutY="310.0" text="W6" />
-      <Label fx:id="lblTextHosoku" layoutX="800.0" layoutY="320.0" text="補足" />
+      <Label fx:id="lblWinWideFiveNagashi" layoutX="836.0" layoutY="310.0" text="W5n" />
+      <Label fx:id="lblWinAnaHorseThree" layoutX="636.0" layoutY="325.0" text="U3" />
+      <Label fx:id="lblWinAnaHorseFour" layoutX="686.0" layoutY="325.0" text="U4" />
+      <Label fx:id="lblWinAnaHorseFive" layoutX="736.0" layoutY="325.0" text="U5" />
+      <Label fx:id="lblWinAnaHorseSix" layoutX="786.0" layoutY="325.0" text="U6" />
+      <Label fx:id="lblWinAnaHorseFiveNagashi" layoutX="836.0" layoutY="325.0" text="U5n" />
       </children>
 </AnchorPane>

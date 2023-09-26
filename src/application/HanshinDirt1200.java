@@ -1,7 +1,11 @@
 package application;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class HanshinDirt1200 extends RaceCourse {
 	{
+		courseName = "阪神ダート1200";
 		straightDistance = "";
 		straightSlope = "急坂";
 		rotationSide = "右回り";
@@ -16,6 +20,8 @@ public class HanshinDirt1200 extends RaceCourse {
 				+ "一般的にダート短距離戦は逃げ馬と先行馬が有利だが、"
 				+ "この条件においては差し馬も届いている。"
 				+ "直線が急坂で前が止まる場合も多く、好位差しが理想の戦法。";
+		startDistance = "普通";
+		goodRaceFrame = new ArrayList<Integer>(Arrays.asList(5,6,7,8));
 	}
 	
 }

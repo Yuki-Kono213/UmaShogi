@@ -1,5 +1,8 @@
 package application;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class NiigataGrass1000 extends RaceCourse {
 	{
 		straightDistance = "長い";
@@ -16,6 +19,7 @@ public class NiigataGrass1000 extends RaceCourse {
 				+ "7～8枠の成績が抜けており、特に8枠の勝率がさらにアップ。"
 				+ "このコースでは、とにかく外枠に入ることが第一条件で、"
 				+ "その次にダッシュ力。スピード活かして押し切る競馬がベスト。";
+		goodRaceFrame = new ArrayList<Integer>(Arrays.asList(7,8));
 	}
 	
 }

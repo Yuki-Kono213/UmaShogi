@@ -1,5 +1,8 @@
 package application;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class ChukyoDirt1400 extends RaceCourse {
 	{
 		straightDistance = "長い";
@@ -17,6 +20,8 @@ public class ChukyoDirt1400 extends RaceCourse {
 				+ "芝スタートであり、最も長く芝を走れる8枠だが、その成績は思っているほど高くはない。"
 				+ "前半からペースが速くなりやすく、前半の争いは激しくなる。"
 				+ "直線も長く急坂が待ち構え、ダート短距離でも差し馬がハマる。";
+		startDistance = "長い";
+		goodRaceFrame = new ArrayList<Integer>(Arrays.asList(6,7));
 	}
 	
 }

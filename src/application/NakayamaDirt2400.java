@@ -1,5 +1,8 @@
 package application;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 public class NakayamaDirt2400 extends RaceCourse {
 	{
 		straightDistance = "";
@@ -17,6 +20,7 @@ public class NakayamaDirt2400 extends RaceCourse {
 				+ "距離2400mとダートでは長丁場。さらに直線には急坂が待ち構え、"
 				+ "道中はいかにスタミナを温存できるかが勝負の分かれ目に。"
 				+ "距離損が多い外枠は軽視。";
+		goodRaceFrame = new ArrayList<Integer>(Arrays.asList(1,2,3,4,5,6));
 	}
 	
 }

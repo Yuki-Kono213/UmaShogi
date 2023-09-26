@@ -5,12 +5,22 @@ import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Comparator;
 import java.util.List;
 
+import javax.lang.model.element.NestingKind;
+import javax.swing.JFileChooser;
+
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+
+import org.h2.util.SmallLRUCache;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -38,6 +48,10 @@ public class SampleController {
 	private Label labelRaceName;
 	@FXML
 	private Label lblPastReturn;
+	@FXML
+	private Label lblPastCount;
+	@FXML
+	private Label lblPastPercentage;
 	@FXML
 	private TextArea frame4;
 	@FXML
@@ -81,9 +95,13 @@ public class SampleController {
 	@FXML
 	private TableColumn<HorseData, String> numberTable;
 	@FXML
+	private TableColumn<HorseData, String> jikuTable;
+	@FXML
 	private TableColumn<HorseData, String> nameTable;
 	@FXML
 	private TableColumn<HorseData, String> indexTable;
+	@FXML
+	private TableColumn<HorseData, String> anaIndexTable;
 	@FXML
 	private TableColumn<HorseData, String> dateTable;
 	@FXML
@@ -195,6 +213,8 @@ public class SampleController {
 	private TableColumn<HorseData, String> nameTable2;
 	@FXML
 	private TableColumn<HorseData, String> indexTable1;
+	@FXML
+	private TableColumn<HorseData, String> anaIndexTable1;
 	@FXML
 	private Button raceLevelbtn;
 
@@ -332,7 +352,19 @@ public class SampleController {
 	private Label lblWinWideFive;
 	@FXML
 	private Label lblWinWideSix;
+	@FXML
+	private Label lblWinWideFiveNagashi;
 
+	@FXML
+	private Label lblWinAnaHorseThree;
+	@FXML
+	private Label lblWinAnaHorseFour;
+	@FXML
+	private Label lblWinAnaHorseFive;
+	@FXML
+	private Label lblWinAnaHorseSix;
+	@FXML
+	private Label lblWinAnaHorseFiveNagashi;
 
 	private PastRaceResult prr = new PastRaceResult();
 
@@ -432,13 +464,15 @@ public class SampleController {
 	HorseData[] horseDataArray;
 	Horse[] horseArray;
 
-	private String grade;
+	public static String grade;
 	private String hande;
 	private String raceAge;
 	private String raceCount;
+	public static String stage;
 	private Boolean female;
-	private String condition;
-	private RaceDataManager rdm;
+	public static String condition;
+	public static String grassDirt;
+	public static RaceDataManager rdm;
 	private boolean reGet = false; 
 	public void ReGetURL() {
 		reGet = true;
@@ -452,9 +486,8 @@ public class SampleController {
 		SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy/MM/dd");
 		for(int i = 1; i < 13; i++) {
 			textURL.setText(textURL.getText(0,42)+ Util.raceKeibaLaboURL.get(String.valueOf(i)) + "/");
-			newHorse = false;
 			GetURL();
-			if(!labelRaceName.getText().contains("障害")) {
+			if(!labelRaceName.getText().contains("障害")&&!labelRaceName.getText().contains("新馬")) {
 				try {
 					raceDate = LocalDate.parse(labelRaceDate.getText(), DateTimeFormatter.ofPattern("yyyy/[]M/[]d"));
 					Thread.sleep(1000);
@@ -463,48 +496,226 @@ public class SampleController {
 					e.printStackTrace();
 				}
 			}
-			if(raceDate != null && raceDate.isBefore(dateObj)) {GetRaceMoney();}
+			Calendar cal3 = Calendar.getInstance();
+			SimpleDateFormat sdf3 = new SimpleDateFormat("HH");
+			if(raceDate == null) {
+				continue;
+			}
+			if(raceDate.isBefore(dateObj) || 
+					raceDate.isEqual(dateObj) && Integer.parseInt(sdf3.format(cal3.getTime())) >= 17) {GetRaceMoney();}
 			
 		}
+	}
+	public void GetRaceMoneyFile() {
+		JFileChooser filechooser = new JFileChooser();
+
+	    int selected = filechooser.showOpenDialog(filechooser);
+	    if (selected == JFileChooser.APPROVE_OPTION){
+	      File file = filechooser.getSelectedFile();
+	      if (!file.exists()) {
+              System.out.print("ファイルが存在しません");
+              return;
+          }
+          try {
+        	  reGet = false;
+        	  FileReader fileReader = new FileReader(file);
+        	  BufferedReader bufferedReader = new BufferedReader(fileReader);
+        	  String data;
+        	  while ((data = bufferedReader.readLine()) != null && data != "\r\n") {
+          		for(int i = 1; i < 13; i++) {
+          			textURL.setText(data.substring(0,42)+ Util.raceKeibaLaboURL.get(String.valueOf(i)) + "/");
+          			GetURL();
+          			if(!labelRaceName.getText().contains("障害")&&!labelRaceName.getText().contains("新馬")) {
+          				try {
+                  			GetRaceMoney();
+                  			System.out.println("a" + i);
+          					Thread.sleep(1000);
+          				} catch (Exception e) {
+          					// TODO 自動生成された catch ブロック
+          					e.printStackTrace();
+          				}
+          			}
+          			
+          		}
+			  }
+      		
+	          // 最後にファイルを閉じてリソースを開放する
+	          bufferedReader.close();
+			} catch (IOException e) {
+				// TODO 自動生成された catch ブロック
+				e.printStackTrace();
+			}
+       
+	    }else if (selected == JFileChooser.CANCEL_OPTION) {
+	    }else if (selected == JFileChooser.ERROR_OPTION){
+	    }
+	}
+
+	ArrayList<HorseData> hDataArrayList = new ArrayList<>();
+	ArrayList<HorseData> hDataAnaArrayList = new ArrayList<>();
+	
+	private void DrawJikuAna() {
+
+		for (HorseData h : horseDataArray) {
+			if(h != null) {
+				hDataArrayList.add(h);
+				hDataAnaArrayList.add(h);
+			}
+		}
+		hDataArrayList.sort((o1, o2) -> Integer.parseInt(o2.getIndex()) - Integer.parseInt(o1.getIndex()));
+		hDataAnaArrayList.sort((o1, o2) -> Integer.parseInt(o2.getAnaIndex()) - Integer.parseInt(o1.getAnaIndex()));
+		
+		String[] horseArrayStrings = new String[6];
+		
+		horseArrayStrings[0] = hDataArrayList.get(0).getNo();
+		horseArrayStrings[1] = hDataArrayList.get(1).getNo();
+		int cnt = 2;
+		for(int i = 0; i < hDataAnaArrayList.size(); i++) {
+			if(!horseArrayStrings[0].equals(hDataAnaArrayList.get(i).getNo()) && !horseArrayStrings[1].equals(hDataAnaArrayList.get(i).getNo())) {
+				horseArrayStrings[cnt] = hDataAnaArrayList.get(i).getNo();
+				cnt++;
+			}
+			if(cnt == 6) {
+				break;
+			}
+		}
+		
+
+		horseDataArray[Math.abs(Util.RankMap.get(horseArrayStrings[0]) - horseDataArray.length)].setJikuAna("軸1");
+		horseDataArray[Math.abs(Util.RankMap.get(horseArrayStrings[1]) - horseDataArray.length)].setJikuAna("軸2");
+		horseDataArray[Math.abs(Util.RankMap.get(horseArrayStrings[2]) - horseDataArray.length)].setJikuAna("穴1");
+		horseDataArray[Math.abs(Util.RankMap.get(horseArrayStrings[3]) - horseDataArray.length)].setJikuAna("穴2");
+		horseDataArray[Math.abs(Util.RankMap.get(horseArrayStrings[4]) - horseDataArray.length)].setJikuAna("穴3");
+		horseDataArray[Math.abs(Util.RankMap.get(horseArrayStrings[5]) - horseDataArray.length)].setJikuAna("穴4");
+		
+		table.getItems().clear();
+
+		for(int i = horseDataArray.length - 1; i > -1; i--){
+
+			table.getItems().add(horseDataArray[i]);
+		}
+		
+		table.sort();
 	}
 	public void GetRaceMoney() {
 		try {
 			Document doc = Jsoup.connect(textURL.getText().replace("umabashira.html", "") + "raceresult.html").get();
 			Elements wide = doc.select(".haraimodoshi tr .tR");
 			Elements wideNo = doc.select(".haraimodoshi tr .tC");
-			ArrayList<HorseData> hDataArrayList = new ArrayList<>();
-			for (HorseData h : horseDataArray) {
-				if(h != null) {
-					hDataArrayList.add(h);
-				}
-			}
 			String[]horse3 = null;
 			String[]horse4 = null;
 			String[]horse5 = null;
 			String[]horse6 = null;
-			hDataArrayList.sort((o1, o2) -> Integer.parseInt(o2.getIndex()) - Integer.parseInt(o1.getIndex()));
+			String[]anaHorse3 = new String[3];
+			String[]anaHorse4 = new String[4];
+			String[]anaHorse5 = new String[5];
+			String[]anaHorse6 = new String[6];
+			String[]anaHorse5nagashi = new String[5];
+			String[]horse5nagashi = new String[5];
+			String jikuHorse = hDataArrayList.get(0).getNo();
 			if(hDataArrayList.size() > 2) {
 				horse3 = new String[] {hDataArrayList.get(0).getNo(), hDataArrayList.get(1).getNo(), hDataArrayList.get(2).getNo()};
+				//anaHorse3 = new String[] {hDataAnaArrayList.get(0).getNo(), hDataAnaArrayList.get(1).getNo(), hDataAnaArrayList.get(2).getNo()};
+				anaHorse3[0] = hDataArrayList.get(0).getNo();
+				int cnt = 1;
+				for(int i = 0; i < hDataAnaArrayList.size(); i++) {
+					if(!anaHorse3[0].equals(hDataAnaArrayList.get(i).getNo())) {
+						anaHorse3[cnt] = hDataAnaArrayList.get(i).getNo();
+						cnt++;
+					}
+					if(cnt == 3) {
+						break;
+					}
+				}
+				
 			}
 			if(hDataArrayList.size() > 3) {
 				horse4 = new String[] {hDataArrayList.get(0).getNo(), hDataArrayList.get(1).getNo(), hDataArrayList.get(2).getNo()
 					,hDataArrayList.get(3).getNo()};
+				//anaHorse4 = new String[] {hDataAnaArrayList.get(0).getNo(), hDataAnaArrayList.get(1).getNo(), hDataAnaArrayList.get(2).getNo()
+				//		, hDataAnaArrayList.get(3).getNo()};
+				
+				anaHorse4[0] = hDataArrayList.get(0).getNo();
+				anaHorse4[1] = hDataArrayList.get(1).getNo();
+				int cnt = 2;
+				for(int i = 0; i < hDataAnaArrayList.size(); i++) {
+				if(!anaHorse4[0].equals(hDataAnaArrayList.get(i).getNo()) && !anaHorse4[1].equals(hDataAnaArrayList.get(i).getNo())) {
+						anaHorse4[cnt] = hDataAnaArrayList.get(i).getNo();
+						cnt++;
+					}
+					if(cnt == 4) {
+						break;
+					}
+				}
 			}
 		
 			if(hDataArrayList.size() > 4) {
 				horse5 = new String[] {hDataArrayList.get(0).getNo(), hDataArrayList.get(1).getNo(), hDataArrayList.get(2).getNo()
 					,hDataArrayList.get(3).getNo(),hDataArrayList.get(4).getNo()};
+				//anaHorse5 = new String[] {hDataAnaArrayList.get(0).getNo(), hDataAnaArrayList.get(1).getNo(), hDataAnaArrayList.get(2).getNo()
+				//			, hDataAnaArrayList.get(3).getNo(), hDataAnaArrayList.get(4).getNo()};
+					
+				anaHorse5[0] = hDataArrayList.get(0).getNo();
+				anaHorse5[1] = hDataArrayList.get(1).getNo();
+				int cnt = 2;
+				for(int i = 0; i < hDataAnaArrayList.size(); i++) {
+					if(!anaHorse5[0].equals(hDataAnaArrayList.get(i).getNo()) && !anaHorse5[1].equals(hDataAnaArrayList.get(i).getNo())) {
+						anaHorse5[cnt] = hDataAnaArrayList.get(i).getNo();
+						cnt++;
+					}
+					if(cnt == 5) {
+						break;
+					}
+				}
 			}
 			if(hDataArrayList.size() > 5) {
 				horse6 = new String[] {hDataArrayList.get(0).getNo(), hDataArrayList.get(1).getNo(), hDataArrayList.get(2).getNo()
 					,hDataArrayList.get(3).getNo(),hDataArrayList.get(4).getNo(),hDataArrayList.get(5).getNo()};
+				horse5nagashi = new String[]{ hDataArrayList.get(1).getNo(), hDataArrayList.get(2).getNo()
+					,hDataArrayList.get(3).getNo(),hDataArrayList.get(4).getNo(),hDataArrayList.get(5).getNo()};
+				//anaHorse6 = new String[] {hDataAnaArrayList.get(0).getNo(), hDataAnaArrayList.get(1).getNo(), hDataAnaArrayList.get(2).getNo()
+				//		, hDataAnaArrayList.get(3).getNo(), hDataAnaArrayList.get(4).getNo(), hDataAnaArrayList.get(5).getNo()};
+			
+				anaHorse6[0] = hDataArrayList.get(0).getNo();
+				anaHorse6[1] = hDataArrayList.get(1).getNo();
+				int cnt = 2;
+				for(int i = 0; i < hDataAnaArrayList.size(); i++) {
+					if(!anaHorse6[0].equals(hDataAnaArrayList.get(i).getNo()) && !anaHorse6[1].equals(hDataAnaArrayList.get(i).getNo())) {
+						anaHorse6[cnt] = hDataAnaArrayList.get(i).getNo();
+						cnt++;
+					}
+					if(cnt == 6) {
+						break;
+					}
+				}
+				cnt = 0;
+				for(int i = 0; i < hDataAnaArrayList.size(); i++) {
+					if(!jikuHorse.equals(hDataAnaArrayList.get(i).getNo())) {
+						anaHorse5nagashi[cnt] = hDataAnaArrayList.get(i).getNo();
+						cnt++;
+					}
+					if(cnt == 5) {
+						break;
+					}
+				}
 			}
+			
+			
 			String[] wideArray = wide.get(3).text().replace(",", "").replace("円","").split(" ");
+			//String[] anaHorseArray = wide.get(6).text().replace(",", "").replace("円","").split(" ");
+			String[] anaHorseArray = wideArray;
 			String[] wideNoArray = wideNo.get(3).text().split(" ");
+			String[] anaHorseNoArray = wideNo.get(6).text().split(" ");
 			int horse3int = 0;
 			int horse4int = 0;
 			int horse5int = 0;
 			int horse6int = 0;
+			int horseNagashi5int = 0;
+			int anaHorse3int = 0;
+			int anaHorse4int = 0;
+			int anaHorse5int = 0;
+			int anaHorse6int = 0;
+			int anaHorseNagashi5int = 0;
 			for (int i =0; i < wideArray.length; i++) {
 				Wide w = new Wide(wideNoArray[i].split("-")[0], wideNoArray[i].split("-")[1], Integer.parseInt(wideArray[i]));
 				if(horse3 != null && Arrays.asList(horse3).contains(Util.RankTableMap.get(w.one)) && Arrays.asList(horse3).contains(Util.RankTableMap.get(w.two)) ) {
@@ -521,6 +732,32 @@ public class SampleController {
 				if(horse6 != null && Arrays.asList(horse6).contains(Util.RankTableMap.get(w.one)) && Arrays.asList(horse6).contains(Util.RankTableMap.get(w.two)) ) {
 					horse6int += w.money;
 				}
+				if(horse5nagashi != null && (jikuHorse.contains(Util.RankTableMap.get(w.one)) || jikuHorse.contains(Util.RankTableMap.get(w.two)))
+						&& (Arrays.asList(horse5nagashi).contains(Util.RankTableMap.get(w.one))||Arrays.asList(horse5nagashi).contains(Util.RankTableMap.get(w.two)))) {
+					horseNagashi5int += w.money;
+				}
+			}
+			
+			for (int i =0; i < anaHorseArray.length; i++) {
+				Wide w = new Wide(wideNoArray[i].split("-")[0], wideNoArray[i].split("-")[1], Integer.parseInt(anaHorseArray[i]));
+				if(anaHorse3 != null && Arrays.asList(anaHorse3).contains(Util.RankTableMap.get(w.one)) && Arrays.asList(anaHorse3).contains(Util.RankTableMap.get(w.two)) ) {
+					anaHorse3int += w.money;
+				}
+				
+				if(horse4 != null && Arrays.asList(anaHorse4).contains(Util.RankTableMap.get(w.one)) && Arrays.asList(anaHorse4).contains(Util.RankTableMap.get(w.two)) ) {
+					anaHorse4int += w.money;
+				}
+				
+				if(horse5 != null && Arrays.asList(anaHorse5).contains(Util.RankTableMap.get(w.one)) && Arrays.asList(anaHorse5).contains(Util.RankTableMap.get(w.two)) ) {
+					anaHorse5int += w.money;
+				}
+				if(horse6 != null && Arrays.asList(anaHorse6).contains(Util.RankTableMap.get(w.one)) && Arrays.asList(anaHorse6).contains(Util.RankTableMap.get(w.two)) ) {
+					anaHorse6int += w.money;
+				}
+				if(horse5nagashi != null && (jikuHorse.contains(Util.RankTableMap.get(w.one)) || jikuHorse.contains(Util.RankTableMap.get(w.two)))
+						&& (Arrays.asList(anaHorse5nagashi).contains(Util.RankTableMap.get(w.one))||Arrays.asList(anaHorse5nagashi).contains(Util.RankTableMap.get(w.two)))) {
+					anaHorseNagashi5int += w.money;
+				}
 			}
 			
 			if(horse4 == null) {
@@ -536,11 +773,22 @@ public class SampleController {
 			lblWinWideThree.setText(String.valueOf(horse3int));
 			lblWinWideFour.setText(String.valueOf(horse4int));
 			lblWinWideFive.setText(String.valueOf(horse5int));
-
 			lblWinWideSix.setText(String.valueOf(horse6int));
+			lblWinWideFiveNagashi.setText(String.valueOf(horseNagashi5int));
+			lblWinAnaHorseThree.setText(String.valueOf(anaHorse3int));
+			lblWinAnaHorseFour.setText(String.valueOf(anaHorse4int));
+			lblWinAnaHorseFive.setText(String.valueOf(anaHorse5int));
+			lblWinAnaHorseSix.setText(String.valueOf(anaHorse6int));
+			lblWinAnaHorseFiveNagashi.setText(String.valueOf(anaHorseNagashi5int));
 			new RaceDB().UseRaceDataBase(
 					new String[] {"updateMoney", rdm.RaceURL,lblWinWideThree.getText(), lblWinWideFour.getText() 
-							, lblWinWideFive.getText() , lblWinWideSix.getText() });
+							, lblWinWideFive.getText() , lblWinWideSix.getText(), lblWinWideFiveNagashi.getText()
+							, lblWinAnaHorseThree.getText(), lblWinAnaHorseFour.getText() 
+							, lblWinAnaHorseFive.getText() , lblWinAnaHorseSix.getText(), lblWinAnaHorseFiveNagashi.getText() });
+			System.out.println(lblWinWideThree.getText() + " " + lblWinWideFour.getText() + " " +
+					lblWinWideFive.getText() + " " + lblWinWideSix.getText() + " " +  lblWinWideFiveNagashi.getText());
+			System.out.println(lblWinAnaHorseThree.getText() + " " + lblWinAnaHorseFour.getText() + " " +
+					lblWinAnaHorseFive.getText() + " " + lblWinAnaHorseSix.getText() + " " +  lblWinAnaHorseFiveNagashi.getText());
 			
 		} catch (IOException e) {
 			// TODO 自動生成された catch ブロック
@@ -548,17 +796,25 @@ public class SampleController {
 		}
 	
 	}
+	public static String[]pastGetStrings = new String[13];
+	public static LocalDate staticRaceDate;
 	static int loadcnt = 0;
 	public static LocalDate matchDate;
+	public static int raceDateCount;
 	public static RaceCourse rc;
 	String pastRaceTenkai;
+	public static boolean grassStartBool;
 	public void GetURL() {
 
 		numberTable.setCellValueFactory(new PropertyValueFactory<HorseData, String>("no"));
 
+		jikuTable.setCellValueFactory(new PropertyValueFactory<HorseData, String>("jikuAna"));
+		
 		nameTable.setCellValueFactory(new PropertyValueFactory<HorseData, String>("name"));
 
 		indexTable.setCellValueFactory(new PropertyValueFactory<HorseData, String>("index"));
+		
+		anaIndexTable.setCellValueFactory(new PropertyValueFactory<HorseData, String>("anaIndex"));
 
 		dateTable.setCellValueFactory(new PropertyValueFactory<HorseData, String>("date"));
 
@@ -613,6 +869,7 @@ public class SampleController {
 		nameTable1.setCellValueFactory(new PropertyValueFactory<HorseData, String>("name"));
 		nameTable2.setCellValueFactory(new PropertyValueFactory<HorseData, String>("name"));
 		indexTable1.setCellValueFactory(new PropertyValueFactory<HorseData, String>("index"));
+		anaIndexTable1.setCellValueFactory(new PropertyValueFactory<HorseData, String>("anaIndex"));
 		
 		beforeJockeyTrait.setCellValueFactory(new PropertyValueFactory<HorseData, String>("beforeJockeyTrait"));
 		nowJockeyTrait.setCellValueFactory(new PropertyValueFactory<HorseData, String>("nowJockeyTrait"));
@@ -670,6 +927,9 @@ public class SampleController {
 			Elements conditionElements = doc.select(".raceaboutbox.clearfix li");
 			Elements heavyElements = doc.select(".kinryou.std9 td");
 			condition = conditionElements.get(1).text();
+			if(condition.length() > 1) {
+				condition = "良";
+			}
 			System.out.println("コンディション" + condition);
 			labelRaceName.setText(doc.select(".raceTitle.fL").get(0).text());
 			grade = null;
@@ -725,7 +985,10 @@ public class SampleController {
 			}
 
 			labelRaceStage.setText(stageElements.get(3).text().split("競馬")[0]);
+			stage = labelRaceStage.getText();
 			labelRaceDate.setText(dateElements.get(0).text().split("\\(")[0]);
+			raceDateCount = Integer.parseInt(dateElements.get(0).text().split("回")[1].split("日")[0].substring(2));
+			System.out.println(raceDateCount + "日目");
 			String[] dateString = labelRaceDate.getText().split("/");
 			labelRaceDate.setText(String.format("%d/%02d/%02d", Integer.parseInt(dateString[0].replace("/", "")),
 					Integer.parseInt(dateString[1].replace("/", "")),
@@ -755,12 +1018,14 @@ public class SampleController {
 			rdm.RaceURL = textURL.getText();
 			rdm.RaceName = labelRaceName.getText();
 			Integer raceID = raceData[0];
+			if (rangeElements.get(1).text().contains("芝")) {
+				rdm.grass = true;
+				grassDirt = "芝";
+			} else {
+				rdm.grass = false;
+				grassDirt = "ダ";
+			}
 			if (raceID == -1 || raceData[3] == 0 || reGet) {
-				if (rangeElements.get(0).text().contains("芝")) {
-					rdm.grass = true;
-				} else {
-					rdm.grass = false;
-				}
 				rdm.payCash =  raceData[1];
 				rdm.returnCash =  raceData[2];
 				if(raceID == -1 || raceData[3] == 0) {
@@ -797,6 +1062,30 @@ public class SampleController {
 			if(loadcnt == 0) {SetEventButton();}
 			loadcnt++;
 
+			new RaceDB().execute(new String[]{"pastReturn",labelRaceDate.getText().split("/")[0],labelRaceStage.getText(), 
+					labelRaceRange.getText().replace("芝", "").replace("ダ","" ).replace("m", ""),
+					String.valueOf(rdm.grass),raceCount,condition, hande});
+			if(LocalDate.now()
+				.isEqual(LocalDate.parse(labelRaceDate.getText(),
+						DateTimeFormatter.ofPattern("yyyy/[]M/[]d")))
+				||LocalDate.now()
+				.isBefore(LocalDate.parse(labelRaceDate.getText(),
+						DateTimeFormatter.ofPattern("yyyy/[]M/[]d")))||
+				LocalDate.now().isAfter(LocalDate.parse(labelRaceDate.getText(),
+						DateTimeFormatter.ofPattern("yyyy/[]M/[]d")))){
+				lblPastCount.setText(pastGetStrings[0] + "回");
+				lblWinWideThree.setText(pastGetStrings[1]);
+				lblWinWideFour.setText(pastGetStrings[2]);
+				lblWinWideFive.setText(pastGetStrings[3]);
+				lblWinWideSix.setText(pastGetStrings[4]);
+				lblWinWideFiveNagashi.setText(pastGetStrings[5]);
+				lblWinAnaHorseThree.setText(pastGetStrings[6]);
+				lblWinAnaHorseFour.setText(pastGetStrings[7]);
+				lblWinAnaHorseFive.setText(pastGetStrings[8]);
+				lblWinAnaHorseSix.setText(pastGetStrings[9]);
+				lblWinAnaHorseFiveNagashi.setText(pastGetStrings[10]);
+				lblPastPercentage.setText(pastGetStrings[11] + "%");
+			}
 			txtThisPaddockURL.setText(
 					"https://regist.prc.jp/api/windowopen.aspx?target=race/" + labelRaceDate.getText().substring(0, 4)
 							+ "/" + labelRaceDate.getText().substring(0, 10).replace("/", "") + "/"
@@ -828,7 +1117,6 @@ public class SampleController {
 			lblPastReturn.setText(new RaceDB().executeReturnMoney(
 					labelRaceRange.getText(), labelRaceStage.getText() 
 					, labelRaceDate.getText().substring(0,4))+ "%");
-			System.out.println(labelRaceDate.getText().substring(0,4));
 			}
 			catch (Exception e) {
 				lblPastReturn.setText("0%");
@@ -836,6 +1124,13 @@ public class SampleController {
 			txtExplainRace.clear();
 			txtExplainRace.setWrapText(true);
 			txtExplainRace.setText(rc.textString);
+
+			grassStartBool = false;
+			if(rc.grassStart.contains("芝スタート")) {
+				grassStartBool = true;
+			}
+			
+			staticRaceDate = LocalDate.parse(labelRaceDate.getText(), DateTimeFormatter.ofPattern("yyyy/[]M/[]d"));
 			for (int i = 0; i < horseElements.size() / 2; i++) {
 				prr = new PastRaceResult();
 				j = i + 18 - horseElements.size() / 2;
@@ -962,7 +1257,6 @@ public class SampleController {
 												StringBuilder sb = new StringBuilder(dateFormatString);
 												sb.insert(4, "/");
 												sb.insert(7, "/");
-												System.out.println(sb);
 												if(LocalDate
 														.parse(sb.toString(),
 																DateTimeFormatter.ofPattern("yyyy/[]M/[]d"))
@@ -1203,7 +1497,7 @@ public class SampleController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+		DrawJikuAna();
 		RaceDB rdb = new RaceDB();
 		Comparator<HorseData> comparator = Comparator.<HorseData, String>comparing(model -> model.getNo());
 		FXCollections.sort(table.getItems(), comparator);
@@ -1347,8 +1641,9 @@ public class SampleController {
 		}
 		HorseData horseData = new HorseData(strArray[h.number], h.name, analysis, horseString,
 				pastRaceCondition, raceRange, labelRaceRange.getText(), address, raceLevel, jockeyWeight, cornerShape,
-				grassStart, raceGround, rotationSide, rotationSize, straightDistance, straightSlope, jockey, condition);
-		table.getItems().add(horseData);
+				grassStart, raceGround, rotationSide, rotationSize, straightDistance, straightSlope, jockey, condition
+				,h.frame, h.rate, h.position);
+		//table.getItems().add(horseData);
 		horseDataArray[index] = horseData;
 		horseArray[index] = h;
 
@@ -1360,7 +1655,7 @@ public class SampleController {
 		try {
 			doc = Jsoup.connect(textURL.getText()).get();
 
-			Elements horseURLElements = doc.select("td[class~=hcolor.cyaku.*] > a, td.BeforRaces");
+			Elements horseURLElements = doc.select("td[class~=hcolor.cyaku.*], td.BeforRaces");
 			Elements horseElements = doc.select("a.tategaki.bamei");
 
 			int[] rank1 = new int[2];
@@ -1371,69 +1666,82 @@ public class SampleController {
 			int[] rankCnt = new int[2];
 			try {
 
-				for (int i = 0; i < horseElements.size() / 2; i++) {
+				for (int i = 0; i < horseElements.size()/2; i++) {
 					int horseIndex = horseElements.size() / 2 - i - 1;
-					try {
-						rank1 = new int[2];
-						rank2 = new int[2];
-						rank3 = new int[2];
-						rankOther = new int[2];
-						rankCnt = new int[2];
-						for (int i2 = 0; i2 < 2; i2++) {
-							int index = (horseElements.size() / 2 - i - 1) + (horseElements.size() / 2 * i2);
-							if (horseURLElements.get(index).getElementsByTag("a").attr("href").contains("/")) {
-								Document raceDoc = Jsoup.connect("https://www.keibalab.jp"
-										+ horseURLElements.get(index).getElementsByTag("a").attr("href")
-										+ "umabashira.html").get();
-								Elements horseDataElements = raceDoc.select("div[class~=BameiWrap] > a");
-
-								Elements dateElements = raceDoc.select(".fL.ml10 .bold");
-								String[] dateStrings = dateElements.get(0).text().split("\\(")[0].split("/");
-								String dateString = (String.format("%d/%02d/%02d",
-										Integer.parseInt(dateStrings[0].replace("/", "")),
-										Integer.parseInt(dateStrings[1].replace("/", "")),
-										Integer.parseInt(dateStrings[2].replace("/", ""))));
-								for (int i3 = 0; i3 < horseDataElements.size() / 2; i3++) {
-									Document horseDoc = Jsoup
-											.connect("https://www.keibalab.jp"
-													+ horseDataElements.get(i3).getElementsByTag("a").attr("href"))
-											.get();
-									Elements horseRaceElements = horseDoc.select(".sortobject tr");
-									for (int i4 = 0; i4 < horseRaceElements.size(); i4++) {
-										if (horseRaceElements.get(i4).text().split(" ").length > 22
-												&& !horseRaceElements.get(i4).text().contains("失")
-												&& LocalDate
-														.parse(horseRaceElements.get(i4).text().split(" ")[0],
-																DateTimeFormatter.ofPattern("yyyy/[]M/[]d"))
-														.isAfter(LocalDate.parse(dateString,
-																DateTimeFormatter.ofPattern("yyyy/[]M/[]d")))
-												&& LocalDate
-														.parse(horseRaceElements.get(i4).text().split(" ")[0],
-																DateTimeFormatter.ofPattern("yyyy/[]M/[]d"))
-														.isBefore(LocalDate.parse(labelRaceDate.getText(),
-																DateTimeFormatter.ofPattern("yyyy/[]M/[]d")))) {
-											int rank = Integer.parseInt(horseRaceElements.get(i4).text().split(" ")[7]);
-											rankCnt[i2]++;
-											if (rank == 1) {
-												rank1[i2]++;
-											} else if (rank == 2) {
-												rank2[i2]++;
-											} else if (rank == 3) {
-												rank3[i2]++;
-											} else {
-												rankOther[i2]++;
+					rank1 = new int[2];
+					rank2 = new int[2];
+					rank3 = new int[2];
+					rankOther = new int[2];
+					rankCnt = new int[2];
+					if(i < horseElements.size()/2) {
+						try {
+							for (int i2 = 0; i2 < 2; i2++) {
+								int index = horseIndex + (horseElements.size() / 2 * i2);
+								System.out.println(horseURLElements.get(index).getElementsByTag("a").attr("href") != "");
+								if (horseURLElements.get(index).getElementsByTag("a").attr("href") != "" &&
+									horseURLElements.get(index).getElementsByTag("a").attr("href").contains("/")) {
+									Document raceDoc = Jsoup.connect("https://www.keibalab.jp"
+											+ horseURLElements.get(index).getElementsByTag("a").attr("href")
+											+ "umabashira.html").get();
+									Elements horseDataElements = raceDoc.select("div[class~=BameiWrap] > a");
+	
+									Elements dateElements = raceDoc.select(".fL.ml10 .bold");
+									String[] dateStrings = dateElements.get(0).text().split("\\(")[0].split("/");
+									String dateString = (String.format("%d/%02d/%02d",
+											Integer.parseInt(dateStrings[0].replace("/", "")),
+											Integer.parseInt(dateStrings[1].replace("/", "")),
+											Integer.parseInt(dateStrings[2].replace("/", ""))));
+									ArrayList<String>horseList = new ArrayList<String>();
+									for (int i3 = 0; i3 < horseDataElements.size() / 2; i3++) {
+										System.out.println((horseDataElements.get(i3).getElementsByTag("a").attr("href")));
+										if((horseDataElements.get(i3).getElementsByTag("a").attr("href")) != "") {
+										Document horseDoc = Jsoup
+												.connect("https://www.keibalab.jp"
+														+ horseDataElements.get(i3).getElementsByTag("a").attr("href")).get();
+										Elements horseRaceElements = horseDoc.select(".sortobject tr");
+	
+										for (int i4 = 0; i4 < horseRaceElements.size(); i4++) {
+											if (!horseList.contains(horseRaceElements.get(i4).getElementsByTag("a").attr("href"))
+													&&horseRaceElements.get(i4).text().split(" ").length > 22
+													&& !horseRaceElements.get(i4).text().contains("失")
+													&& LocalDate
+															.parse(horseRaceElements.get(i4).text().split(" ")[0],
+																	DateTimeFormatter.ofPattern("yyyy/[]M/[]d"))
+															.isAfter(LocalDate.parse(dateString,
+																	DateTimeFormatter.ofPattern("yyyy/[]M/[]d")))
+													&& LocalDate
+															.parse(horseRaceElements.get(i4).text().split(" ")[0],
+																	DateTimeFormatter.ofPattern("yyyy/[]M/[]d"))
+															.isBefore(LocalDate.parse(labelRaceDate.getText(),
+																	DateTimeFormatter.ofPattern("yyyy/[]M/[]d")))) {
+		
+													//horseList.add(horseRaceElements.get(i4).getElementsByTag("a").attr("href"));
+													//System.out.println(horseRaceElements.get(i4).getElementsByTag("a").attr("href"));
+													int rank = Integer.parseInt(horseRaceElements.get(i4).text().split(" ")[7]);
+													//System.out.println(horseRaceElements.get(i4).getElementsByTag("a").attr("href"));
+													rankCnt[i2]++;
+													if (rank == 1) {
+														rank1[i2]++;
+													} else if (rank == 2) {
+														rank2[i2]++;
+													} else if (rank == 3) {
+														rank3[i2]++;
+													} else {
+														rankOther[i2]++;
+													}
+		
+												}
 											}
-
 										}
+	
+										Thread.sleep(1000);
 									}
-
-									Thread.sleep(1000);
+	//								
 								}
-//								
 							}
+						} catch (Exception e) {
+	
 						}
-					} catch (Exception e) {
-
 					}
 					int[] rankPercentage = new int[8];
 					if (rankCnt[0] != 0) {
